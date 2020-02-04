@@ -11,8 +11,8 @@ A bullet can be either a task, an event, or a note. Each of these can contain ne
 There are two individual Node projects in this app, one for the server and one for the client. Navigate into each subfolder and run `npm install` to install dependencies.  
 
 You will also need to add a config file for the server to work properly. For dev, create a file called 'dev.env'. In that file, specify the following parameters:
-*PORT (port you want the server to run on)
-*DEV_MONGODB_URL (url of your mongo db)
-*DB_USER
-*DB_PASSWORD
-*JWT_SECRET (for your JWT)
+* PORT (port you want the server to run on)
+* DEV_MONGODB_URL (url of your mongo db)
+* DB_USER
+* DB_PASSWORD
+* JWT_SECRET (for your JWT)
