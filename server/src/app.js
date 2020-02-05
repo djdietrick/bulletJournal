@@ -6,6 +6,8 @@ let bodyParser = require('body-parser');
 
 let port = process.env.PORT;
 
+const bulletRouter = require('./routes/bullet');
+
 // Connect to DB
 require('../db/mongoose');
 
@@ -17,6 +19,8 @@ app.use(express.static(publicDir));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(bulletRouter);
 
 app.get('/', (req, res) => {
     res.sendFile('index.html', {root: publicDir});

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
-const extend = require('mongoose-schema-extend');
 
+const options =  { 
+    collection: 'bullets', 
+    discriminatorKey: '_type', 
+    timestamps: true}
+
+// Schemas
 const bulletSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -9,28 +14,40 @@ const bulletSchema = new mongoose.Schema({
     description: {
         type:String
     },
-    date: {
+    addedDate: {
         type: Date,
-    }
-}, { collection: 'bullets', discriminatorKey: '_type', timestamps: true});
-
-const taskSchema = bulletSchema.extend({
-
-});
-
-const eventSchema = bulletSchema.extend({
-
-});
-
-const noteSchema = bulletSchema.extend({
-
-});
-
-// Statics and methods
+        required: true,
+        default: Date.now
+    },
+    notes: [String]
+}, options);
 
 const Bullet = mongoose.model('bullet', bulletSchema);
-const Task = mongoose.model('task', taskSchema);
-const Event = mongoose.model('event', eventSchema);
-const Note = mongoose.model('note', noteSchema);
+
+const Task = Bullet.discriminator('task', new mongoose.Schema({
+    dueDate: {
+        type: Date
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    },
+    status: {
+        type: String,
+        default: "InProgress"
+    }
+}), options);
+
+const Event = Bullet.discriminator('event', new mongoose.Schema({
+    eventDate: {
+        type: Date,
+        required: true,
+        index: true,
+        default: Date.now
+    }
+}), options);
+
+const Note = mongoose.model('note', bulletSchema);
+
 
 module.exports = {Bullet, Task, Event, Note};
