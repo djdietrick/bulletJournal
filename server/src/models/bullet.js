@@ -24,30 +24,4 @@ const bulletSchema = new mongoose.Schema({
 
 const Bullet = mongoose.model('bullet', bulletSchema);
 
-const Task = Bullet.discriminator('task', new mongoose.Schema({
-    dueDate: {
-        type: Date
-    },
-    completed: {
-        type: Boolean,
-        default: false
-    },
-    status: {
-        type: String,
-        default: "InProgress"
-    }
-}), options);
-
-const Event = Bullet.discriminator('event', new mongoose.Schema({
-    eventDate: {
-        type: Date,
-        required: true,
-        index: true,
-        default: Date.now
-    }
-}), options);
-
-const Note = mongoose.model('note', bulletSchema);
-
-
-module.exports = {Bullet, Task, Event, Note};
+module.exports = Bullet;
