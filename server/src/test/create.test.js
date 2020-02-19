@@ -18,7 +18,7 @@ test('Create task', async() => {
 
     await request(app).post('/tasks')
     .send(task)
-    .expect(200);
+    .expect(201);
 
     const tasks = await Bullet.find();
     expect(tasks.length).toBe(1);
@@ -44,7 +44,7 @@ test('Create task with due date', async() => {
 
     await request(app).post('/tasks')
     .send(task)
-    .expect(200);
+    .expect(201);
 
     const tasks = await Bullet.find();
     expect(tasks.length).toBe(1);
@@ -60,7 +60,7 @@ test('Create event', async() => {
 
     await request(app).post('/events')
     .send(event)
-    .expect(200);
+    .expect(201);
 
     const events = await Bullet.find();
     expect(events.length).toBe(1);
@@ -82,7 +82,7 @@ test('Create future event', async() => {
 
     await request(app).post('/events')
     .send(event)
-    .expect(200);
+    .expect(201);
 
     const events = await Bullet.find();
     expect(events.length).toBe(1);
@@ -101,7 +101,7 @@ test('Create event with time', async() => {
 
     await request(app).post('/events')
     .send(event)
-    .expect(200);
+    .expect(201);
 
     const events = await Bullet.find();
     expect(events.length).toBe(1);
@@ -121,7 +121,7 @@ test('Create note', async() => {
 
     await request(app).post('/notes')
     .send(note)
-    .expect(200);
+    .expect(201);
 
     const notes = await Bullet.find();
     expect(notes.length).toBe(1);
@@ -150,15 +150,15 @@ test('Check inheritance', async() => {
 
     await request(app).post('/tasks')
     .send(task)
-    .expect(200);
+    .expect(201);
 
     await request(app).post('/events')
     .send(event)
-    .expect(200);
+    .expect(201);
 
     await request(app).post('/notes')
     .send(note)
-    .expect(200);
+    .expect(201);
 
     const bullets = await Bullet.find();
     expect(bullets.length).toBe(3);
