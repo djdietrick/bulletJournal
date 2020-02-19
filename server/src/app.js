@@ -30,8 +30,10 @@ app.get('/', (req, res) => {
     res.sendFile('index.html', {root: publicDir});
 });
 
-app.listen(port, () => {
-    console.log('Server is up on http://localhost:' + port);
-});
+if(process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log('Server is up on http://localhost:' + port);
+    });
+}
 
 module.exports = app;

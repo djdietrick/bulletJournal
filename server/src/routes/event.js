@@ -13,13 +13,29 @@ router.post('/events', async(req, res) => {
     }
 });
 
+// /events?year=2020&month=01 , gets events in the given month with importance high and medium (for monthly view)
+// /events?year=2020 , gets events in the given year with importance high (for yearly view)
 router.get('/events', async(req, res) => {
     const match = {}
     const sort = {}
 
     // Matches
-    if (req.query.completed) {
-        match.completed = req.query.completed === 'true'
+    if(req.query.year && req.query.month) {
+        match.anchorDate = {
+            $gte: new Date(req.query.year, req.query.month, 1),
+            $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
+        }
+        match.imporance = "HIGH"
+    } else if (req.query.year) {
+        match.anchorDate = {
+            $gte: new Date(req.query.year, 1, 1),
+            $lt: new Date(req.query.year + 1, 1, 1)
+        }
+        match.importance = {
+            $or: ['HIGH', 'MEDIUM']
+        }
+    } else {
+        return res.status(400).send("Must provide either a month and year or just a year");
     }
 
     // Sorts
@@ -61,7 +77,7 @@ router.get('/events/:id', async (req, res) => {
 
 router.patch('/events/:id', async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['title', 'description', 'notes', 'eventDate', 'allDay', 'importance'];
+    const allowedUpdates = ['title', 'description', 'notes', 'anchorDate', 'allDay', 'importance'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {

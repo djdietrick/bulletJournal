@@ -14,10 +14,12 @@ const bulletSchema = new mongoose.Schema({
     description: {
         type:String
     },
-    addedDate: {
+    anchorDate: {
+        // Date to tie the bullet to the calendar
         type: Date,
         required: true,
-        default: Date.now
+        default: Date.now,
+        index: true
     },
     notes: [String]
 }, options);

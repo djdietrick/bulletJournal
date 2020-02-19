@@ -29,7 +29,7 @@ test('Create task', async() => {
     const newTask = tasks[0];
     expect(newTask.title).toBe('Take out trash');
     expect(newTask.description).toBeUndefined();
-    expect(newTask.addedDate).toBeDefined();
+    expect(newTask.anchorDate).toBeDefined();
     expect(newTask.notes.length).toBe(0);
     expect(newTask.dueDate).toBeUndefined();
     expect(newTask.completed).toBe(false);
@@ -70,13 +70,13 @@ test('Create event', async() => {
 
     const newEvent = events[0];
     expect(newEvent.title).toBe('Got a haircut');
-    expect(newEvent.eventDate.day).toBe(Date.now.day);
+    expect(newEvent.anchorDate.day).toBe(Date.now.day);
 });
 
 test('Create future event', async() => {
     const event = {
         title: 'Doctors appointment',
-        eventDate: '2020-02-20T00:00:00',
+        anchorDate: '2020-02-20T00:00:00',
         allDay: true
     }
 
@@ -89,14 +89,14 @@ test('Create future event', async() => {
 
     const newEvent = events[0];
     expect(newEvent.title).toBe('Doctors appointment');
-    expect(newEvent.eventDate.toDateString()).toBe('Thu Feb 20 2020');
+    expect(newEvent.anchorDate.toDateString()).toBe('Thu Feb 20 2020');
     expect(newEvent.allDay).toBe(true);
 });
 
 test('Create event with time', async() => {
     const event = {
         title: 'Doctors appointment',
-        eventDate: '2020-02-20T08:00:00'
+        anchorDate: '2020-02-20T08:00:00'
     }
 
     await request(app).post('/events')
@@ -108,9 +108,9 @@ test('Create event with time', async() => {
 
     const newEvent = events[0];
     expect(newEvent.title).toBe('Doctors appointment');
-    expect(newEvent.eventDate.toDateString()).toBe('Thu Feb 20 2020');
-    expect(newEvent.eventDate.getHours()).toBe(8);
-    expect(newEvent.eventDate.getMinutes()).toBe(0);
+    expect(newEvent.anchorDate.toDateString()).toBe('Thu Feb 20 2020');
+    expect(newEvent.anchorDate.getHours()).toBe(8);
+    expect(newEvent.anchorDate.getMinutes()).toBe(0);
     expect(newEvent.allDay).toBe(false);
 });
 
@@ -129,7 +129,6 @@ test('Create note', async() => {
     const noteSpec = await Note.find();
     expect(noteSpec.length).toBe(1);
 
-
     const newNote = notes[0];
     expect(newNote.title).toBe('Test note');
 });
@@ -141,7 +140,7 @@ test('Check inheritance', async() => {
 
     const event = {
         title: 'Doctors appointment',
-        eventDate: '2020-02-20'
+        anchorDate: '2020-02-20'
     }
 
     const note = {

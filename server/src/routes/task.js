@@ -22,6 +22,15 @@ router.get('/tasks', async(req, res) => {
         match.completed = req.query.completed === 'true'
     }
 
+    if(req.query.year && req.query.month) {
+        match.anchorDate = {
+            $gte: new Date(req.query.year, req.query.month, 1),
+            $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
+        }
+    } else {
+        return res.status(400).send("Must provide a month and year");
+    }
+
     // Sorts
     if (req.query.sortBy) {
         const parts = req.query.sortBy.split(':')
