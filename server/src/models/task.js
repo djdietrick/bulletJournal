@@ -9,6 +9,9 @@ const Task = Bullet.discriminator('task', new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    completedDate: {
+        type: Date
+    },
     status: {
         type: String,
         enum: ["IN_PROGRESS", "COMPLETED", "NAN"],

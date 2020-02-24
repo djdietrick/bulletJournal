@@ -1,0 +1,138 @@
+{
+    "events": {
+        "HIGH": [
+            {
+                "title": "Phish",
+                "location": "Nasseau Coliseum",
+                "anchorDate": "2019-12-01T20:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Phish",
+                "location": "MSG",
+                "anchorDate": "2019-12-31T20:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Jam Cruise 18",
+                "anchorDate": "2020-01-07",
+                "allDay": true,
+                "endDate": "2020-01-12"
+            },
+            {
+                "title": "Ski Trip",
+                "location": "Mt Snow",
+                "anchorDate": "2020-02-07",
+                "allDay": true,
+                "endDate": "2020-02-09"
+            },
+            {
+                "title": "Crystal Springs Trip",
+                "location": "Crystal Springs",
+                "anchorDate": "2020-02-28",
+                "allDay": true,
+                "endDate": "2020-03-01"
+            },
+            {
+                "title": "Puerto Rico Trip",
+                "location": "Puerto Rico",
+                "anchorDate": "2020-03-26",
+                "allDay": true,
+                "endDate": "2020-03-29"
+            },
+            {
+                "title": "Jake's Bachelor Party",
+                "location": "Lake Tahoe, CA",
+                "anchorDate": "2020-05-28",
+                "allDay": true,
+                "endDate": "2020-05-31"
+            },
+            {
+                "title": "Anniversary",
+                "anchorDate": "2020-05-26",
+                "allDay": true
+            },
+            {
+                "title": "Jake's Wedding",
+                "location": "Minneapolis, MN",
+                "anchorDate": "2020-06-26",
+                "allDay": true,
+                "endDate": "2020-06-28"
+            }
+        ],
+        "MEDIUM": [
+            {
+                "title": "Tauk",
+                "location": "Brooklyn Bowl",
+                "anchorDate": "2019-10-18T20:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Tauk",
+                "location": "Brooklyn Bowl",
+                "anchorDate": "2019-10-19T20:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Pigeons",
+                "location": "Playstation Theatre",
+                "anchorDate": "2019-11-01T21:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Goose",
+                "location": "Bowery Ballroom",
+                "anchorDate": "2020-01-24T20:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Andy Frasco and Big Something",
+                "location": "Brooklyn Bowl",
+                "anchorDate": "2020-02-15T20:00:00",
+                "allDay": false
+            },
+            {
+                "title": "Book of Mormon",
+                "anchorDate": "2019-10-05T20:00:00",
+                "allDay": false
+            }
+        ],
+        "LOW": [
+            {
+                "title": "Apple picking",
+                "anchorDate": "2019-10-06",
+                "allDay": true
+            },
+            {
+                "title": "Mom visiting",
+                "anchorDate": "2019-12-06",
+                "allDay": true,
+                "endDate": "2019-12-08"
+            },
+            {
+                "title": "Ash's parents visiting",
+                "anchorDate": "2019-12-13",
+                "allDay": true,
+                "endDate": "2019-12-15"
+            },
+            {
+                "title": "Haircut",
+                "anchorDate": "2020-01-03",
+                "allDay": true
+            }
+        ]
+    },
+    "tasks": [
+        {
+            "title": "Test",
+            "anchorDate": "2020-02-20T08:00:00",
+            "dueDate": "2020-02-20T08:00:00"
+        }
+    ],
+    "notes": [
+        {
+            "title": "Test",
+            "anchorDate": "2020-02-20T08:00:00"
+        }
+    ]
+}

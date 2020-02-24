@@ -21,19 +21,51 @@ router.get('/events', async(req, res) => {
 
     // Matches
     if(req.query.year && req.query.month) {
-        match.anchorDate = {
-            $gte: new Date(req.query.year, req.query.month, 1),
-            $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
-        }
-        match.imporance = "HIGH"
-    } else if (req.query.year) {
-        match.anchorDate = {
-            $gte: new Date(req.query.year, 1, 1),
-            $lt: new Date(req.query.year + 1, 1, 1)
-        }
+        // match.$or = [
+        //     {
+        //         anchorDate: {
+        //             $gte: new Date(req.query.year, req.query.month, 1),
+        //             $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
+        //         }
+        //     },
+        //     {
+        //         endDate: {
+        //             $gte: new Date(req.query.year, req.query.month, 1),
+        //             $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
+        //         }
+        //     }
+        // ];
+        
+        // match.anchorDate = {
+        //     $gte: new Date(req.query.year, req.query.month, 1),
+        //     $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
+        // }
         match.importance = {
-            $or: ['HIGH', 'MEDIUM']
+            $in: ['HIGH', 'MEDIUM']
+        };
+    } else if (req.query.year) {
+        const year = parseInt(req.query.year);
+        // match.$or = [
+        //     {
+        //         anchorDate: {
+        //             $gte: new Date(year, 1, 1),
+        //             $lt: new Date(year + 1, 1, 1)
+        //         }
+        //     },
+        //     {
+        //         dueDate: {
+        //             $gte: new Date(year, 1, 1),
+        //             $lt: new Date(year + 1, 1, 1)
+        //         }
+        //     }
+        // ];
+
+        match.anchorDate = {
+            $gte: new Date(year, 1, 1),
+            $lt: new Date(year + 1, 1, 1)
         }
+
+        match.importance = 'HIGH';
     } else {
         return res.status(400).send("Must provide either a month and year or just a year");
     }
@@ -55,6 +87,7 @@ router.get('/events', async(req, res) => {
 
         res.send(data);
     } catch(e) {
+        console.error(e.message);
         res.status(500).send();
     }
 });
