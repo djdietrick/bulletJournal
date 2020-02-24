@@ -13,7 +13,7 @@ router.post('/events', async(req, res) => {
     }
 });
 
-// /events?year=2020&month=01 , gets events in the given month with importance high and medium (for monthly view)
+// /events?year=2020&month=01 , gets all events in the given month (index starts at 0)
 // /events?year=2020 , gets events in the given year with importance high (for yearly view)
 router.get('/events', async(req, res) => {
     const match = {}
@@ -21,49 +21,42 @@ router.get('/events', async(req, res) => {
 
     // Matches
     if(req.query.year && req.query.month) {
-        // match.$or = [
-        //     {
-        //         anchorDate: {
-        //             $gte: new Date(req.query.year, req.query.month, 1),
-        //             $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
-        //         }
-        //     },
-        //     {
-        //         endDate: {
-        //             $gte: new Date(req.query.year, req.query.month, 1),
-        //             $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
-        //         }
-        //     }
-        // ];
-        
-        // match.anchorDate = {
-        //     $gte: new Date(req.query.year, req.query.month, 1),
-        //     $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
-        // }
-        match.importance = {
-            $in: ['HIGH', 'MEDIUM']
-        };
+        const year = parseInt(req.query.year);
+        const month = parseInt(req.query.month);
+        match.$or = [
+            {
+                anchorDate: {
+                    $gte: new Date(year, month),
+                    $lt: new Date(year, month + 1)
+                }
+            },
+            {
+                endDate: {
+                    $gte: new Date(year, month),
+                    $lt: new Date(year, month + 1)
+                }
+            }
+        ];
+
+        // match.importance = {
+        //     $in: ['HIGH', 'MEDIUM']
+        // };
     } else if (req.query.year) {
         const year = parseInt(req.query.year);
-        // match.$or = [
-        //     {
-        //         anchorDate: {
-        //             $gte: new Date(year, 1, 1),
-        //             $lt: new Date(year + 1, 1, 1)
-        //         }
-        //     },
-        //     {
-        //         dueDate: {
-        //             $gte: new Date(year, 1, 1),
-        //             $lt: new Date(year + 1, 1, 1)
-        //         }
-        //     }
-        // ];
-
-        match.anchorDate = {
-            $gte: new Date(year, 1, 1),
-            $lt: new Date(year + 1, 1, 1)
-        }
+        match.$or = [
+            {
+                anchorDate: {
+                    $gte: new Date(year, 0),
+                    $lt: new Date(year + 1, 0)
+                }
+            },
+            {
+                endDate: {
+                    $gte: new Date(year, 0),
+                    $lt: new Date(year + 1, 0)
+                }
+            }
+        ];
 
         match.importance = 'HIGH';
     } else {
