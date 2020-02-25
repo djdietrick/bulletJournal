@@ -3,14 +3,14 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 const a = axios.create({
-  baseURL: process.env.SERVER_URL
+  baseURL: "http://localhost:3000"
 });
 
 const now = new Date();
 const nowYear = now.getFullYear();
 const nowMonth = now.getMonth();
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -23,7 +23,14 @@ export default new Vuex.Store({
     getYear: state => state.year,
     getMonth: state => state.month,
     getYearEvents: state => state.yearEvents,
-    getMonthBullets: state => state.monthBullets
+    getMonthBullets: state => state.monthBullets,
+    getMonthEvents: state => month => {
+      return state.yearEvents.filter(event => {
+        const anchorMonth = new Date(event.anchorDate).getMonth();
+        const endMonth = new Date(event.endDate).getMonth();
+        return (anchorMonth == month || endMonth == month)
+      });
+    }
   },
   mutations: {
     setYear: (state, year) => (state.year = year),

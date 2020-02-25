@@ -6,5 +6,8 @@ module.exports = {
       preProcessor: 'scss',
       patterns: [path.join(__dirname, './src/styles.main.scss')]
     }
+  },
+  devServer: {
+    proxy: process.env.SERVER_URL
   }
 }
