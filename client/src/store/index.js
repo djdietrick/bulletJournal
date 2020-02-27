@@ -26,9 +26,14 @@ export default new Vuex.Store({
     getMonthBullets: state => state.monthBullets,
     getMonthEvents: state => month => {
       return state.yearEvents.filter(event => {
-        const anchorMonth = new Date(event.anchorDate).getMonth();
-        const endMonth = new Date(event.endDate).getMonth();
-        return (anchorMonth == month || endMonth == month)
+        const anchorDate = new Date(event.anchorDate);
+        const anchorMonth = anchorDate.getMonth();
+        const anchorYear = anchorDate.getFullYear();
+        const endDate = new Date(event.endDate);
+        const endMonth = endDate.getMonth();
+        const endYear = endDate.getFullYear();
+        return ((anchorMonth == month && anchorYear == state.year)
+         || (endMonth == month && endYear == state.year));
       });
     }
   },
@@ -50,19 +55,19 @@ export default new Vuex.Store({
       commit('setYearEvents', res.data);
     },
     async fetchMonthBullets({commit, state}) {
-      let bullets = [];
+      let bullets = {};
       
       // Events
       const eventRes = await a.get(`/events?year=${state.year}&month=${state.month}`);
-      bullets.push(eventRes.data);
+      bullets["events"] = eventRes.data;
 
       // Tasks
       const taskRes = await a.get(`/tasks?year=${state.year}&month=${state.month}`);
-      bullets.push(taskRes.data);
+      bullets["tasks"] = taskRes.data;
 
       // Notes
       const noteRes = await a.get(`/notes?year=${state.year}&month=${state.month}`);
-      bullets.push(noteRes.data);
+      bullets["notes"] = noteRes.data;
 
       commit('setMonthBullets', bullets);
     }

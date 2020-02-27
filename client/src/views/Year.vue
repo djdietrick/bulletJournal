@@ -1,11 +1,16 @@
 <template>
     <div class="container">
-        <h1>{{year}}</h1>
-        <div v-for="(name, index) in displayMonths" :key="index" class="month">
-            {{parseInt(index) + 1}} {{name}}
-            <ul class="eventList">
-                <li v-for="event in eventsByMonth[index]" :key="event._id">{{event.title}}</li>
-            </ul>
+        <h1>{{year}}</h1>  
+        <div class="buttonContainer" id='leftButton' v-on:click="moveBack"></div>
+        <div class="buttonContainer" id='rightButton' v-on:click="moveForward"></div>
+
+        <div class="monthsContainer">
+            <div v-for="(name, index) in displayMonths" :key="index" class="month">
+                {{parseInt(index) + 1}} {{name}}
+                <ul class="eventList">
+                    <li v-for="event in eventsByMonth[index]" :key="event._id">{{event.title}}</li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -92,12 +97,32 @@ export default {
 <style lang="scss" scoped>
 .container {
     display: grid;
-    grid-template-columns: 1fr 1fr ;
-    grid-template-rows: 6rem 1fr 1fr 1fr;
+    grid-template-columns: 1fr 95% 1fr ;
+    grid-template-rows: 6rem 1fr;
+}
+
+.monthsContainer {
+    grid-column: 2/3;
+    grid-row: 2 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 h1 {
     grid-column: 1 / -1;
+}
+
+.buttonContainer {
+    background-color: #5643fa;
+}
+
+#leftButton {
+    grid-column: 1 / 2;
+}
+
+#rightButton {
+    grid-column: 3 / 4;
 }
 
 
