@@ -10,30 +10,44 @@
 </template>
 
 <style lang="scss">
-  @import "./styles/main.scss";
+@import "./styles/main.scss";
+
+body {
+  padding: 0;
+}
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  //font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  //text-align: center;
   color: #2c3e50;
 
   display: grid;
   grid-template-columns: minmax(0, 1fr) 95vw minmax(0, 1fr);
-  grid-template-rows: 1fr 95vh;
+  grid-template-rows: 1fr 90vh;
 
 }
 
 #nav {
-  padding: 30px;
+  padding: 2rem;
+  text-align: center;
 
   a {
-    font-weight: bold;
-    color: #2c3e50;
+    //font-weight: bold;
+    color: $color-grey-dark-3;
+    padding: 1.5rem 5rem;
+    background-color: $color-tertiary;
+    margin: 1rem;
+    border-radius: 7px;
+    font-size: 1.7rem;
+    text-decoration: none;
+    border: 1.5px solid $color-secondary-dark;
+    box-shadow: 0 0.5rem 1rem rgba($color-black, .2);
 
     &.router-link-exact-active {
-      color: #42b983;
+      background-color: $color-tertiary-dark;
+      color: $color-grey-light-1;
     }
   }
 

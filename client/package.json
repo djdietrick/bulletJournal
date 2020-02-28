@@ -7,6 +7,9 @@
     "build": "env-cmd -f ./config/dev.env vue-cli-service build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.19.2",
     "moment": "^2.24.0",
     "vue": "^2.6.10",

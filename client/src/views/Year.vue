@@ -1,14 +1,21 @@
 <template>
     <div class="container">
-        <h1>{{year}}</h1>  
-        <div class="buttonContainer" id='leftButton' v-on:click="moveBack"></div>
-        <div class="buttonContainer" id='rightButton' v-on:click="moveForward"></div>
+        <h2 class="heading-secondary">{{year}}</h2>  
+        <div class="btnContainer" id='btn--left' v-on:click="moveBack">
+            <font-awesome-icon icon="angle-left" size="6x"/>
+        </div>
+        <div class="btnContainer" id='btn--right' v-on:click="moveForward">
+            <font-awesome-icon icon="angle-right" size="6x"/>
+        </div>
 
         <div class="monthsContainer">
             <div v-for="(name, index) in displayMonths" :key="index" class="month">
-                {{parseInt(index) + 1}} {{name}}
-                <ul class="eventList">
-                    <li v-for="event in eventsByMonth[index]" :key="event._id">{{event.title}}</li>
+                <h3 class="month__heading heading-tertiary">{{parseInt(index) + 1}} {{name}}</h3>
+                <ul class="month__events">
+                    <li class="paragraph" v-for="event in eventsByMonth[index]" :key="event._id">
+                        <span id="event--title">{{ getDateString(event, index) }}: {{event.title}}   </span> 
+                        <span id="event--details">{{getDisplayString(event)}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -17,6 +24,7 @@
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+import moment from "moment";
 
 export default {
     name: "Year",
@@ -45,6 +53,30 @@ export default {
                 // Move to back half of same year
                 this.setMonth(6);
             }
+        },
+        getDateString(event, month) {
+            if(!event.endDate) {
+                return new Date(event.anchorDate).getDate();
+            } else {
+                let start, end;
+                const anchorDate = moment(event.anchorDate);
+                const endDate = moment(event.endDate);
+                start = anchorDate.month() == month ? anchorDate.format("D") : anchorDate.format("MMM D");
+                end = endDate.month() == month ? endDate.format("D") : endDate.format("MMM D");
+
+                return start + " - " + end;
+            }
+        },
+        getDisplayString(event) {
+            let str = "";
+            if(!event.allDay && !event.endDate) {
+                const anchorDate = moment(event.anchorDate);
+                str += anchorDate.format("h") + ":" + anchorDate.format("mmA") + " ";
+            }
+            if(event.location) {
+                str += "@ " + event.location;
+            }
+            return str;
         }
     },
     computed: {
@@ -95,6 +127,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/main.scss';
+
 .container {
     display: grid;
     grid-template-columns: 1fr 95% 1fr ;
@@ -107,21 +141,60 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 2rem;
+    padding: 0rem 1rem;
 }
 
-h1 {
+.month {
+    border: 2px solid $color-primary-dark;
+    position: relative;
+    border-radius: 1rem;
+    box-shadow: 0 1rem 1rem rgba($color-black, .2);
+
+    &__heading {
+        position: absolute;
+        top: 1rem;
+        left: 2rem;
+    }
+
+    &__events {
+        position: absolute;
+        top: 4.5rem;
+        left: 2rem;
+        list-style-type: none;
+    }
+}
+
+h2 {
     grid-column: 1 / -1;
+    text-align: center;
 }
 
-.buttonContainer {
-    background-color: #5643fa;
+#event--title {
+    color: $color-primary;
+    font-weight: 500;
 }
 
-#leftButton {
+#event--details {
+    color: $color-primary-light;
+    font-weight: 500;
+}
+
+.btnContainer {
+    //background-color: $color-secondary-light;
+    position: relative;
+    align-self:center;
+
+    font-awesome-icon {
+        fill: $color-secondary;
+    }
+}
+
+#btn--left {
     grid-column: 1 / 2;
 }
 
-#rightButton {
+#btn--right {
     grid-column: 3 / 4;
 }
 
