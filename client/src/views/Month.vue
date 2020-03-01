@@ -11,10 +11,8 @@
         <div class="monthContainer">
             <div class="agenda">
                 <div v-for="n in daysInMonth" :key="n" class="agenda__day">
-                    <p class="paragraph">
-                        <span class="agenda__day--date">{{n}} </span> 
-                        <span v-html="getEventString(n)"/>
-                    </p>
+                    <span class="paragraph agenda__day--date">{{n}} </span> 
+                    <span v-html="getEventString(n)" class="paragraph"/>
                 </div>
             </div>
             <div class="tasks">
@@ -104,12 +102,14 @@ export default {
                     // TODO : need to handle if event wraps around months
                     const date = moment([this.year, this.month, i]);
                     e[i] = this.monthEvents.filter((event) => {
-                        const anchorDate = new Date(event.anchorDate);
+                        const anchorDate = moment(event.anchorDate);
                         if(event.endDate) {
-                            const endDate = new Date(event.endDate);
-                            return (anchorDate.getDate() <= i && i <= endDate.getDate());
+                            const endDate = moment(event.endDate);
+                            return (anchorDate.isBefore(date) || anchorDate.isSame(date, "day"))
+                                && (endDate.isAfter(date) || endDate.isSame(date, "day"));
+                            //return (anchorDate.getDate() <= i && i <= endDate.getDate());
                         } else {
-                            return anchorDate.getDate() == i;
+                            return anchorDate.isSame(date, "day");
                         }
                     })
                 }
@@ -167,6 +167,9 @@ h2 {
         width: 95%;
         left: 3rem;
         margin-left: 1.5rem;
+        display: grid;
+        grid-template-columns: 2.5rem 1fr;
+        //grid-column-gap: 1rem;
 
         &:not(:last-child) {
             border-bottom: 1px solid $color-grey-dark-3;

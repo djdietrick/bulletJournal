@@ -4,6 +4,7 @@
       <router-link to="/year">Year</router-link>
       <router-link to="/month">Month</router-link>
       <router-link to="/day">Day</router-link>
+      <router-link to="/create">Create</router-link>
     </div>
     <router-view/>
   </div>
