@@ -5,6 +5,10 @@ import Year from '../views/Year.vue'
 import Month from '../views/Month.vue'
 import Day from '../views/Day.vue'
 import Create from '../components/Create.vue'
+import EventForm from '../components/forms/EventForm.vue';
+import TaskForm from '../components/forms/TaskForm.vue';
+import NoteForm from '../components/forms/NoteForm.vue';
+
 
 Vue.use(VueRouter);
 
@@ -32,7 +36,27 @@ const routes = [
   {
     path: '/create',
     name: 'create',
-    component: Create
+    component: Create,
+    children: [
+      {
+        path: 'event',
+        components: {
+          createView: EventForm
+        }
+      },
+      {
+        path: 'task',
+        components: {
+          createView: TaskForm
+        }
+      },
+      {
+        path: 'note',
+        components: {
+          createView: NoteForm
+        }
+      }
+    ]
   }
 ]
 

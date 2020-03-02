@@ -1,6 +1,11 @@
 <template>
     <div class="container">
-        Create
+        <div id="nav">
+            <router-link to="/create/event">Event</router-link>
+            <router-link to="/create/task">Task</router-link>
+            <router-link to="/create/note">Note</router-link>
+        </div>
+        <router-view name="createView"></router-view>
     </div>
 </template>
 

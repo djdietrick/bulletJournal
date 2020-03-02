@@ -70,6 +70,27 @@ export default new Vuex.Store({
       bullets["notes"] = noteRes.data;
 
       commit('setMonthBullets', bullets);
+    },
+    async createEvent({commit, state}, event) {
+      try {
+        const resp = await a.post('/events', event);
+      } catch(e) {
+        console.error(e);
+      }
+    },
+    async createTask({commit, state}, task) {
+      try {
+        const resp = await a.post('/tasks', task);
+      } catch(e) {
+        console.error(e);
+      }
+    },
+    async createNote({commit, state}, note) {
+      try {
+        const resp = await a.post('/notes', note);
+      } catch(e) {
+        console.error(e);
+      }
     }
   }
 })
