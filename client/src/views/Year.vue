@@ -146,7 +146,7 @@ export default {
 }
 
 .month {
-    border: 2px solid $color-primary-dark;
+    border: 2px solid $color-primary;
     position: relative;
     border-radius: 1rem;
     box-shadow: 0 1rem 1rem rgba($color-black, .2);
@@ -171,12 +171,12 @@ h2 {
 }
 
 #event--title {
-    color: $color-primary;
+    color: $color-primary-light;
     font-weight: 500;
 }
 
 #event--details {
-    color: $color-primary-light;
+    color: $color-primary;
     font-weight: 500;
 }
 

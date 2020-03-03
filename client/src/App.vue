@@ -15,6 +15,7 @@
 
 body {
   padding: 0;
+  background-color: $color-grey-dark-3;
 }
 
 #app {
@@ -31,23 +32,37 @@ body {
 }
 
 #nav {
-  padding: 2rem;
+  padding-top: 1rem;
   text-align: center;
+  opacity: 0.8;
+  transition: 0.1s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
 
   a {
     //font-weight: bold;
     color: $color-grey-dark-3;
-    padding: 1.5rem 5rem;
-    background-color: $color-tertiary;
-    margin: 1rem;
-    border-radius: 7px;
+    padding: 0.5rem 5rem;
+    background-color: $color-primary-light;
     font-size: 1.7rem;
     text-decoration: none;
-    border: 1.5px solid $color-secondary-dark;
+    border: 1.5px solid $color-grey-light-2;
     box-shadow: 0 0.5rem 1rem rgba($color-black, .2);
 
+    &:first-child {
+      border-top-left-radius: 7px;
+      border-bottom-left-radius: 7px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 7px;
+      border-bottom-right-radius: 7px;
+    }
+
     &.router-link-exact-active {
-      background-color: $color-tertiary-dark;
+      background-color: $color-primary;
       color: $color-grey-light-1;
     }
   }

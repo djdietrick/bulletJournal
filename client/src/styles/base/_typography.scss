@@ -42,11 +42,11 @@ body {
 .heading-secondary {
     font-size: 3.5rem;
     //text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 400;
     display: inline-block;
     //background-image: linear-gradient(to right, $color-primary-light, $color-secondary-dark);
     //-webkit-background-clip: text;
-    color: $color-primary-dark;
+    color: $color-primary-light;
     letter-spacing: .2rem;
     transition: all .2s;
 
@@ -65,7 +65,7 @@ body {
 
 .paragraph {
     font-size: $default-font-size;
-    color: $color-primary;
+    color: $color-primary-light;
 
     // &:not(:last-child) {
     //     margin-bottom: 3rem;

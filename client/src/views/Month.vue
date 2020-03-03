@@ -155,7 +155,7 @@ h2 {
 
 .agenda {
     grid-column: 1 / 2;
-    border: 2px solid $color-primary-dark;
+    border: 2px solid $color-primary;
     border-radius: 1rem;
 
     display: grid;
@@ -180,15 +180,19 @@ h2 {
             font-weight: 600;
         }
 
-        &--details {
+        &--title {
             color: $color-primary-light;
+        }
+
+        &--details {
+            color: $color-primary;
         }
     }
 }
 
 .tasks {
     grid-column: 2 / 3;
-    border: 2px solid $color-primary-dark;
+    border: 2px solid $color-primary;
     border-radius: 1rem;
     box-shadow: 0 1rem 1rem rgba($color-black, .2);
     position: relative;
