@@ -17,8 +17,16 @@
             </div>
             <div class="tasks">
                 <ul class="tasks__list">
-                    <li v-for="task in monthTasks" :key="task._id" class="task paragraph">
-                        {{task.title}}
+                    <li v-for="task in monthTasks" :key="task._id" class="task paragraph">   
+                        <div v-on:click="completeTask(task)">
+                            <template v-if="task.completed">
+                                <font-awesome-icon icon="check-square"/>
+                            </template>
+                            <template v-else>
+                                <font-awesome-icon :icon="['far', 'square']"/>
+                            </template>
+                        </div>
+                        <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>
                     </li>
                 </ul>
             </div>
@@ -37,7 +45,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["setYear", "setMonth", "fetchMonthBullets"]),
+        ...mapActions(["setYear", "setMonth", "fetchMonthBullets", "updateTask"]),
         moveBack() {
             if(this.month == 0) {
                 this.setMonth(11);
@@ -72,8 +80,14 @@ export default {
                 }
                 str += "</span>";
             }
-
             return str;
+        },
+        completeTask(task) {
+            const update = {
+                _id: task._id,
+                completed: !task.completed
+            }
+            this.updateTask(update);
         }
     },
     computed: {
@@ -83,10 +97,10 @@ export default {
             monthBullets: "getMonthBullets"
         }),
         monthEvents() {
-            return this.monthBullets.events;
+            return this.monthBullets.event;
         },
         monthTasks() {
-            return this.monthBullets.tasks;
+            return this.monthBullets.task;
         },
         daysInMonth() {
             return moment([this.year, this.month]).daysInMonth();
@@ -135,7 +149,7 @@ export default {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr 95% 1fr;
+    grid-template-columns: 1fr 95%;
     grid-template-rows: 6rem 1fr;
 }
 
@@ -171,6 +185,14 @@ h2 {
         grid-template-columns: 2.5rem 1fr;
         //grid-column-gap: 1rem;
 
+        &:first-child {
+            margin-top: 0.5rem;
+        }
+
+        &:last-child {
+            margin-bottom: 0.5rem;
+        }
+
         &:not(:last-child) {
             border-bottom: 1px solid $color-grey-dark-3;
         }
@@ -202,6 +224,19 @@ h2 {
         left: 3rem;
         top: 1rem;
     }
+}
+
+.task {
+    display:grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.completed {
+    color: $color-grey-dark-2;
+    text-decoration: line-through;
 }
 
 .btnContainer {

@@ -41,7 +41,17 @@ export default new Vuex.Store({
     setYear: (state, year) => (state.year = year),
     setMonth: (state, month) => (state.month = month),
     setYearEvents: (state, events) => (state.yearEvents = events),
-    setMonthBullets: (state, bullets) => (state.monthBullets = bullets)
+    setMonthBullets: (state, bullets) => (state.monthBullets = bullets),
+    updateBullet: (state, bullet) => {
+      let yearIndex = state.yearEvents.findIndex(event => event._id == bullet._id);
+      if(yearIndex !== -1) {
+        state.yearEvents.splice(yearIndex, 1, bullet);
+      }
+      let monthIndex = state.monthBullets[bullet._type].findIndex(bul => bul._id == bullet._id);
+      if(monthIndex !== -1) {
+        state.monthBullets[bullet._type].splice(monthIndex, 1, bullet);
+      }
+    }
   },
   actions: {
     async setYear({commit}, year) {
@@ -59,35 +69,86 @@ export default new Vuex.Store({
       
       // Events
       const eventRes = await a.get(`/events?year=${state.year}&month=${state.month}`);
-      bullets["events"] = eventRes.data;
+      bullets["event"] = eventRes.data;
 
       // Tasks
       const taskRes = await a.get(`/tasks?year=${state.year}&month=${state.month}`);
-      bullets["tasks"] = taskRes.data;
+      bullets["task"] = taskRes.data;
 
       // Notes
       const noteRes = await a.get(`/notes?year=${state.year}&month=${state.month}`);
-      bullets["notes"] = noteRes.data;
+      bullets["note"] = noteRes.data;
 
       commit('setMonthBullets', bullets);
     },
     async createEvent({commit, state}, event) {
       try {
-        const resp = await a.post('/events', event);
+        const res = await a.post('/events', event);
+        if(res.status !== 201) {
+          
+        }
+
+        commit('updateBullet', res.data);
       } catch(e) {
         console.error(e);
       }
     },
     async createTask({commit, state}, task) {
       try {
-        const resp = await a.post('/tasks', task);
+        const res = await a.post('/tasks', task);
+        if(res.status !== 201) {
+          
+        }
+
+        commit('updateBullet', res.data);
       } catch(e) {
         console.error(e);
       }
     },
     async createNote({commit, state}, note) {
       try {
-        const resp = await a.post('/notes', note);
+        const res = await a.post('/notes', note);
+        if(res.status !== 201) {
+          
+        }
+
+        commit('updateBullet', res.data);
+      } catch(e) {
+        console.error(e);
+      }
+    },
+    async updateEvent({commit, state}, event) {
+      try {
+        const res = await a.patch(`/events/${event._id}`, event);
+        if(res.status !== 200) {
+          
+        }
+
+        commit('updateBullet', res.data);
+      } catch(e) {
+        console.error(e);
+      }
+    },
+    async updateTask({commit, state}, task) {
+      try {
+        const id = task._id;
+        delete task._id;
+
+        const res = await a.patch(`/tasks/${id}`, task).catch(e => console.log(e));
+
+        commit('updateBullet', res.data);
+      } catch(e) {
+        console.error(e);
+      }
+    },
+    async updateNote({commit, state}, note) {
+      try {
+        const res = await a.patch(`/notes/${note._id}`, note);
+        if(res.status !== 200) {
+          
+        }
+
+        commit('updateBullet', res.data);
       } catch(e) {
         console.error(e);
       }
