@@ -134,6 +134,14 @@ export default new Vuex.Store({
         const id = task._id;
         delete task._id;
 
+        if(task.completed) {
+          task.completedDate = Date.now;
+          task.status = "COMPLETED";
+        } else {
+          //task.completedDate = null;
+          task.status = "IN_PROGRESS";
+        }
+
         const res = await a.patch(`/tasks/${id}`, task).catch(e => console.log(e));
 
         commit('updateBullet', res.data);

@@ -1,6 +1,16 @@
-.form {
-    &__group:not(:last-child) {
-        margin-bottom: 2rem;
+.form {    
+    display: grid;
+    grid-template-columns: 5rem 1fr 5rem;
+    // grid-template-rows: 1fr;
+
+    &__group {
+        grid-column: 2 / 3;
+        margin-left: 10rem;
+        margin-right: 10rem;
+
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
     }
 
     &__input {
@@ -15,11 +25,14 @@
         width: 90%;
         display: block;
         transition: all .3s;
+        color: $color-primary-light;
+        background-color: $color-grey-dark-3;
+        border-bottom: 2px solid $color-grey-light-1;
 
         &:focus {
             outline: none;
             box-shadow: 0 1rem 2rem rgba($color-black, .1);
-            border-bottom: 3px solid $color-primary;
+            border-bottom: 3px solid $color-tertiary-dark;
         }
 
         &:focus:invalid {
@@ -33,12 +46,13 @@
 
 
     &__label {
-        font-size: 1.2rem;
-        font-weight: 700;
+        font-size: 2rem;
+        font-weight: 400;
         margin-left: 2rem;
         margin-top: .7rem;
         display: block;
         transition: all .3s;
+        color: $color-tertiary-dark;
     }
 
     &__input:placeholder-shown + &__label {
