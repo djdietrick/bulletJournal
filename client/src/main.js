@@ -9,15 +9,25 @@ import { faAngleRight, faAngleLeft, faCheckSquare } from '@fortawesome/free-soli
 import { faSquare } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+//import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import VCalendar from 'v-calendar';
+import DatePicker from 'ant-design-vue/lib/date-picker';
+import Switch from 'ant-design-vue/lib/switch';
+import Popover from 'ant-design-vue/lib/popover';
+import AntD from 'ant-design-vue';
 
 library.add(faAngleRight, faAngleLeft, faCheckSquare, faSquare);
 //library.add(faAngleLeft);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.component('date-picker', DatePicker);
-Vue.use(VCalendar);
+// Vue.component('date-picker', DatePicker);
+// Vue.use(VCalendar);
+
+Vue.use(AntD);
+Vue.component(DatePicker.name, DatePicker);
+Vue.component(DatePicker.RangePicker.name, DatePicker.RangePicker);
+Vue.component(Switch.name, Switch);
+Vue.component(Popover.name, Popover);
 
 Vue.config.productionTip = false
 

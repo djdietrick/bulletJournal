@@ -1,16 +1,23 @@
+@import '../../../node_modules/ant-design-vue/lib/date-picker/style/index';
+@import '../../../node_modules/ant-design-vue/lib/switch/style/index';
+@import '../../../node_modules/ant-design-vue/lib/popover/style/index';
+
 .form {    
-    display: grid;
-    grid-template-columns: 5rem 1fr 5rem;
+    display: flex;
+    flex-direction: column;
+    //grid-template-columns: 5rem 1fr 5rem;
     // grid-template-rows: 1fr;
 
     &__group {
-        grid-column: 2 / 3;
-        margin-left: 10rem;
-        margin-right: 10rem;
+        //grid-column: 2 / 3;
+        margin-left: 5rem;
+        margin-right: 5rem;
 
-        &:not(:last-child) {
-            margin-bottom: 2rem;
-        }
+        margin-bottom: 2rem;
+
+        // &:not(:last-child) {
+        //     margin-bottom: 2rem;
+        // }
     }
 
     &__input {
@@ -107,4 +114,12 @@
     &__radio-input:checked ~ &__radio-label &__radio-button::after {
         opacity: 1;
     }
+
+    .date-picker {
+        background-color: $color-white;
+    }
+}
+
+.ant-popover-inner {
+    background-color: $color-grey-dark-3;
 }

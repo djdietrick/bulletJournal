@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="grid-container">
         <h2 class="heading-secondary">{{year}}</h2>  
         <div class="btnContainer" id='btn--left' v-on:click="moveBack">
             <font-awesome-icon icon="angle-left" size="6x"/>
@@ -129,7 +129,7 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/main.scss';
 
-.container {
+.grid-container {
     display: grid;
     grid-template-columns: 1fr 95% 1fr ;
     grid-template-rows: 6rem 1fr;

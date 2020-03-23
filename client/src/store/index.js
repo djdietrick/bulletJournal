@@ -15,7 +15,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     yearEvents: [],
-    monthBullets: [],
+    monthBullets: {},
     year: nowYear,
     month: nowMonth
   },

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="grid-container">
         <h2 class="heading-secondary">{{monthString}} {{year}}</h2>  
         <div class="btnContainer" id='btn--left' v-on:click="moveBack">
             <font-awesome-icon icon="angle-left" size="6x"/>
@@ -26,7 +26,14 @@
                                 <font-awesome-icon :icon="['far', 'square']"/>
                             </template>
                         </div>
-                        <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>
+                        <a-popover title="Edit Task" trigger="click">
+                            <template slot="content">
+                                <div>
+                                    <TaskForm :passedBullet="task" :submitFunction="updateTask"/>
+                                </div>
+                            </template>
+                            <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>
+                        </a-popover>
                     </li>
                 </ul>
             </div>
@@ -37,6 +44,7 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import moment from "moment";
+import TaskForm from "../components/forms/TaskForm";
 
 export default {
     name: "Month",
@@ -44,8 +52,11 @@ export default {
         return {         
         }
     },
+    components: {
+        TaskForm
+    },
     methods: {
-        ...mapActions(["setYear", "setMonth", "fetchMonthBullets", "updateTask"]),
+        ...mapActions(["setYear", "setMonth", "fetchMonthBullets", "updateTask", "updateEvent"]),
         moveBack() {
             if(this.month == 0) {
                 this.setMonth(11);
@@ -88,6 +99,9 @@ export default {
                 completed: !task.completed
             }
             this.updateTask(update);
+        },
+        updateTaskTest(task) {
+            console.log(task);
         }
     },
     computed: {
@@ -147,7 +161,7 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/main.scss';
 
-.container {
+.grid-container {
     display: grid;
     grid-template-columns: 1fr 95%;
     grid-template-rows: 6rem 1fr;

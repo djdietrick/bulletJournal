@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="grid-container">
         <div id="nav">
             <router-link to="/create/event">Event</router-link>
             <router-link to="/create/task">Task</router-link>
