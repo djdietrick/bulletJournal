@@ -15,22 +15,20 @@
             <v-calendar is-dark color="blue" :value="event.anchorDate" v-model="event.anchorDate"/>
         </div>-->
         <div class="form__group">
-            <label for="changeDate" class="paragraph">
+            <label for="changeDate" class="form__label">
                 Change Date?
                 <a-switch v-model="changeDate"/>
                 <div v-if="changeDate">
-                    <label for="anchorDate" class="form__label">Anchor Date</label>
                     <a-date-picker size="large" class="date-picker" v-model="task.anchorDate"/>
                 </div>  
             </label>
         </div>
         <div class="form__group">
-            <label for="hasDueDate" class="paragraph">
+            <label for="hasDueDate" class="form__label">
                 Due Date
                 <a-switch v-model="hasDueDate"/>
             </label>
             <div v-if="hasDueDate">
-                <!-- <label for="dueDate" class="form__label">Due Date</label> -->
                 <a-date-picker size="large" class="date-picker" v-model="task.dueDate"/>
             </div>  
         </div>
@@ -38,7 +36,7 @@
         <div class="form__group">
             <button
                     class="btn btn-primary"
-                    @click.prevent="formatAndSubmit()">Create
+                    @click.prevent="formatAndSubmit()">{{btnText}}
             </button>
         </div>
     </form>
@@ -61,7 +59,8 @@ export default {
                 }
             }
         },
-        submitFunction: Function
+        submitFunction: Function,
+        btnText: String
     },
     created() {
         // If we get passed a due date, check hasDueDate box
@@ -78,7 +77,13 @@ export default {
     },
     data() {
         return {
-            task: Vue.util.extend({}, this.passedBullet),
+            //task: Vue.util.extend({}, this.passedBullet),
+            task: {
+                title: this.passedBullet.title,
+                description: this.passedBullet.description,
+                anchorDate: this.passedBullet.anchorDate,
+                dueDate: this.passedBullet.anchorDate
+            },
             changeDate: false,
             hasDueDate: false
         }
@@ -89,14 +94,14 @@ export default {
         }
     },
     methods: {
-        onChange(date, dateString) {
-            console.log(date, dateString);
-        },
         formatAndSubmit() {
             let retTask = Vue.util.extend({},this.task);
             retTask.anchorDate = retTask.anchorDate.format();
             if(retTask.dueDate !== null)
                 retTask.dueDate = retTask.dueDate.format();
+
+            if(this.passedBullet._id !== undefined)
+                retTask["_id"] = this.passedBullet._id;
             
             this.submitFunction(retTask);
         }

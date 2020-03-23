@@ -13,5 +13,23 @@ html {
 
 body {
     box-sizing: border-box;
-    background-color: $color-white;
+    background-color: $color-grey-dark-3;
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 1rem;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        // box-shadow: inset 0 0 5px grey;
+        // border-radius: 10px;
+        height: 50%;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: $color-grey-dark;
+    border-radius: 10px;
+    }
 }

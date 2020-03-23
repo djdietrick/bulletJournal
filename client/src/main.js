@@ -5,8 +5,8 @@ import store from './store'
 
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faAngleRight, faAngleLeft, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
-import { faSquare } from '@fortawesome/free-regular-svg-icons'
+import { faAngleRight, faAngleLeft, faCheckSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 //import DatePicker from 'v-calendar/lib/components/date-picker.umd'
@@ -16,7 +16,7 @@ import Switch from 'ant-design-vue/lib/switch';
 import Popover from 'ant-design-vue/lib/popover';
 import AntD from 'ant-design-vue';
 
-library.add(faAngleRight, faAngleLeft, faCheckSquare, faSquare);
+library.add(faAngleRight, faAngleLeft, faCheckSquare, faSquare, faPlusSquare, faTrash);
 //library.add(faAngleLeft);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

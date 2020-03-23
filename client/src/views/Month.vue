@@ -2,38 +2,48 @@
     <div class="grid-container">
         <h2 class="heading-secondary">{{monthString}} {{year}}</h2>  
         <div class="btnContainer" id='btn--left' v-on:click="moveBack">
-            <font-awesome-icon icon="angle-left" size="6x"/>
+            <font-awesome-icon class="arrow" icon="angle-left" size="6x"/>
         </div>
         <div class="btnContainer" id='btn--right' v-on:click="moveForward">
-            <font-awesome-icon icon="angle-right" size="6x"/>
+            <font-awesome-icon class="arrow" icon="angle-right" size="6x"/>
         </div>
 
         <div class="monthContainer">
             <div class="agenda">
                 <div v-for="n in daysInMonth" :key="n" class="agenda__day">
-                    <span class="paragraph agenda__day--date">{{n}} </span> 
+                    <span class="paragraph agenda__day--date"
+                        :class="{currentDay: n === currentDate.date()
+                                            && currentDate.month() === month
+                                            && currentDate.year() === year}">{{n}} </span> 
                     <span v-html="getEventString(n)" class="paragraph"/>
                 </div>
             </div>
             <div class="tasks">
                 <ul class="tasks__list">
-                    <li v-for="task in monthTasks" :key="task._id" class="task paragraph">   
-                        <div v-on:click="completeTask(task)">
-                            <template v-if="task.completed">
-                                <font-awesome-icon icon="check-square"/>
-                            </template>
-                            <template v-else>
-                                <font-awesome-icon :icon="['far', 'square']"/>
-                            </template>
+                    <li v-for="task in monthTasks" :key="task._id" class="task-container">   
+                        <div class="task paragraph">
+                            <div v-on:click="completeTask(task)">
+                                <template v-if="task.completed">
+                                    <font-awesome-icon icon="check-square"/>
+                                </template>
+                                <template v-else>
+                                    <font-awesome-icon :icon="['far', 'square']"/>
+                                </template>
+                            </div>
+                            <a-popover title="Edit Task" trigger="click" placement="bottomLeft">
+                                <template slot="content">
+                                    <div>
+                                        <TaskForm :passedBullet="task" 
+                                            :submitFunction="updateTask"
+                                            btnText="Update"/>
+                                    </div>
+                                </template>
+                                <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>
+                            </a-popover>
                         </div>
-                        <a-popover title="Edit Task" trigger="click">
-                            <template slot="content">
-                                <div>
-                                    <TaskForm :passedBullet="task" :submitFunction="updateTask"/>
-                                </div>
-                            </template>
-                            <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>
-                        </a-popover>
+                        <Delete class="delete"
+                            :id="task._id"
+                            :title="task.title"/>
                     </li>
                 </ul>
             </div>
@@ -45,15 +55,18 @@
 import {mapGetters, mapActions} from "vuex";
 import moment from "moment";
 import TaskForm from "../components/forms/TaskForm";
+import Delete from "../components/Delete";
 
 export default {
     name: "Month",
     data() {
-        return {         
+        return {
+            currentDate: moment()   
         }
     },
     components: {
-        TaskForm
+        TaskForm,
+        Delete
     },
     methods: {
         ...mapActions(["setYear", "setMonth", "fetchMonthBullets", "updateTask", "updateEvent"]),
@@ -123,13 +136,16 @@ export default {
             return moment([this.year, this.month]).format('MMMM');
         },
         eventsByDay() {
-            let e = {};
+            let ev = {};
 
             try {
+                if(this.monthEvents === undefined)
+                    return ev;
+
                 for(let i = 1; i <= this.daysInMonth; i++) {
                     // TODO : need to handle if event wraps around months
                     const date = moment([this.year, this.month, i]);
-                    e[i] = this.monthEvents.filter((event) => {
+                    ev[i] = this.monthEvents.filter((event) => {
                         const anchorDate = moment(event.anchorDate);
                         if(event.endDate) {
                             const endDate = moment(event.endDate);
@@ -144,7 +160,7 @@ export default {
             } catch(e) {
                 console.log(e);
             }
-            return e;
+            return ev;
         }
     },
     watch: {
@@ -190,6 +206,9 @@ h2 {
     grid-template-rows: repeat(daysInMonth, 1fr);
     align-items: center;
     box-shadow: 0 1rem 1rem rgba($color-black, .2);
+    height: 85vh;
+
+    overflow-y: auto;
 
     &__day {
         width: 95%;
@@ -224,6 +243,10 @@ h2 {
             color: $color-primary;
         }
     }
+
+    .currentDay {
+        color: white;
+    }
 }
 
 .tasks {
@@ -233,10 +256,27 @@ h2 {
     box-shadow: 0 1rem 1rem rgba($color-black, .2);
     position: relative;
 
+    height: 85vh;
+    overflow-y: auto;
+
     &__list {
         position: absolute;
         left: 3rem;
         top: 1rem;
+
+        list-style-type: none;
+
+    }
+}
+
+.task-container {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        .delete {
+            display: inline-block;
+        }
     }
 }
 
@@ -257,10 +297,6 @@ h2 {
     //background-color: $color-secondary-light;
     position: relative;
     align-self:center;
-
-    font-awesome-icon {
-        fill: $color-secondary;
-    }
 }
 
 #btn--left {
@@ -270,7 +306,5 @@ h2 {
 #btn--right {
     grid-column: 3 / 4;
 }
-
-
 
 </style>

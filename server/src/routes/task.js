@@ -23,9 +23,11 @@ router.get('/tasks', async(req, res) => {
     }
 
     if(req.query.year && req.query.month) {
+        const year = parseInt(req.query.year);
+        const month = parseInt(req.query.month);
         match.anchorDate = {
-            $gte: new Date(req.query.year, req.query.month, 1),
-            $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
+            $gte: new Date(year, month),
+            $lt: new Date(year, month + 1)
         }
     } else {
         return res.status(400).send("Must provide a month and year");
@@ -70,11 +72,12 @@ router.get('/tasks/:id', async (req, res) => {
 
 router.patch('/tasks/:id', async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['title', 'description', 'notes', 'completed', 'dueDate', 'status'];
+    const allowedUpdates = ['title', 'anchorDate', 'description', 'notes', 'completed', 'dueDate', 'status', 'completedDate'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
         const invalidUpdates = updates.filter(update => !allowedUpdates.includes(update));
+        console.debug("Invalid update(s): ", invalidUpdates);
         return res.status(400).send({ 
             error: 'Invalid updates!', 
             invalidUpdates

@@ -24,11 +24,12 @@ app.use(cors());
 const taskRouter = require('./routes/task');
 const eventRouter = require('./routes/event');
 const noteRouter = require('./routes/note');
+const sharedRouter = require('./routes/shared');
 
 app.use(taskRouter);
 app.use(eventRouter);
 app.use(noteRouter);
-
+app.use(sharedRouter);
 
 app.get('/', (req, res) => {
     res.sendFile('index.html', {root: publicDir});

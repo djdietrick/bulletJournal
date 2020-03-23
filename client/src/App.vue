@@ -4,11 +4,33 @@
       <router-link to="/year">Year</router-link>
       <router-link to="/month">Month</router-link>
       <router-link to="/day">Day</router-link>
-      <router-link to="/create">Create</router-link>
     </div>
-    <router-view/>
+    <div class="create">
+      <a-popover title="Create" trigger="click" placement="bottomRight">
+          <template slot="content">
+              <div>
+                  <Create/>
+              </div>
+          </template>
+          <font-awesome-icon 
+            class="create--icon"
+            :icon="['far', 'plus-square']"/>
+      </a-popover>
+    </div>
+    <transition name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
+
+<script>
+import Create from './components/Create';
+export default {
+  components: {
+    Create
+  }
+}
+</script>
 
 <style lang="scss">
 @import "./styles/main.scss";
@@ -35,12 +57,6 @@ body {
 #nav {
   padding-top: 1rem;
   text-align: center;
-  opacity: 0.8;
-  transition: 0.1s ease-in-out;
-
-  &:hover {
-    opacity: 1;
-  }
 
   a {
     //font-weight: bold;
@@ -51,6 +67,7 @@ body {
     text-decoration: none;
     border: 1.5px solid $color-grey-light-2;
     box-shadow: 0 0.5rem 1rem rgba($color-black, .2);
+    transition: 0.2s ease-in-out;
 
     &:first-child {
       border-top-left-radius: 7px;
@@ -76,6 +93,24 @@ body {
 .grid-container {
   grid-row: 2 / 3;
   grid-column: 2 / 3;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.create {
+  position: fixed;
+  top: 3rem;
+  right: 7%;
+
+  &--icon {
+    color: $color-primary-light;
+    transform: scale(4);
+  }
 }
 
 </style>

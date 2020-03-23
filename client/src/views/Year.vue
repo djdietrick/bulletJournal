@@ -2,14 +2,15 @@
     <div class="grid-container">
         <h2 class="heading-secondary">{{year}}</h2>  
         <div class="btnContainer" id='btn--left' v-on:click="moveBack">
-            <font-awesome-icon icon="angle-left" size="6x"/>
+            <font-awesome-icon class="arrow" icon="angle-left" size="6x"/>
         </div>
         <div class="btnContainer" id='btn--right' v-on:click="moveForward">
-            <font-awesome-icon icon="angle-right" size="6x"/>
+            <font-awesome-icon class="arrow" icon="angle-right" size="6x"/>
         </div>
 
         <div class="monthsContainer">
-            <div v-for="(name, index) in displayMonths" :key="index" class="month">
+            <div v-for="(name, index) in displayMonths" :key="index" class="month"
+                :class="{currentMonth: index == currentDate.month()}">
                 <h3 class="month__heading heading-tertiary">{{parseInt(index) + 1}} {{name}}</h3>
                 <ul class="month__events">
                     <li class="paragraph" v-for="event in eventsByMonth[index]" :key="event._id">
@@ -30,6 +31,7 @@ export default {
     name: "Year",
     data() {
         return {
+            currentDate: moment()
         }
     },
     methods: {
@@ -151,6 +153,8 @@ export default {
     border-radius: 1rem;
     box-shadow: 0 1rem 1rem rgba($color-black, .2);
 
+    overflow-y: auto;
+
     &__heading {
         position: absolute;
         top: 1rem;
@@ -163,6 +167,10 @@ export default {
         left: 2rem;
         list-style-type: none;
     }
+}
+
+.currentMonth {
+    border: 2px solid $color-white;
 }
 
 h2 {

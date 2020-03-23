@@ -4,15 +4,17 @@
     &:visited {
         text-transform: uppercase;
         text-decoration: none;
-        padding: 1.5rem 4rem;
+        padding: 1rem 2rem;
         display: inline-block;
         border-radius: 10rem;
         transition: all .2s;
         position: relative;
         font-size: $default-font-size;
+        background-color: $color-grey-dark-3;
+        border: 1.5px solid $color-primary-light;
+        color: $color-primary-light;
 
         //Change for the <button> element
-        border: none;
         cursor: pointer;
     }
     
@@ -93,4 +95,8 @@
         box-shadow: 0 .5rem 1rem rgba($color-black, .15);
         transform: translateY(0);
     }
+}
+
+.arrow {
+    color: $color-primary;
 }
