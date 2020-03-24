@@ -13,7 +13,7 @@
               </div>
           </template>
           <font-awesome-icon 
-            class="create--icon"
+            class="create--icon noselect"
             :icon="['far', 'plus-square']"/>
       </a-popover>
     </div>
@@ -28,6 +28,9 @@ import Create from './components/Create';
 export default {
   components: {
     Create
+  },
+  created() {
+    this.$store.dispatch('fetchBullets');
   }
 }
 </script>
@@ -60,24 +63,24 @@ body {
 
   a {
     //font-weight: bold;
-    color: $color-grey-dark-3;
+    color: $color-primary-light;
     padding: 0.5rem 5rem;
-    background-color: $color-primary-light;
+    background-color: $color-grey-dark-3;
     font-size: 1.7rem;
     text-decoration: none;
     border: 1.5px solid $color-grey-light-2;
     box-shadow: 0 0.5rem 1rem rgba($color-black, .2);
     transition: 0.2s ease-in-out;
 
-    &:first-child {
-      border-top-left-radius: 7px;
-      border-bottom-left-radius: 7px;
-    }
+    // &:first-child {
+    //   border-top-left-radius: 7px;
+    //   border-bottom-left-radius: 7px;
+    // }
 
-    &:last-child {
-      border-top-right-radius: 7px;
-      border-bottom-right-radius: 7px;
-    }
+    // &:last-child {
+    //   border-top-right-radius: 7px;
+    //   border-bottom-right-radius: 7px;
+    // }
 
     &.router-link-exact-active {
       background-color: $color-primary;

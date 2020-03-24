@@ -34,10 +34,9 @@ export default {
         noteForm: NoteForm
     },
     methods: {
-        ...mapActions(["createEvent", "createTask", "createNote", "refreshBullets"]),
+        ...mapActions(["createEvent", "createTask", "createNote"]),
         async create(bullet) {
             await this.submitFunction(bullet);
-            this.refreshBullets();
         }
     },
     computed: {

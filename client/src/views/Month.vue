@@ -15,7 +15,12 @@
                         :class="{currentDay: n === currentDate.date()
                                             && currentDate.month() === month
                                             && currentDate.year() === year}">{{n}} </span> 
-                    <span v-html="getEventString(n)" class="paragraph"/>
+                    <div class="agenda__day--text">
+                        <span v-for="(event, index) in eventsByDay[n]" :key="index" 
+                            v-html="getEventString(event)">
+                            <p v-if="parseInt(index) + 1 !== eventsByDay[n].length">, </p>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="tasks">
@@ -69,7 +74,7 @@ export default {
         Delete
     },
     methods: {
-        ...mapActions(["setYear", "setMonth", "fetchMonthBullets", "updateTask", "updateEvent"]),
+        ...mapActions(["setYear", "setMonth", "fetchBullets", "updateTask", "updateEvent"]),
         moveBack() {
             if(this.month == 0) {
                 this.setMonth(11);
@@ -86,24 +91,21 @@ export default {
                 this.setMonth(this.month + 1);
             }
         },
-        getEventString(day) {
-            let str = "";
-            if(!this.eventsByDay[day])
-                return str;
-
-            for(let i = 0; i < this.eventsByDay[day].length; i++) {
-                let event = this.eventsByDay[day][i];
-                str += "<span class='agenda__day--title'>" + event.title + "</span> ";
-                str += "<span class='agenda__day--details'>"
-                if(!event.allDay && !event.endDate) {
-                    const anchorDate = moment(event.anchorDate);
-                    str += anchorDate.format("h") + ":" + anchorDate.format("mmA") + " ";
-                }
-                if(event.location) {
-                    str += "@ " + event.location;
-                }
-                str += "</span>";
+        getEventsByDay(day) {
+            return this.eventsByDay[day];
+        },
+        getEventString(event) {
+            let str = new String();
+            str += "<span class='agenda__day--title paragraph'>" + event.title + "</span> ";
+            str += "<span class='agenda__day--details paragraph'>"
+            if(!event.allDay && !event.endDate) {
+                const anchorDate = moment(event.anchorDate);
+                str += anchorDate.format("h") + ":" + anchorDate.format("mmA") + " ";
             }
+            if(event.location) {
+                str += "@ " + event.location;
+            }
+            str += "</span>";
             return str;
         },
         completeTask(task) {
@@ -121,14 +123,9 @@ export default {
         ...mapGetters({
             year: "getYear", 
             month: "getMonth", 
-            monthBullets: "getMonthBullets"
+            monthEvents: "getMonthEvents",
+            monthTasks: "getMonthTasks"
         }),
-        monthEvents() {
-            return this.monthBullets.event;
-        },
-        monthTasks() {
-            return this.monthBullets.task;
-        },
         daysInMonth() {
             return moment([this.year, this.month]).daysInMonth();
         },
@@ -165,11 +162,11 @@ export default {
     },
     watch: {
         month: function() {
-            this.fetchMonthBullets();
+            this.fetchBullets();
         }
     },
     created() {
-        this.fetchMonthBullets();
+        this.fetchBullets();
     }
 }
 </script>
@@ -242,6 +239,17 @@ h2 {
         &--details {
             color: $color-primary;
         }
+
+        &--text {
+            display: inline;
+        }
+
+        &:hover {
+            .delete {
+                //display: inline-block;
+                visibility: visible;
+            }
+        }
     }
 
     .currentDay {
@@ -275,7 +283,8 @@ h2 {
 
     &:hover {
         .delete {
-            display: inline-block;
+            //display: inline-block;
+            visibility: visible;
         }
     }
 }

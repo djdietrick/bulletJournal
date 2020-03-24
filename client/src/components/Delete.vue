@@ -41,7 +41,8 @@ export default {
 @import '../styles/main.scss';
 
 .delete {    
-    display: none;
+    //display: none;
+    visibility: hidden;
     margin-left: 1rem;
     transition: 0.1s ease-in-out;
 
@@ -51,7 +52,8 @@ export default {
 
     &:focus {
         transform: scale(1.2);
-        display: inline-block;
+        //display: inline-block;
+        visibility: visible;
     }
 
     &--icon {

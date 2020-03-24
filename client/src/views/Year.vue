@@ -35,7 +35,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["setYear", "setMonth", "fetchYearEvents"]),
+        ...mapActions(["setYear", "setMonth", "fetchEvents"]),
         moveBack() {
             if(this.month < 6) {
                 // Move back to back half of last year
@@ -86,7 +86,7 @@ export default {
             year: "getYear", 
             month: "getMonth", 
             yearEvents: "getYearEvents", 
-            monthEvents: "getMonthEvents"}),
+            monthEvents: "getEventsForMonth"}),
         displayMonths() {
             if(this.month < 6) {
                 return {
@@ -119,11 +119,11 @@ export default {
     },
     watch: {
         year: function() {
-            this.fetchYearEvents();
+            this.fetchEvents();
         }
     },
     created() {
-        this.fetchYearEvents();
+        this.fetchEvents();
     }
 }
 </script>
