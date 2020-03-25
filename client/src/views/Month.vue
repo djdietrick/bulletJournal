@@ -16,39 +16,15 @@
                                             && currentDate.month() === month
                                             && currentDate.year() === year}">{{n}} </span> 
                     <div class="agenda__day--text">
-                        <span v-for="(event, index) in eventsByDay[n]" :key="index" 
-                            v-html="getEventString(event)">
-                            <p v-if="parseInt(index) + 1 !== eventsByDay[n].length">, </p>
-                        </span>
+                        <EventInfo class="agenda__day--event" v-for="(event, index) in eventsByDay[n]" :key="index"
+                            :event="event" :month="parseInt(index)"/>
                     </div>
                 </div>
             </div>
             <div class="tasks">
                 <ul class="tasks__list">
-                    <li v-for="task in monthTasks" :key="task._id" class="task-container">   
-                        <div class="task paragraph">
-                            <div v-on:click="completeTask(task)">
-                                <template v-if="task.completed">
-                                    <font-awesome-icon icon="check-square"/>
-                                </template>
-                                <template v-else>
-                                    <font-awesome-icon :icon="['far', 'square']"/>
-                                </template>
-                            </div>
-                            <a-popover title="Edit Task" trigger="click" placement="bottomLeft">
-                                <template slot="content">
-                                    <div>
-                                        <TaskForm :passedBullet="task" 
-                                            :submitFunction="updateTask"
-                                            btnText="Update"/>
-                                    </div>
-                                </template>
-                                <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>
-                            </a-popover>
-                        </div>
-                        <Delete class="delete"
-                            :id="task._id"
-                            :title="task.title"/>
+                    <li v-for="task in monthTasks" :key="task._id" class="task-container">  
+                        <TaskInfo :task="task"/>
                     </li>
                 </ul>
             </div>
@@ -59,8 +35,8 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import moment from "moment";
-import TaskForm from "../components/forms/TaskForm";
-import Delete from "../components/Delete";
+import EventInfo from "../components/info/EventInfo";
+import TaskInfo from "../components/info/TaskInfo";
 
 export default {
     name: "Month",
@@ -70,11 +46,11 @@ export default {
         }
     },
     components: {
-        TaskForm,
-        Delete
+        EventInfo,
+        TaskInfo
     },
     methods: {
-        ...mapActions(["setYear", "setMonth", "fetchBullets", "updateTask", "updateEvent"]),
+        ...mapActions(["setYear", "setMonth", "fetchBullets"]),
         moveBack() {
             if(this.month == 0) {
                 this.setMonth(11);
@@ -93,30 +69,6 @@ export default {
         },
         getEventsByDay(day) {
             return this.eventsByDay[day];
-        },
-        getEventString(event) {
-            let str = new String();
-            str += "<span class='agenda__day--title paragraph'>" + event.title + "</span> ";
-            str += "<span class='agenda__day--details paragraph'>"
-            if(!event.allDay && !event.endDate) {
-                const anchorDate = moment(event.anchorDate);
-                str += anchorDate.format("h") + ":" + anchorDate.format("mmA") + " ";
-            }
-            if(event.location) {
-                str += "@ " + event.location;
-            }
-            str += "</span>";
-            return str;
-        },
-        completeTask(task) {
-            const update = {
-                _id: task._id,
-                completed: !task.completed
-            }
-            this.updateTask(update);
-        },
-        updateTaskTest(task) {
-            console.log(task);
         }
     },
     computed: {
@@ -164,9 +116,6 @@ export default {
         month: function() {
             this.fetchBullets();
         }
-    },
-    created() {
-        this.fetchBullets();
     }
 }
 </script>
@@ -224,7 +173,7 @@ h2 {
         }
 
         &:not(:last-child) {
-            border-bottom: 1px solid $color-grey-dark-3;
+            border-bottom: 1px solid $color-grey-dark-4;
         }
 
         &--date { 
@@ -232,22 +181,11 @@ h2 {
             font-weight: 600;
         }
 
-        &--title {
-            color: $color-primary-light;
-        }
+        &--event {
+            margin-left: 5px;
 
-        &--details {
-            color: $color-primary;
-        }
-
-        &--text {
-            display: inline;
-        }
-
-        &:hover {
-            .delete {
-                //display: inline-block;
-                visibility: visible;
+            &:not(:last-child) {
+                margin-right: 5px;
             }
         }
     }
@@ -275,31 +213,6 @@ h2 {
         list-style-type: none;
 
     }
-}
-
-.task-container {
-    display: flex;
-    align-items: center;
-
-    &:hover {
-        .delete {
-            //display: inline-block;
-            visibility: visible;
-        }
-    }
-}
-
-.task {
-    display:grid;
-    grid-template-columns: 2.5rem 1fr;
-    align-items: center;
-
-    cursor: pointer;
-}
-
-.completed {
-    color: $color-grey-dark-2;
-    text-decoration: line-through;
 }
 
 .btnContainer {

@@ -14,8 +14,9 @@
                 <h3 class="month__heading heading-tertiary">{{parseInt(index) + 1}} {{name}}</h3>
                 <ul class="month__events">
                     <li class="paragraph" v-for="event in eventsByMonth[index]" :key="event._id">
-                        <span id="event--title">{{ getDateString(event, index) }}: {{event.title}}   </span> 
-                        <span id="event--details">{{getDisplayString(event)}}</span>
+                        <EventInfo :event="event" :month="parseInt(index)" addDateString/>
+                        <!-- <span id="event--title">{{ getDateString(event, index) }}: {{event.title}}   </span> 
+                        <span id="event--details">{{getDisplayString(event)}}</span> -->
                     </li>
                 </ul>
             </div>
@@ -26,6 +27,7 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import moment from "moment";
+import EventInfo from "../components/info/EventInfo";
 
 export default {
     name: "Year",
@@ -122,8 +124,8 @@ export default {
             this.fetchEvents();
         }
     },
-    created() {
-        this.fetchEvents();
+    components: {
+        EventInfo
     }
 }
 </script>

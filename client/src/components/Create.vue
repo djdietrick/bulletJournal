@@ -1,22 +1,32 @@
 <template>
-    <div>
-        <div class="radio--group">
-            <input class="radio--button" type="radio" id="taskForm" v-model="selectedComponent" value="taskForm">
-            <label class="radio--label" for="taskForm">Task</label>
-            <input class="radio--button" type="radio" id="eventForm" v-model="selectedComponent" value="eventForm">
-            <label class="radio--label" for="eventForm">Event</label>
-            <input class="radio--button" type="radio" id="noteForm" v-model="selectedComponent" value="noteForm">
-            <label class="radio--label" for="noteForm">Note</label>
-        </div>
+    <div class="create">
+        <BasePopover title="Create" placement="bottomRight">
+            <template v-slot:content>
+                <div class="radio--group">
+                    <input class="radio--button" type="radio" id="taskForm" v-model="selectedComponent" value="taskForm">
+                    <label class="radio--label" for="taskForm">Task</label>
+                    <input class="radio--button" type="radio" id="eventForm" v-model="selectedComponent" value="eventForm">
+                    <label class="radio--label" for="eventForm">Event</label>
+                    <input class="radio--button" type="radio" id="noteForm" v-model="selectedComponent" value="noteForm">
+                    <label class="radio--label" for="noteForm">Note</label>
+                </div>
 
-        <component :is="selectedComponent"
-            :submitFunction="create"
-            btnText="Create">
-        </component>
+                <component :is="selectedComponent"
+                    :submitFunction="create"
+                    btnText="Create">
+                </component>
+            </template>
+            <template v-slot:trigger>
+                <font-awesome-icon 
+                    class="create--icon noselect"
+                    :icon="['far', 'plus-square']"/>
+            </template>
+        </BasePopover>
     </div>
 </template>
 
 <script>
+import BasePopover from './BasePopover';
 import TaskForm from './forms/TaskForm';
 import EventForm from './forms/EventForm';
 import NoteForm from './forms/NoteForm';
@@ -31,7 +41,8 @@ export default {
     components: {
         taskForm: TaskForm,
         eventForm: EventForm,
-        noteForm: NoteForm
+        noteForm: NoteForm,
+        BasePopover
     },
     methods: {
         ...mapActions(["createEvent", "createTask", "createNote"]),
@@ -58,6 +69,17 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/main.scss';
+
+.create {
+  position: fixed;
+  top: 3rem;
+  right: 7%;
+
+  &--icon {
+    color: $color-primary-light;
+    transform: scale(4);
+  }
+}
 
 </style>
 

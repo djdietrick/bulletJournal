@@ -5,18 +5,7 @@
       <router-link to="/month">Month</router-link>
       <router-link to="/day">Day</router-link>
     </div>
-    <div class="create">
-      <a-popover title="Create" trigger="click" placement="bottomRight">
-          <template slot="content">
-              <div>
-                  <Create/>
-              </div>
-          </template>
-          <font-awesome-icon 
-            class="create--icon noselect"
-            :icon="['far', 'plus-square']"/>
-      </a-popover>
-    </div>
+    <Create/>
     <transition name="fade">
       <router-view/>
     </transition>
@@ -41,7 +30,6 @@ export default {
 
 body {
   padding: 0;
-  background-color: $color-grey-dark-3;
 }
 
 #app {

@@ -5,23 +5,19 @@ import store from './store'
 
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faAngleRight, faAngleLeft, faCheckSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight, faAngleLeft, faCheckSquare, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-//import DatePicker from 'v-calendar/lib/components/date-picker.umd'
-import VCalendar from 'v-calendar';
 import DatePicker from 'ant-design-vue/lib/date-picker';
 import Switch from 'ant-design-vue/lib/switch';
 import Popover from 'ant-design-vue/lib/popover';
 import AntD from 'ant-design-vue';
 
-library.add(faAngleRight, faAngleLeft, faCheckSquare, faSquare, faPlusSquare, faTrash);
-//library.add(faAngleLeft);
+library.add(faAngleRight, faAngleLeft, faCheckSquare, 
+  faSquare, faPlusSquare, faTrash, faEdit);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-// Vue.component('date-picker', DatePicker);
-// Vue.use(VCalendar);
 
 Vue.use(AntD);
 Vue.component(DatePicker.name, DatePicker);

@@ -52,8 +52,10 @@
                 class="form-control"
                 v-model="event.importance">
             <option
-                    v-for="(importance, index) in importances" :key="index"
-                    >{{ importance }}</option>
+                v-for="(importance, index) in importances" 
+                :key="index" :selected="importance === event.importance">
+                    {{ importance }}
+            </option>
         </select>
         </div>
         <div class="form__group">
@@ -132,6 +134,13 @@ export default {
             retEvent.importance = retEvent.importance.toUpperCase();
             this.submitFunction(retEvent);
         }
+    },
+    formatImportance(importance) {
+        if(importance.length === 0)
+            return "";
+        let str = imporance.toLowerCase();
+        str.splice(0, 1, str[0].toUpperCase());
+        return str;
     }
 }
 </script>

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
 import Year from '../views/Year.vue'
 import Month from '../views/Month.vue'
 import Day from '../views/Day.vue'
