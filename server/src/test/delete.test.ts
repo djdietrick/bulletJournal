@@ -1,15 +1,21 @@
+export {};
 const request = require('supertest');
-const path = require('path');
-const app = require('../app');
-const Bullet = require('../models/bullet');
-const Task = require('../models/task');
-const Event = require('../models/event');
-const Note = require('../models/note');
+import {App} from '../app';
+const BulletModel = require('../models/bullet');
+const TaskModel = require('../models/task');
+const EventModel = require('../models/event');
+const NoteModel = require('../models/note');
 const {clearBullets} = require('./fixtures/db');
+
+const app = new App().express;
 
 beforeEach(async() => {
     await clearBullets();
 });
+
+afterAll(async() => {
+    await clearBullets();
+})
 
 test('Delete task', async() => {
     const task = {
@@ -20,13 +26,13 @@ test('Delete task', async() => {
     .send(task)
     .expect(201);
 
-    const tasks = await Task.find();
+    const tasks = await TaskModel.find();
     expect(tasks.length).toBe(1);
 
     await request(app).delete(`/tasks/${tasks[0]._id}`)
     .expect(200);
 
-    const tasksNew = await Task.find();
+    const tasksNew = await TaskModel.find();
     expect(tasksNew.length).toBe(0);
 });
 
@@ -39,13 +45,13 @@ test('Delete event', async() => {
     .send(event)
     .expect(201);
 
-    const events = await Event.find();
+    const events = await EventModel.find();
     expect(events.length).toBe(1);
 
     await request(app).delete(`/events/${events[0]._id}`)
     .expect(200);
 
-    const eventsNew = await Event.find();
+    const eventsNew = await EventModel.find();
     expect(eventsNew.length).toBe(0);
 });
 
@@ -58,12 +64,12 @@ test('Delete note', async() => {
     .send(note)
     .expect(201);
 
-    const notes = await Note.find();
+    const notes = await NoteModel.find();
     expect(notes.length).toBe(1);
 
     await request(app).delete(`/notes/${notes[0]._id}`)
     .expect(200);
 
-    const notesNew = await Note.find();
+    const notesNew = await NoteModel.find();
     expect(notesNew.length).toBe(0);
 });

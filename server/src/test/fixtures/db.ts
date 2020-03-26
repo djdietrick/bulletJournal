@@ -1,19 +1,19 @@
-const Bullet = require('../../models/bullet');
-// const Task = require('../models/task');
-// const Event = require('../models/event');
-// const Note = require('../models/note');
+export {};
 const bullets = require('./testBullets.json');
-const app = require('../../app');
 const request = require('supertest');
+const BulletModel = require('../../models/bullet');
+import {App} from '../../app';
+
+const app = new App().express;
 
 const clearBullets = async () => {
-    await Bullet.deleteMany();
+    await BulletModel.deleteMany();
 }
 
 const loadBullets = async() => {
     // Load events
     try {
-        for(let [importance, events] of Object.entries(bullets.events)) {
+        for(let [importance, events] of Object.entries<Array<any>>(bullets.events)) {
             for(let event of events) {
                 event.importance = importance;
                 await request(app).post('/events').send(event);

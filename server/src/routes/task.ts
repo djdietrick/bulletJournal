@@ -1,8 +1,18 @@
-const express = require('express');
+import {Router, Request, Response} from 'express';
 const Task = require('../models/task');
-let router = express.Router();
+let router = Router();
 
-router.post('/tasks', async(req, res) => {
+export function TaskRouter(router: Router = Router()): Router {
+    router.post('/tasks', createTask);
+    router.get('/tasks', getTasks);
+    router.get('/tasks/:id', getTask);
+    router.patch('/tasks/:id', updateTask);
+    router.delete('/tasks/:id', deleteTask);
+
+    return router;
+}
+
+async function createTask(req: Request, res: Response) {
     try {
         const task = await new Task(req.body).save();
 
@@ -11,21 +21,21 @@ router.post('/tasks', async(req, res) => {
         console.log(e.message);
         return res.status(400).send(e.message);
     }
-});
+}
 
-router.get('/tasks', async(req, res) => {
+async function getTasks(req: Request, res: Response) {
     const match = {}
     const sort = {}
 
     // Matches
     if (req.query.completed) {
-        match.completed = req.query.completed === 'true'
+        match["completed"] = req.query.completed === 'true'
     }
 
     if(req.query.year && req.query.month) {
         const year = parseInt(req.query.year);
         const month = parseInt(req.query.month);
-        match.anchorDate = {
+        match["anchorDate"] = {
             $gte: new Date(year, month),
             $lt: new Date(year, month + 1)
         }
@@ -52,9 +62,9 @@ router.get('/tasks', async(req, res) => {
     } catch(e) {
         res.status(500).send();
     }
-});
+}
 
-router.get('/tasks/:id', async (req, res) => {
+async function getTask(req: Request, res: Response) {
     const _id = req.params.id;
 
     try {
@@ -68,9 +78,9 @@ router.get('/tasks/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send();
     }
-});
+}
 
-router.patch('/tasks/:id', async (req, res) => {
+async function updateTask(req: Request, res: Response) {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['title', 'anchorDate', 'description', 'notes', 'completed', 'dueDate', 'status', 'completedDate'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -97,9 +107,9 @@ router.patch('/tasks/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-});
+}
 
-router.delete('/tasks/:id', async (req, res) => {
+async function deleteTask(req: Request, res: Response) {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id})
 
@@ -111,6 +121,4 @@ router.delete('/tasks/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-});
-
-module.exports = router;
+}

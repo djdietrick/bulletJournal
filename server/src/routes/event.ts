@@ -1,8 +1,20 @@
-const express = require('express');
+import {Router, Request, Response} from 'express';
 const Event = require('../models/event');
-let router = express.Router();
+let router = Router();
+let moment = require('moment');
 
-router.post('/events', async(req, res) => {
+export function EventRouter(router: Router = Router()): Router {
+    router.post('/events', createEvent);
+    router.get('/events', getEvents);
+    router.get('events/byweek', getEventsByWeek);
+    router.get('/events/:id', getEvent);
+    router.patch('/events/:id', updateEvent);
+    router.delete('/events/:id', deleteEvent);
+
+    return router;
+}
+
+async function createEvent(req: Request, res: Response) {
     try {
         const evnt = await new Event(req.body).save();
 
@@ -11,19 +23,19 @@ router.post('/events', async(req, res) => {
         console.log(e.message);
         return res.status(400).send(e.message);
     }
-});
+}
 
 // /events?year=2020&month=01 , gets all events in the given month (index starts at 0) with importance high or medium
 // /events?year=2020 , gets events in the given year with importance high (for yearly view)
-router.get('/events', async(req, res) => {
+async function getEvents(req: Request, res: Response) {
     const match = {}
     const sort = {}
 
     // Matches
     if(req.query.year && req.query.month) {
-        const year = parseInt(req.query.year);
-        const month = parseInt(req.query.month);
-        match.$or = [
+        const year: number = parseInt(req.query.year);
+        const month: number = parseInt(req.query.month);
+        match["$or"] = [
             {
                 anchorDate: {
                     $gte: new Date(year, month),
@@ -38,12 +50,12 @@ router.get('/events', async(req, res) => {
             }
         ];
 
-        match.importance = {
+        match["importance"] = {
             $in: ['HIGH', 'MEDIUM']
         };
     } else if (req.query.year) {
         const year = parseInt(req.query.year);
-        match.$or = [
+        match["$or"] = [
             {
                 anchorDate: {
                     $gte: new Date(year, 0),
@@ -58,7 +70,7 @@ router.get('/events', async(req, res) => {
             }
         ];
 
-        match.importance = 'HIGH';
+        match["importance"] = 'HIGH';
     } else {
         return res.status(400).send("Must provide either a month and year or just a year");
     }
@@ -83,9 +95,41 @@ router.get('/events', async(req, res) => {
         console.error(e.message);
         res.status(500).send();
     }
-});
+}
 
-router.get('/events/:id', async (req, res) => {
+async function getEventsByWeek(req: Request, res: Response) {
+    const match = {}
+    const sort = {}
+
+    // Matches
+    if(req.query.year && req.query.week) {
+        const year = parseInt(req.query.year);
+        const week = parseInt(req.query.week);
+
+        const start = moment().week(week).year(year);
+        const end = moment().week(week).year(year);
+        console.log("Start: ", start);
+        console.log("End: ", end);
+        // match["$or"] = [
+        //     {
+        //         anchorDate: {
+        //             $gte: moment(),
+        //             $lt: new Date(year, month + 1)
+        //         }
+        //     },
+        //     {
+        //         endDate: {
+        //             $gte: new Date(year, month),
+        //             $lt: new Date(year, month + 1)
+        //         }
+        //     }
+        // ];
+    } else {
+        return res.status(400).send("Must provide either a month and year or just a year");
+    }
+}
+
+async function getEvent(req: Request, res: Response) {
     const _id = req.params.id;
 
     try {
@@ -99,9 +143,10 @@ router.get('/events/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send();
     }
-});
+}
 
-router.patch('/events/:id', async (req, res) => {
+
+async function updateEvent(req: Request, res: Response) {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['title', 'description', 'notes', 'anchorDate', 'allDay', 'importance'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -127,9 +172,9 @@ router.patch('/events/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-});
+}
 
-router.delete('/events/:id', async (req, res) => {
+async function deleteEvent(req: Request, res: Response) {
     try {
         const evnt = await Event.findOneAndDelete({ _id: req.params.id})
 
@@ -141,6 +186,4 @@ router.delete('/events/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-});
-
-module.exports = router;
+}

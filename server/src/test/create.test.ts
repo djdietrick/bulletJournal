@@ -1,15 +1,22 @@
+export {}
+const {clearBullets} = require("./fixtures/db");
 const request = require('supertest');
-const path = require('path');
-const app = require('../app');
-const Bullet = require('../models/bullet');
-const Task = require('../models/task');
-const Event = require('../models/event');
-const Note = require('../models/note');
-const {clearBullets} = require('./fixtures/db');
+const BulletModel = require('../models/bullet');
+const TaskModel = require('../models/task');
+const EventModel = require('../models/event');
+const NoteModel = require('../models/note');
+import {App} from '../app';
+const moment = require('moment');
+
+const app = new App().express;
 
 beforeEach(async() => {
     await clearBullets();
 });
+
+afterAll(async() => {
+    await clearBullets();
+})
 
 test('Create task', async() => {
     const task = {
@@ -20,10 +27,10 @@ test('Create task', async() => {
     .send(task)
     .expect(201);
 
-    const tasks = await Bullet.find();
+    const tasks = await BulletModel.find();
     expect(tasks.length).toBe(1);
 
-    const taskSpec = await Task.find();
+    const taskSpec = await TaskModel.find();
     expect(taskSpec.length).toBe(1);
 
     const newTask = tasks[0];
@@ -46,7 +53,7 @@ test('Create task with due date', async() => {
     .send(task)
     .expect(201);
 
-    const tasks = await Bullet.find();
+    const tasks = await BulletModel.find();
     expect(tasks.length).toBe(1);
 
     const newTask = tasks[0];
@@ -62,15 +69,16 @@ test('Create event', async() => {
     .send(event)
     .expect(201);
 
-    const events = await Bullet.find();
+    const events = await BulletModel.find();
     expect(events.length).toBe(1);
 
-    const eventSpec = await Event.find();
+    const eventSpec = await EventModel.find();
     expect(eventSpec.length).toBe(1);
 
+    const date = moment();
     const newEvent = events[0];
     expect(newEvent.title).toBe('Got a haircut');
-    expect(newEvent.anchorDate.day).toBe(Date.now.day);
+    expect(newEvent.anchorDate.getDate()).toBe(date.date());
 });
 
 test('Create future event', async() => {
@@ -84,7 +92,7 @@ test('Create future event', async() => {
     .send(event)
     .expect(201);
 
-    const events = await Bullet.find();
+    const events = await BulletModel.find();
     expect(events.length).toBe(1);
 
     const newEvent = events[0];
@@ -103,7 +111,7 @@ test('Create event with time', async() => {
     .send(event)
     .expect(201);
 
-    const events = await Bullet.find();
+    const events = await BulletModel.find();
     expect(events.length).toBe(1);
 
     const newEvent = events[0];
@@ -123,10 +131,10 @@ test('Create note', async() => {
     .send(note)
     .expect(201);
 
-    const notes = await Bullet.find();
+    const notes = await BulletModel.find();
     expect(notes.length).toBe(1);
 
-    const noteSpec = await Note.find();
+    const noteSpec = await NoteModel.find();
     expect(noteSpec.length).toBe(1);
 
     const newNote = notes[0];
@@ -159,15 +167,15 @@ test('Check inheritance', async() => {
     .send(note)
     .expect(201);
 
-    const bullets = await Bullet.find();
+    const bullets = await BulletModel.find();
     expect(bullets.length).toBe(3);
 
-    const tasks = await Task.find();
+    const tasks = await TaskModel.find();
     expect(tasks.length).toBe(1);
 
-    const events = await Event.find();
+    const events = await EventModel.find();
     expect(events.length).toBe(1);
 
-    const notes = await Note.find();
+    const notes = await NoteModel.find();
     expect(notes.length).toBe(1);
 })

@@ -1,16 +1,22 @@
+export {};
 const request = require('supertest');
-const app = require('../app');
-const Event = require('./../../src/models/event');
-const Bullet = require('../../src/models/bullet');
+import {App} from '../app';
+const EventModel = require('../models/event');
 const {clearBullets, loadBullets} = require('./fixtures/db');
+
+const app = new App().express;
 
 beforeEach(async() => {
     await clearBullets();
     await loadBullets();
 });
 
+afterAll(async() => {
+    await clearBullets();
+})
+
 test('Get single event', async() => {
-    const events = await Event.find();
+    const events = await EventModel.find();
     const event = events[0];
 
     const response = await request(app).get(`/events/${event._id}`)
@@ -116,9 +122,4 @@ test('Get notes for month and year', async() => {
 
 test('Negative note tests', async() => {
 
-});
-
-test('Get bullets', async() => {
-    let response = await request(app).get('/bullets?limit=100')
-    .expect(200);
 });

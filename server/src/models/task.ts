@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 const Bullet = require('./bullet');
 
 const Task = Bullet.discriminator('task', new mongoose.Schema({

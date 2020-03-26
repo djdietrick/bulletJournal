@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 
 const options =  { 
     collection: 'bullets', 
     discriminatorKey: '_type', 
-    timestamps: true}
+    timestamps: true
+}
 
 // Schemas
-const bulletSchema = new mongoose.Schema({
+const bulletSchema: mongoose.Schema = new mongoose.Schema({
     title: {
         type: String,
         required: true

@@ -1,8 +1,18 @@
-const express = require('express');
+import {Router, Request, Response} from 'express';
 const Note = require('../models/note');
-let router = express.Router();
+let router = Router();
 
-router.post('/notes', async(req, res) => {
+export function NoteRouter(router: Router = Router()): Router {
+    router.post('/notes', createNote);
+    router.get('/notes', getNotes);
+    router.get('/notes/:id', getNote);
+    router.patch('/notes/:id', updateNote);
+    router.delete('/notes/:id', deleteNote);
+
+    return router;
+}
+
+async function createNote(req: Request, res: Response) {
     try {
         const note = await new Note(req.body).save();
 
@@ -11,15 +21,15 @@ router.post('/notes', async(req, res) => {
         console.log(e.message);
         return res.status(400).send(e.message);
     }
-});
+}
 
-router.get('/notes', async(req, res) => {
+async function getNotes(req: Request, res: Response) {
     const match = {}
     const sort = {}
 
     // Matches
     if(req.query.year && req.query.month) {
-        match.anchorDate = {
+        match["anchorDate"] = {
             $gte: new Date(req.query.year, req.query.month, 1),
             $lt: new Date(req.query.year + 1, req.query.month + 1, 1)
         }
@@ -46,9 +56,9 @@ router.get('/notes', async(req, res) => {
     } catch(e) {
         res.status(500).send();
     }
-});
+}
 
-router.get('/notes/:id', async (req, res) => {
+async function getNote(req: Request, res: Response) {
     const _id = req.params.id;
 
     try {
@@ -62,9 +72,9 @@ router.get('/notes/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send();
     }
-});
+}
 
-router.patch('/notes/:id', async (req, res) => {
+async function updateNote(req: Request, res: Response) {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['title', 'description', 'notes'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -78,7 +88,7 @@ router.patch('/notes/:id', async (req, res) => {
     }
 
     try {
-        const note = await Notes.findOne({ _id: req.params.id})
+        const note = await Note.findOne({ _id: req.params.id})
 
         if (!note) {
             return res.status(404).send()
@@ -90,9 +100,9 @@ router.patch('/notes/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-});
+}
 
-router.delete('/notes/:id', async (req, res) => {
+async function deleteNote(req: Request, res: Response) {
     try {
         const note = await Note.findOneAndDelete({ _id: req.params.id})
 
@@ -104,6 +114,4 @@ router.delete('/notes/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-});
-
-module.exports = router;
+}
