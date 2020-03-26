@@ -116,6 +116,9 @@ export default {
         month: function() {
             this.fetchBullets();
         }
+    },
+    created() {
+        this.fetchBullets();
     }
 }
 </script>
@@ -125,7 +128,7 @@ export default {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 95%;
+    grid-template-columns: 1fr 95% 1fr;
     grid-template-rows: 6rem 1fr;
 }
 
@@ -139,7 +142,7 @@ h2 {
     grid-row: 2 / -1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 3rem;
+    grid-gap: 2rem;
     padding: 0rem 1rem;
 }
 

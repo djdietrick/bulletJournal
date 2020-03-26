@@ -1,5 +1,5 @@
 <template>
-    <BasePopover class="edit" title="Edit" placement="right">
+    <BasePopover class="edit" title="Edit" placement="left">
         <template v-slot:content>
             <div>
                 <component :is="selectedComponent"
@@ -12,7 +12,8 @@
         <template v-slot:trigger>
             <font-awesome-icon 
                 class="edit--icon"
-                icon="edit"/>
+                icon="edit"
+                size="2x"/>
         </template>
     </BasePopover>
 </template>
@@ -72,11 +73,11 @@ export default {
     transition: 0.1s ease-in-out;
 
     &:hover {
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
 
     &:focus {
-        transform: scale(1.2);
+        transform: scale(1.1);
         //display: inline-block;
         //visibility: visible;
     }

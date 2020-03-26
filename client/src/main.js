@@ -5,7 +5,8 @@ import store from './store'
 
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faAngleRight, faAngleLeft, faCheckSquare, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight, faAngleLeft, faCheckSquare, faTrash, 
+  faEdit, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { faSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -15,7 +16,7 @@ import Popover from 'ant-design-vue/lib/popover';
 import AntD from 'ant-design-vue';
 
 library.add(faAngleRight, faAngleLeft, faCheckSquare, 
-  faSquare, faPlusSquare, faTrash, faEdit);
+  faSquare, faPlusSquare, faTrash, faEdit, faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 

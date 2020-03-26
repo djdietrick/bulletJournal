@@ -8,14 +8,18 @@
                 <font-awesome-icon :icon="['far', 'square']"/>
             </template>
         </div>
-        <BasePopover :title="task.title">
+        <BasePopover :title="task.title" :placement="placement">
             <template v-slot:content>
                 <div class="info">
                     <Toolbar :bullet="task"/>
                 </div>
             </template>
-            <template v-slot:trigger>    
-                <p class="paragraph" :class="{completed: task.completed}">{{task.title}}</p>        
+            <template v-slot:trigger>
+                <div class="task__text">
+                    <p class="paragraph" :class="{completed: task.completed, 
+                        overdue: isOverdue(task)}">{{task.title}}</p>    
+                    <font-awesome-icon v-if="isOverdue(task)" class="overdue__icon" icon="exclamation-circle"/> 
+                </div>
             </template>
         </BasePopover>
     </div>
@@ -25,9 +29,14 @@
 import BasePopover from "../BasePopover";
 import Toolbar from "./Toolbar";
 import {mapActions} from "vuex";
+import moment from "moment";
 export default {
     props: {
-        task: Object
+        task: Object,
+        placement: {
+            type: String,
+            default: "right"
+        }
     },
     components: {
         BasePopover,
@@ -41,6 +50,11 @@ export default {
                 completed: !this.task.completed
             }
             this.updateTask(update);
+        },
+        isOverdue(task) {
+            if(!task.dueDate) return false;
+            if(task.completed === true) return false;
+            return moment(task.dueDate).unix() < moment().unix();
         }
     }
 }
@@ -55,11 +69,26 @@ export default {
     align-items: center;
 
     cursor: pointer;
+
+    &__text {
+        display: flex;
+        align-items: center;
+    }
 }
 
 .completed {
     color: $color-grey-dark-2;
     text-decoration: line-through;
+}
+
+.overdue {
+    color: $color-warning;
+
+    &__icon {
+        display: inline-block;
+        color: $color-warning;
+        margin-left: 7px;
+    }
 }
 
 

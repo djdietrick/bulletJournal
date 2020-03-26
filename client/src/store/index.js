@@ -19,15 +19,18 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     year: nowYear, // Current year the user is viewing
-    month: nowMonth // Current month the user is viewing
+    month: nowMonth, // Current month the user is viewing
+    dayViewBullets: []
   },
   getters: {
     getYear: state => state.year,
     getMonth: state => state.month,
+    getDayBullets: state => state.dayViewBullets
   },
   mutations: {
     setYear: (state, year) => (state.year = year),
     setMonth: (state, month) => (state.month = month),
+    setDayBullets: (state, bullets) => (state.dayViewBullets = bullets)
   },
   actions: {
     async setYear({commit}, year) {
@@ -44,6 +47,14 @@ export default new Vuex.Store({
     async deleteBullet({commit, dispatch}, id) {
       const res = await a.delete(`/${id}`);
       dispatch('fetchBullets');
+    },
+    async getBulletsForDayView({commit, dispatch}, index) {
+      try {
+        const res = await a.get(`/bullets?index=${index}`);
+        commit('setDayBullets', res.data);
+      } catch(e) {
+        console.log(e);
+      }
     }
   },
   modules: {

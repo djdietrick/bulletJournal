@@ -1,5 +1,5 @@
 <template>
-    <BasePopover class="delete" :title="'Delete ' + title + '?'" placement="right">
+    <BasePopover class="delete" :title="'Delete ' + title + '?'" placement="bottom">
         <template v-slot:content>
             <div>
                 <button class="btn" @click="deleteBullet(id)">Delete</button>
@@ -9,7 +9,8 @@
         <template v-slot:trigger>
             <font-awesome-icon 
                 class="delete--icon"
-                icon="trash"/>
+                icon="trash"
+                size="2x"/>
         </template>
     </BasePopover>
 </template>
@@ -50,11 +51,11 @@ export default {
     transition: 0.1s ease-in-out;
 
     &:hover {
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
 
     &:focus {
-        transform: scale(1.2);
+        transform: scale(1.1);
         //display: inline-block;
         //visibility: visible;
     }

@@ -2,7 +2,7 @@
     <div class="toolbar">
         <Edit class="edit"
             :bullet="bullet"
-            formType="event"/>
+            :formType="bullet._type"/>
         <Delete class="delete"
                 :id="bullet._id"
                 :title="bullet.title"/>
@@ -22,3 +22,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "../../styles/main.scss";
+
+.toolbar {
+    display: flex;
+    justify-content: center;
+}
+</style>

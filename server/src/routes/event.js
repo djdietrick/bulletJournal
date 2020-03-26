@@ -13,7 +13,7 @@ router.post('/events', async(req, res) => {
     }
 });
 
-// /events?year=2020&month=01 , gets all events in the given month (index starts at 0)
+// /events?year=2020&month=01 , gets all events in the given month (index starts at 0) with importance high or medium
 // /events?year=2020 , gets events in the given year with importance high (for yearly view)
 router.get('/events', async(req, res) => {
     const match = {}
@@ -38,9 +38,9 @@ router.get('/events', async(req, res) => {
             }
         ];
 
-        // match.importance = {
-        //     $in: ['HIGH', 'MEDIUM']
-        // };
+        match.importance = {
+            $in: ['HIGH', 'MEDIUM']
+        };
     } else if (req.query.year) {
         const year = parseInt(req.query.year);
         match.$or = [

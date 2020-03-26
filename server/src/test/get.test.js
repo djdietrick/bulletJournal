@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
 const Event = require('./../../src/models/event');
+const Bullet = require('../../src/models/bullet');
 const {clearBullets, loadBullets} = require('./fixtures/db');
 
 beforeEach(async() => {
@@ -60,14 +61,13 @@ test('Get events for year and month', async() => {
     .expect(200);
 
     const events = response.body;
-    expect(events.length).toBe(4);
+    expect(events.length).toBe(3);
 
     const eventTitles = events.map(event => event.title);
 
     expect(eventTitles.includes("Phish")).toBe(true);
     expect(eventTitles.includes("Jam Cruise 18")).toBe(true);
     expect(eventTitles.includes("Goose")).toBe(true);
-    expect(eventTitles.includes("Haircut")).toBe(true);
 });
 
 test('Get events spanning two months', async() => {
@@ -116,4 +116,9 @@ test('Get notes for month and year', async() => {
 
 test('Negative note tests', async() => {
 
+});
+
+test('Get bullets', async() => {
+    let response = await request(app).get('/bullets?limit=100')
+    .expect(200);
 });

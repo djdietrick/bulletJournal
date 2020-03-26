@@ -126,6 +126,9 @@ export default {
     },
     components: {
         EventInfo
+    },
+    created() {
+        this.fetchEvents();
     }
 }
 </script>

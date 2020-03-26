@@ -10,7 +10,7 @@ let port = process.env.PORT;
 // Connect to DB
 require('../db/mongoose');
 
-const publicDir = path.join(__dirname, '../../client/public/');
+const publicDir = path.join(__dirname, '../../client/dist/');
 
 let app = express();
 
