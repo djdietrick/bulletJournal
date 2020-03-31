@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/year">Year</router-link>
       <router-link to="/month">Month</router-link>
-      <router-link to="/day">Day</router-link>
+      <router-link to="/day">Week</router-link>
     </div>
     <Create/>
     <transition name="fade">

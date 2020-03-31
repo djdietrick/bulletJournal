@@ -5,6 +5,7 @@ const a = axios.create({
 });
 
 const state = {
+    weekEvents: [],
     monthEvents: [],
     yearEvents: [] // Stores events for the whole year with importance HIGH, to be displayed in Year view
 }
@@ -12,6 +13,7 @@ const state = {
 const getters = {
     getYearEvents: state => state.yearEvents,
     getMonthEvents: state => state.monthEvents,
+    getWeekEvents: state => state.weekEvents,
     getEventsForMonth: (state, getters, rootState) => month => {
         return state.yearEvents.filter(event => {
             const anchorDate = new Date(event.anchorDate);
@@ -29,6 +31,7 @@ const getters = {
 const mutations = {
     setYearEvents: (state, events) => (state.yearEvents = events),
     setMonthEvents: (state, events) => (state.monthEvents = events),
+    setWeekEvents: (state, events) => (state.weekEvents = events),
     updateEvent: (state, event) => {
 
     }
@@ -67,6 +70,9 @@ const actions = {
 
         const monthRes = await a.get(`/events?year=${rootState.year}&month=${rootState.month}`);
         commit('setMonthEvents', monthRes.data);
+
+        const weekRes = await a.get(`/events/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
+        commit('setWeekEvents', weekRes.data);
     },
 };
 

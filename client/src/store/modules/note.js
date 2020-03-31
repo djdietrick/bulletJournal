@@ -5,15 +5,18 @@ const a = axios.create({
 });
 
 const state = {
+    weekNotes: [],
     monthNotes: []
 }
 
 const getters = {
-    getMonthNotes: state => state.monthNotes
+    getMonthNotes: state => state.monthNotes,
+    getWeekNotes: state => state.weekNotes
 }
 
 const mutations = {
     setMonthNotes: (state, notes) => (state.monthNotes = notes),
+    setWeekNotes: (state, notes) => (state.weekNotes = notes),
     updateNote: (state, note) => {
 
     }
@@ -51,6 +54,9 @@ const actions = {
     async fetchNotes({ commit, rootState }) {
         const monthRes = await a.get(`/notes?year=${rootState.year}&month=${rootState.month}`);
         commit('setMonthNotes', monthRes.data);
+        
+        const weekRes = await a.get(`/notes/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
+        commit('setWeekNotes', weekRes.data);
     }
 };
 

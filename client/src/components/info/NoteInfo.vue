@@ -1,14 +1,14 @@
 <template>
-    <BasePopover :title="event.title">
+    <BasePopover :title="note.title">
         <template v-slot:content>
             <div class="info">
-                
+                <Toolbar :bullet="note"/>
             </div>
         </template>
         <template v-slot:trigger>
-            <div>
-                <p id="paragraph event--title">{{ dateString }}: {{event.title}}   </p> 
-                <p id="paragraph event--details">{{ displayString }}</p>
+            <div class="note">
+                <font-awesome-icon icon="pencil-alt" class="paragraph note--icon"/>
+                <p class="paragraph note--text">{{note.title}}</p>
             </div>
         </template>
     </BasePopover>
@@ -16,18 +16,50 @@
 
 <script>
 import BasePopover from "../BasePopover";
-import NoteForm from "../forms/NoteForm";
-import Delete from "../Delete";
+import Toolbar from "./Toolbar";
+import moment from "moment";
+import {mapActions} from "vuex";
 export default {
+    props: {
+        note: Object,
+        placement: {
+            type: String,
+            default: "right"
+        }
+    },
     components: {
         BasePopover,
-        NoteForm,
-        Delete
+        Toolbar
+    },
+    methods: {
+        ...mapActions(["updateNote"])
     }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../../styles/main.scss";
+
+.note {
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: center;
+
+    &--icon {
+        color: $color-primary-light;
+        //font-size: 10rem;
+        display: inline-block;
+    }
+
+    &--text {
+        color: $color-primary-light;
+        display: inline-block;
+    }
+}
 
 </style>

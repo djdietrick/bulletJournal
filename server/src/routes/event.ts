@@ -1,12 +1,13 @@
 import {Router, Request, Response} from 'express';
 const Event = require('../models/event');
 let router = Router();
-let moment = require('moment');
+// let moment = require('moment');
+import * as moment from 'moment';
 
 export function EventRouter(router: Router = Router()): Router {
     router.post('/events', createEvent);
     router.get('/events', getEvents);
-    router.get('events/byweek', getEventsByWeek);
+    router.get('/events/week', getEventsByWeek);
     router.get('/events/:id', getEvent);
     router.patch('/events/:id', updateEvent);
     router.delete('/events/:id', deleteEvent);
@@ -92,40 +93,56 @@ async function getEvents(req: Request, res: Response) {
 
         res.send(data);
     } catch(e) {
-        console.error(e.message);
+        console.log(e.message);
         res.status(500).send();
     }
 }
 
 async function getEventsByWeek(req: Request, res: Response) {
-    const match = {}
-    const sort = {}
+    
+        const match = {}
+        const sort = {}
 
-    // Matches
-    if(req.query.year && req.query.week) {
-        const year = parseInt(req.query.year);
-        const week = parseInt(req.query.week);
+        if(!req.query.date)
+            return res.status(400).send("Must provide either a month and year or just a year");
 
-        const start = moment().week(week).year(year);
-        const end = moment().week(week).year(year);
-        console.log("Start: ", start);
-        console.log("End: ", end);
-        // match["$or"] = [
-        //     {
-        //         anchorDate: {
-        //             $gte: moment(),
-        //             $lt: new Date(year, month + 1)
-        //         }
-        //     },
-        //     {
-        //         endDate: {
-        //             $gte: new Date(year, month),
-        //             $lt: new Date(year, month + 1)
-        //         }
-        //     }
-        // ];
-    } else {
-        return res.status(400).send("Must provide either a month and year or just a year");
+        // Matches
+        const date: moment.Moment = moment(req.query.date, "YYYY-M-D");
+
+        const start: Date = new Date(date.year(), date.month(), date.date());
+        const end: Date = new Date(date.year(), date.month(), date.date() + 7);
+        const duration = {
+            $gte: start,
+            $lt: end
+        }
+
+        match["$or"] = [
+            {
+                anchorDate: duration
+            },
+            {
+                endDate: duration
+            }
+        ];
+
+            // Sorts
+        if (req.query.sortBy) {
+            sort["anchorDate"] =  1
+        }
+
+        const options = {
+            limit: parseInt(req.query.limit),
+            skip: parseInt(req.query.skip),
+            sort
+        }
+    try {
+        const data = await Event.find(match, null, options);
+
+        return res.send(data);
+
+    } catch(e) {
+        console.error(e.message);
+        return res.status(500).send(e.message);
     }
 }
 
@@ -139,9 +156,9 @@ async function getEvent(req: Request, res: Response) {
             return res.status(404).send();
         }
 
-        res.send(evnt);
+        return res.send(evnt);
     } catch (e) {
-        res.status(500).send();
+        return res.status(500).send();
     }
 }
 

@@ -12,9 +12,9 @@
             <div class="agenda">
                 <div v-for="n in daysInMonth" :key="n" class="agenda__day">
                     <span class="paragraph agenda__day--date"
-                        :class="{currentDay: n === currentDate.date()
-                                            && currentDate.month() === month
-                                            && currentDate.year() === year}">{{n}} </span> 
+                        :class="{currentDay: isCurrentDay(n)}">{{n}}</span>
+                    <span class="paragraph agenda__day--date"
+                        :class="{currentDay: isCurrentDay(n)}">{{getDayOfWeekChar(n)}}</span>
                     <div class="agenda__day--text">
                         <EventInfo class="agenda__day--event" v-for="(event, index) in eventsByDay[n]" :key="index"
                             :event="event" :month="parseInt(index)"/>
@@ -69,6 +69,18 @@ export default {
         },
         getEventsByDay(day) {
             return this.eventsByDay[day];
+        },
+        getDayOfWeekChar(dayOfMonth) {
+            return moment({
+                year: this.year,
+                month: this.month,
+                date: dayOfMonth
+            }).format("dd")[0];
+        },
+        isCurrentDay(dayOfMonth) {
+            return dayOfMonth === this.currentDate.date()
+                && this.currentDate.month() === this.month
+                && this.currentDate.year() === this.year
         }
     },
     computed: {
@@ -164,7 +176,7 @@ h2 {
         left: 3rem;
         margin-left: 1.5rem;
         display: grid;
-        grid-template-columns: 2.5rem 1fr;
+        grid-template-columns: 2.2rem 1.5rem 1fr;
         //grid-column-gap: 1rem;
 
         &:first-child {

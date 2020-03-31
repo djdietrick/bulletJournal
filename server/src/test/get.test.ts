@@ -123,3 +123,11 @@ test('Get notes for month and year', async() => {
 test('Negative note tests', async() => {
 
 });
+
+test('Get events by week', async() => {
+    let response = await request(app).get('/events/week?date=2020-05-24')
+    .expect(200);
+
+    let events = response.body;
+    expect(events.length).toBe(2);
+});

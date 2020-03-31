@@ -138,7 +138,7 @@ export default {
     formatImportance(importance) {
         if(importance.length === 0)
             return "";
-        let str = imporance.toLowerCase();
+        let str = importance.toLowerCase();
         str.splice(0, 1, str[0].toUpperCase());
         return str;
     }

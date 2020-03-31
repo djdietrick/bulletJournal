@@ -1,10 +1,12 @@
 import {Router, Request, Response} from 'express';
 const Task = require('../models/task');
 let router = Router();
+import * as moment from 'moment';
 
 export function TaskRouter(router: Router = Router()): Router {
     router.post('/tasks', createTask);
     router.get('/tasks', getTasks);
+    router.get('/tasks/week', getTasksByWeek);
     router.get('/tasks/:id', getTask);
     router.patch('/tasks/:id', updateTask);
     router.delete('/tasks/:id', deleteTask);
@@ -77,6 +79,55 @@ async function getTask(req: Request, res: Response) {
         res.send(task);
     } catch (e) {
         res.status(500).send();
+    }
+}
+
+async function getTasksByWeek(req: Request, res: Response) { 
+    try {
+        const match = {}
+        const sort = {}
+
+
+        if(!req.query.date)
+            return res.status(400).send("Must provide either a month and year or just a year");
+
+        // Matches
+        const date: moment.Moment = moment(req.query.date, "YYYY-M-D");
+
+        const start: Date = new Date(date.year(), date.month(), date.date());
+        const end: Date = new Date(date.year(), date.month(), date.date() + 7);
+        const duration = {
+            $gte: start,
+            $lt: end
+        }
+        
+        match["$or"] = [
+            {
+                anchorDate: duration
+            },
+            {
+                dueDate: duration
+            }
+        ];
+
+            // Sorts
+        if (req.query.sortBy) {
+            sort["anchorDate"] =  1
+        }
+
+        const options = {
+            limit: parseInt(req.query.limit),
+            skip: parseInt(req.query.skip),
+            sort
+        }
+  
+        const data = await Task.find(match, null, options);
+
+        return res.send(data);
+
+    } catch(e) {
+        console.error(e.message);
+        return res.status(500).send(e.message);
     }
 }
 

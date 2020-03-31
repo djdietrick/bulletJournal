@@ -1,5 +1,6 @@
 <template>
     <div class="grid-container">
+        <h2 class="heading-secondary">Week of {{sundayMoment.format("MMMM Do, YYYY")}}</h2>  
         <div class="btnContainer" id='btn--left' v-on:click="moveBack">
             <font-awesome-icon class="arrow" icon="angle-left" size="6x"/>
         </div>
@@ -7,12 +8,28 @@
             <font-awesome-icon class="arrow" icon="angle-right" size="6x"/>
         </div>
         <div class="day-container">
-
-        </div>
+            <div v-for="n in 7" :key="n" class="day">
+                <h3 class="day__heading heading-tertiary">{{getDateString(n)}}</h3>
+                <ul class="day__list">
+                    <li v-for="bullet in getBulletsForDay(n)" :key="bullet._id">
+                        <template v-if="bullet._type == 'event'">
+                            <EventInfo :event="bullet" :month="month"/>
+                        </template>
+                        <template v-else-if="bullet._type == 'task'">
+                            <TaskInfo :task="bullet"/>
+                        </template>
+                        <template v-else>
+                            <NoteInfo :note="bullet"/>
+                        </template>
+                    </li>
+                </ul>
+            </div>
+        </div> 
     </div>
 </template>
 
 <script>
+import Vue from "vue";
 import {mapActions, mapGetters} from "vuex";
 import EventInfo from "../components/info/EventInfo";
 import TaskInfo from "../components/info/TaskInfo";
@@ -22,47 +39,68 @@ import moment from "moment";
 export default {
     data() {
         return {
-            viewIndex: 0 //Keep track of where we are in day view, control how much we get when we move
+            
         }
     },
     methods: {
-        ...mapActions(["getBulletsForDayView"]),
+        ...mapActions(["fetchBullets", "setYear", "setMonth", "setSunday"]),
         moveBack() {
-            this.viewIndex--;
+            const prevSunday = this.sundayMoment;
+            prevSunday.day(-7);
+            this.setSunday(prevSunday.date());
+            this.setMonth(prevSunday.month());
+            this.setYear(prevSunday.year());
         },
         moveForward() {
-            this.viewIndex++;
+            const nextSunday = this.sundayMoment;
+            nextSunday.day(7);
+            this.setSunday(nextSunday.date());
+            this.setMonth(nextSunday.month());
+            this.setYear(nextSunday.year());
+        },
+        getBulletsForDay(index) {
+            let bullets = [];
+            const date = moment([this.year, this.month, this.sunday]).days(index - 1);
+
+            bullets.push(...this.events.filter(event => {
+                const anchorDate = moment(event.anchorDate);
+                const endDate = event.endDate ? moment(event.endDate) : null;
+
+                return date.isSame(anchorDate, "day")
+                    || (endDate && (date.isBetween(anchorDate, endDate) || date.isSame(endDate, "day")));
+            }));
+
+            bullets.push(...this.tasks.filter(task => {
+                const anchorDate = moment(task.anchorDate);
+                const dueDate = task.dueDate ? moment(task.dueDate) : null;
+
+                return date.isSame(anchorDate, "day")
+                    || (dueDate && date.isSame(dueDate, "day"));
+            }));
+
+            bullets.push(...this.notes.filter(note => {
+                const anchorDate = moment(note.anchorDate);
+
+                return date.isSame(anchorDate, "day");
+            }));
+
+            return bullets;
+        },
+        getDateString(index) {
+            return moment([this.year, this.month, this.sunday]).day(index - 1).format("D ddd");
         }
     },
     computed: {
         ...mapGetters({
-            bullets: "getDayBullets"
+            events: "getWeekEvents",
+            tasks: "getWeekTasks",
+            notes: "getWeekNotes",
+            sunday: "getSunday",
+            month: "getMonth", 
+            year: "getYear"
         }),
-        bulletsByDay() {
-            try {
-                let bulls = {};
-                this.bullets.forEach((bullet) => {
-                    let bulletDates = [];
-                    bulletDates.push(moment(bullet.anchorDate).format("YYYY-MM-DD"));
-
-                    if(bullet._type === "event" && bullet.endDate) {
-                        bulletDates.push(moment(bullet.endDate).format("YYYY-MM-DD"));
-                    } else if(bullet._type === "task" && bullet.dueDate) {
-                        bulletDates.push(moment(bullet.dueDate).format("YYYY-MM-DD"));
-                    }
-
-                    bulletDates.forEach(date => {
-                        if(!bulls[date]) {
-                            bulls[date] = [];
-                        }
-                        bulls[date].push(bullet);
-                    });
-                });
-                return bulls;
-            } catch(e) {
-                console.log(e);
-                return {};
-            }  
+        sundayMoment() {
+            return moment([this.year, this.month, this.sunday]);
         }
     },
     components: {
@@ -70,13 +108,8 @@ export default {
         TaskInfo,
         NoteInfo
     },
-    watch: {
-        viewIndex: function(val) {
-            this.getBulletsForDayView(val);
-        }
-    },
     created() {
-        this.getBulletsForDayView(this.viewIndex);
+        this.fetchBullets();
     }
 }
 </script>
@@ -87,17 +120,41 @@ export default {
 .grid-container {
     display: grid;
     grid-template-columns: 1fr 95% 1fr ;
-    grid-template-rows: 1fr;
+    grid-template-rows: 6rem 1fr;
+}
+
+.day-container {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1rem;
+}
+
+h2 {
+    grid-column: 1 / -1;
+    text-align: center;
 }
 
 #btn--left {
+    grid-row: 2 / 3;
     grid-column: 1 / 2;
     align-self: center;
+    justify-self: center;
 }
 
 #btn--right {
+    grid-row: 2 / 3;
     grid-column: 3 / 4;
     align-self: center;
+    justify-self: center;
+}
+
+.day {
+    border: 2px solid $color-primary;
+    padding: 1rem;
+    border-radius: 1rem;
+
 }
 
 </style>

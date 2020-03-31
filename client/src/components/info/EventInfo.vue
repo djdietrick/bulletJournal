@@ -1,12 +1,15 @@
 <template>
-    <BasePopover :title="event.title">
+    <BasePopover :title="event.title" class="event">
         <template v-slot:content>
             <div class="info">
                 <Toolbar :bullet="event"/>
 
             </div>
         </template>
-        <template v-slot:trigger>
+        <template v-slot:trigger class="event__text">
+            <!-- <font-awesome-icon :icon="['far', 'circle']" class="paragraph event--icon"/> -->
+            <font-awesome-icon icon="circle" class="paragraph event--icon"/>
+
             <p v-if="addDateString" id="event--date">{{ dateString }}:</p>
             <p id="event--title">{{event.title}}</p> 
             <p id="event--details">&nbsp; &nbsp; {{  displayString }}</p>
@@ -63,6 +66,21 @@ export default {
 p {
     display: inline-block;
     font-size: $default-font-size;
+}
+
+.event:hover {
+    cursor: pointer;
+}
+
+.event__text {
+    display: flex;
+    align-items: center;
+}
+
+.event--icon {
+    color: $color-primary-light;
+    margin-right: 5px;
+    font-size: 1rem;
 }
 
 #event--date {

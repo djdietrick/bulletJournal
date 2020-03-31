@@ -1,10 +1,12 @@
 import {Router, Request, Response} from 'express';
 const Note = require('../models/note');
 let router = Router();
+import * as moment from 'moment';
 
 export function NoteRouter(router: Router = Router()): Router {
     router.post('/notes', createNote);
     router.get('/notes', getNotes);
+    router.get('/notes/week', getNotesByWeek);
     router.get('/notes/:id', getNote);
     router.patch('/notes/:id', updateNote);
     router.delete('/notes/:id', deleteNote);
@@ -71,6 +73,47 @@ async function getNote(req: Request, res: Response) {
         res.send(note);
     } catch (e) {
         res.status(500).send();
+    }
+}
+
+async function getNotesByWeek(req: Request, res: Response) {
+    const match = {}
+    const sort = {}
+
+    if(!req.query.date)
+        return res.status(400).send("Must provide either a month and year or just a year");
+
+    // Matches
+    const date: moment.Moment = moment(req.query.date, "YYYY-M-D");
+
+    const start: Date = new Date(date.year(), date.month(), date.date());
+    const end: Date = new Date(date.year(), date.month(), date.date() + 7);
+    const duration = {
+        $gte: start,
+        $lt: end
+    }
+    
+    match["anchorDate"] = duration;
+
+        // Sorts
+    if (req.query.sortBy) {
+        sort["anchorDate"] =  1
+    }
+
+    const options = {
+        limit: parseInt(req.query.limit),
+        skip: parseInt(req.query.skip),
+        sort
+    }
+
+    try {
+        const data = await Note.find(match, null, options);
+
+        return res.send(data);
+
+    } catch(e) {
+        console.error(e.message);
+        return res.status(500).send(e.message);
     }
 }
 

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.ts",
     "test": "env-cmd -f ./config/test.env jest --runInBand",
-    "populatedb": "env-cmd -f ./config/test.env ts-node src/test/fixtures/populatedb.ts"
+    "prod": "env-cmd -f ./config/prod.env nodemon build/index.js",
+    "populatedb": "env-cmd -f ./config/test.env ts-node src/test/fixtures/populatedb.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
@@ -44,7 +46,8 @@
     },
     "moduleFileExtensions": [
       "ts",
-      "js"
+      "js",
+      "json"
     ]
   }
 }
