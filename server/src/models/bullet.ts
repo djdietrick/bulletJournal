@@ -22,7 +22,12 @@ const bulletSchema: mongoose.Schema = new mongoose.Schema({
         default: Date.now,
         index: true
     },
-    notes: [String]
+    notes: [String],
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    }
 }, options);
 
 const Bullet = mongoose.model('bullet', bulletSchema);

@@ -5,12 +5,15 @@ const BulletModel = require('../models/bullet');
 const TaskModel = require('../models/task');
 const EventModel = require('../models/event');
 const NoteModel = require('../models/note');
-const {clearBullets} = require('./fixtures/db');
+const User = require('../models/user');
+const {clearBullets, createUser} = require('./fixtures/db');
+const {sendAuthRequest} = require('./fixtures/auth');
 
 const app = new App().express;
 
 beforeEach(async() => {
     await clearBullets();
+    await createUser();
 });
 
 afterAll(async() => {
@@ -18,8 +21,12 @@ afterAll(async() => {
 })
 
 test('Delete task', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const task = {
-        title: 'Take out trash'
+        title: 'Take out trash',
+        owner: ownerId
     }
 
     await request(app).post('/tasks')
@@ -37,8 +44,12 @@ test('Delete task', async() => {
 });
 
 test('Delete event', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const event = {
-        title: 'Got a haircut'
+        title: 'Got a haircut',
+        owner: ownerId
     }
 
     await request(app).post('/events')
@@ -48,16 +59,22 @@ test('Delete event', async() => {
     const events = await EventModel.find();
     expect(events.length).toBe(1);
 
-    await request(app).delete(`/events/${events[0]._id}`)
-    .expect(200);
+    await sendAuthRequest('delete', `/events/${events[0]._id}`);
+
+    // await request(app).delete(`/events/${events[0]._id}`)
+    // .expect(200);
 
     const eventsNew = await EventModel.find();
     expect(eventsNew.length).toBe(0);
 });
 
 test('Delete note', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const note = {
-        title: 'Test note'
+        title: 'Test note',
+        owner: ownerId
     }
 
     await request(app).post('/notes')

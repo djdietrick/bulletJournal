@@ -1,8 +1,7 @@
 import {Router, Request, Response} from 'express';
 const Event = require('../models/event');
-let router = Router();
-// let moment = require('moment');
 import * as moment from 'moment';
+const auth = require('../middleware/auth');
 
 export function EventRouter(router: Router = Router()): Router {
     router.post('/events', createEvent);
@@ -10,7 +9,7 @@ export function EventRouter(router: Router = Router()): Router {
     router.get('/events/week', getEventsByWeek);
     router.get('/events/:id', getEvent);
     router.patch('/events/:id', updateEvent);
-    router.delete('/events/:id', deleteEvent);
+    router.delete('/events/:id', auth, deleteEvent);
 
     return router;
 }

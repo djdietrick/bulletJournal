@@ -1,10 +1,11 @@
 export {}
-const {clearBullets} = require("./fixtures/db");
+const {clearBullets, createUser} = require("./fixtures/db");
 const request = require('supertest');
 const BulletModel = require('../models/bullet');
 const TaskModel = require('../models/task');
 const EventModel = require('../models/event');
 const NoteModel = require('../models/note');
+const User = require('../models/user');
 import {App} from '../app';
 const moment = require('moment');
 
@@ -12,6 +13,7 @@ const app = new App().express;
 
 beforeEach(async() => {
     await clearBullets();
+    await createUser();
 });
 
 afterAll(async() => {
@@ -19,8 +21,12 @@ afterAll(async() => {
 })
 
 test('Create task', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const task = {
-        title: 'Take out trash'
+        title: 'Take out trash',
+        owner: ownerId
     }
 
     await request(app).post('/tasks')
@@ -44,9 +50,13 @@ test('Create task', async() => {
 });
 
 test('Create task with due date', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const task = {
         title: 'Take out trash',
-        dueDate: '2020-02-20T00:00:00'
+        dueDate: '2020-02-20T00:00:00',
+        owner: ownerId
     }
 
     await request(app).post('/tasks')
@@ -61,8 +71,12 @@ test('Create task with due date', async() => {
 });
 
 test('Create event', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const event = {
-        title: 'Got a haircut'
+        title: 'Got a haircut',
+        owner: ownerId
     }
 
     await request(app).post('/events')
@@ -82,10 +96,14 @@ test('Create event', async() => {
 });
 
 test('Create future event', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const event = {
         title: 'Doctors appointment',
         anchorDate: '2020-02-20T00:00:00',
-        allDay: true
+        allDay: true,
+        owner: ownerId
     }
 
     await request(app).post('/events')
@@ -102,9 +120,13 @@ test('Create future event', async() => {
 });
 
 test('Create event with time', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const event = {
         title: 'Doctors appointment',
-        anchorDate: '2020-02-20T08:00:00'
+        anchorDate: '2020-02-20T08:00:00',
+        owner: ownerId
     }
 
     await request(app).post('/events')
@@ -123,8 +145,12 @@ test('Create event with time', async() => {
 });
 
 test('Create note', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const note = {
-        title: 'Test note'
+        title: 'Test note',
+        owner: ownerId
     }
 
     await request(app).post('/notes')
@@ -142,17 +168,23 @@ test('Create note', async() => {
 });
 
 test('Check inheritance', async() => {
+    const users = await User.find();
+    const ownerId = users[0]._id;
+
     const task = {
-        title: 'Take out trash'
+        title: 'Take out trash',
+        owner: ownerId
     }
 
     const event = {
         title: 'Doctors appointment',
-        anchorDate: '2020-02-20'
+        anchorDate: '2020-02-20',
+        owner: ownerId
     }
 
     const note = {
-        title: 'Test note'
+        title: 'Test note',
+        owner: ownerId
     }
 
     await request(app).post('/tasks')

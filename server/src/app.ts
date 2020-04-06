@@ -11,6 +11,7 @@ import {EventRouter} from './routes/event';
 import {NoteRouter} from './routes/note';
 import {SharedRouter} from './routes/shared';
 import {TaskRouter} from './routes/task';
+import {UserRouter} from './routes/user';
 
 const publicDir = path.join(__dirname, '../../client/dist/');
 
@@ -50,6 +51,7 @@ export class App {
         this.express.use(EventRouter());
         this.express.use(NoteRouter());
         this.express.use(SharedRouter());
+        this.express.use(UserRouter());
 
         this.express.get('/', (req: express.Request, res: express.Response) => {
             res.sendFile('index.html', {root: publicDir});

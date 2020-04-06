@@ -13,6 +13,7 @@ beforeEach(async() => {
 
 afterAll(async() => {
     await clearBullets();
+    return loadBullets();
 })
 
 test('Get single event', async() => {

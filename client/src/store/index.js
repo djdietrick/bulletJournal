@@ -2,10 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import moment from 'moment';
+import createPersistedState from 'vuex-persistedstate';
 
 import task from './modules/task';
 import event from './modules/event';
 import note from './modules/note';
+import auth from './modules/auth';
 
 const a = axios.create({
   baseURL: "http://localhost:3000"
@@ -57,6 +59,8 @@ export default new Vuex.Store({
   modules: {
     task,
     event,
-    note
-  }
+    note,
+    auth
+  },
+  plugins: [createPersistedState()]
 })
