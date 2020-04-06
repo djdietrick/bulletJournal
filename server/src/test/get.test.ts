@@ -3,6 +3,7 @@ const request = require('supertest');
 import {App} from '../app';
 const EventModel = require('../models/event');
 const {clearBullets, loadBullets} = require('./fixtures/db');
+const {sendAuthRequest} = require('./fixtures/auth');
 
 const app = new App().express;
 
@@ -20,8 +21,8 @@ test('Get single event', async() => {
     const events = await EventModel.find();
     const event = events[0];
 
-    const response = await request(app).get(`/events/${event._id}`)
-    expect(200);
+    const response = await sendAuthRequest('get', `/events/${event._id}`)
+    expect(response.status).toBe(200);
 
     const getEvent = response.body;
 
@@ -29,8 +30,8 @@ test('Get single event', async() => {
 });
 
 test('Get events for year', async() => {
-    const response = await request(app).get('/events?year=2019')
-    .expect(200);
+    const response = await sendAuthRequest('get', '/events?year=2019')
+    expect(response.status).toBe(200);
 
     const events = response.body;
     expect(events.length).toBe(3);
@@ -46,16 +47,16 @@ test('Get events for year', async() => {
 test('Get events spanning two years', async() => {
     const desc = "Test event spanning 2 years";
 
-    let response = await request(app).get('/events?year=2019')
-    .expect(200);
+    let response = await sendAuthRequest('get', '/events?year=2019');
+    expect(response.status).toBe(200);
 
     let events = response.body;
     let eventDesc = events.map(event => event.description);
 
     expect(eventDesc.includes(desc)).toBe(true);
 
-    response = await request(app).get('/events?year=2020')
-    .expect(200);
+    response = await sendAuthRequest('get', '/events?year=2020')
+    expect(response.status).toBe(200);
 
     events = response.body;
     eventDesc = events.map(event => event.description);
@@ -64,8 +65,8 @@ test('Get events spanning two years', async() => {
 });
 
 test('Get events for year and month', async() => {
-    let response = await request(app).get('/events?year=2020&month=0')
-    .expect(200);
+    let response = await sendAuthRequest('get', '/events?year=2020&month=0')
+    expect(response.status).toBe(200);
 
     const events = response.body;
     expect(events.length).toBe(3);
@@ -80,16 +81,16 @@ test('Get events for year and month', async() => {
 test('Get events spanning two months', async() => {
     const desc = "Crystal Springs Trip";
 
-    let response = await request(app).get('/events?year=2020&month=1')
-    .expect(200);
+    let response = await sendAuthRequest('get', '/events?year=2020&month=1')
+    expect(response.status).toBe(200);
 
     let events = response.body;
     let eventTitles = events.map(event => event.title);
 
     expect(eventTitles.includes(desc)).toBe(true);
 
-    response = await request(app).get('/events?year=2020&month=2')
-    .expect(200);
+    response = await sendAuthRequest('get', '/events?year=2020&month=2')
+    expect(response.status).toBe(200);
 
     events = response.body;
     eventTitles = events.map(event => event.title);
@@ -126,8 +127,9 @@ test('Negative note tests', async() => {
 });
 
 test('Get events by week', async() => {
-    let response = await request(app).get('/events/week?date=2020-05-24')
-    .expect(200);
+    let response = await sendAuthRequest('get', '/events/week?date=2020-05-24');
+
+    expect(response.status).toBe(200);
 
     let events = response.body;
     expect(events.length).toBe(2);

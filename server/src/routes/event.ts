@@ -4,21 +4,24 @@ import * as moment from 'moment';
 const auth = require('../middleware/auth');
 
 export function EventRouter(router: Router = Router()): Router {
-    router.post('/events', createEvent);
-    router.get('/events', getEvents);
-    router.get('/events/week', getEventsByWeek);
-    router.get('/events/:id', getEvent);
-    router.patch('/events/:id', updateEvent);
+    router.post('/events', auth, createEvent);
+    router.get('/events', auth, getEvents);
+    router.get('/events/week', auth, getEventsByWeek);
+    router.get('/events/:id', auth, getEvent);
+    router.patch('/events/:id', auth, updateEvent);
     router.delete('/events/:id', auth, deleteEvent);
 
     return router;
 }
 
-async function createEvent(req: Request, res: Response) {
+async function createEvent(req: any, res: Response) {
     try {
-        const evnt = await new Event(req.body).save();
+        const event = await new Event({
+            ...req.body,
+            owner: req.user._id
+        }).save();
 
-        return res.status(201).send(evnt);
+        return res.status(201).send(event);
     } catch(e) {
         console.log(e.message);
         return res.status(400).send(e.message);
@@ -195,10 +198,11 @@ async function deleteEvent(req: Request, res: Response) {
         const evnt = await Event.findOneAndDelete({ _id: req.params.id})
 
         if (!evnt) {
-            res.status(404).send()
+            console.log("Could not find event with id ", req.params.id);
+            return res.status(404).send();
         }
 
-        res.send(evnt)
+        return res.send(evnt);
     } catch (e) {
         res.status(500).send()
     }

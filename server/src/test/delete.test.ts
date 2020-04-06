@@ -21,71 +21,48 @@ afterAll(async() => {
 })
 
 test('Delete task', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const task = {
-        title: 'Take out trash',
-        owner: ownerId
+        title: 'Take out trash'
     }
 
-    await request(app).post('/tasks')
-    .send(task)
-    .expect(201);
+    await sendAuthRequest('post', '/tasks', task);
 
     const tasks = await TaskModel.find();
     expect(tasks.length).toBe(1);
 
-    await request(app).delete(`/tasks/${tasks[0]._id}`)
-    .expect(200);
+    await sendAuthRequest('delete', `/tasks/${tasks[0]._id}`);
 
     const tasksNew = await TaskModel.find();
     expect(tasksNew.length).toBe(0);
 });
 
 test('Delete event', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const event = {
         title: 'Got a haircut',
-        owner: ownerId
     }
 
-    await request(app).post('/events')
-    .send(event)
-    .expect(201);
+    await sendAuthRequest('post', '/events', event);
 
     const events = await EventModel.find();
     expect(events.length).toBe(1);
 
     await sendAuthRequest('delete', `/events/${events[0]._id}`);
 
-    // await request(app).delete(`/events/${events[0]._id}`)
-    // .expect(200);
-
     const eventsNew = await EventModel.find();
     expect(eventsNew.length).toBe(0);
 });
 
 test('Delete note', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const note = {
-        title: 'Test note',
-        owner: ownerId
+        title: 'Test note'
     }
-
-    await request(app).post('/notes')
-    .send(note)
-    .expect(201);
+    
+    await sendAuthRequest('post', '/notes', note);
 
     const notes = await NoteModel.find();
     expect(notes.length).toBe(1);
 
-    await request(app).delete(`/notes/${notes[0]._id}`)
-    .expect(200);
+    await sendAuthRequest('delete', `/notes/${notes[0]._id}`);
 
     const notesNew = await NoteModel.find();
     expect(notesNew.length).toBe(0);

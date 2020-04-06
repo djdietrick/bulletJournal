@@ -2,21 +2,25 @@ import {Router, Request, Response} from 'express';
 const Task = require('../models/task');
 let router = Router();
 import * as moment from 'moment';
+const auth = require('../middleware/auth');
 
 export function TaskRouter(router: Router = Router()): Router {
-    router.post('/tasks', createTask);
-    router.get('/tasks', getTasks);
-    router.get('/tasks/week', getTasksByWeek);
-    router.get('/tasks/:id', getTask);
-    router.patch('/tasks/:id', updateTask);
-    router.delete('/tasks/:id', deleteTask);
+    router.post('/tasks', auth, createTask);
+    router.get('/tasks', auth, getTasks);
+    router.get('/tasks/week', auth, getTasksByWeek);
+    router.get('/tasks/:id', auth, getTask);
+    router.patch('/tasks/:id', auth, updateTask);
+    router.delete('/tasks/:id', auth, deleteTask);
 
     return router;
 }
 
-async function createTask(req: Request, res: Response) {
+async function createTask(req: any, res: Response) {
     try {
-        const task = await new Task(req.body).save();
+        const task = await new Task({
+            ...req.body,
+            owner: req.user._id
+        }).save();
 
         return res.status(201).send(task);
     } catch(e) {

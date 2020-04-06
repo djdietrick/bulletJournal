@@ -1,5 +1,6 @@
 export {}
 const {clearBullets, createUser} = require("./fixtures/db");
+const {sendAuthRequest} = require('./fixtures/auth');
 const request = require('supertest');
 const BulletModel = require('../models/bullet');
 const TaskModel = require('../models/task');
@@ -21,17 +22,11 @@ afterAll(async() => {
 })
 
 test('Create task', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const task = {
-        title: 'Take out trash',
-        owner: ownerId
+        title: 'Take out trash'
     }
 
-    await request(app).post('/tasks')
-    .send(task)
-    .expect(201);
+    await sendAuthRequest('post', '/tasks', task);
 
     const tasks = await BulletModel.find();
     expect(tasks.length).toBe(1);
@@ -50,18 +45,12 @@ test('Create task', async() => {
 });
 
 test('Create task with due date', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const task = {
         title: 'Take out trash',
-        dueDate: '2020-02-20T00:00:00',
-        owner: ownerId
+        dueDate: '2020-02-20T00:00:00'
     }
 
-    await request(app).post('/tasks')
-    .send(task)
-    .expect(201);
+    await sendAuthRequest('post', '/tasks', task);
 
     const tasks = await BulletModel.find();
     expect(tasks.length).toBe(1);
@@ -71,17 +60,11 @@ test('Create task with due date', async() => {
 });
 
 test('Create event', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const event = {
-        title: 'Got a haircut',
-        owner: ownerId
+        title: 'Got a haircut'
     }
 
-    await request(app).post('/events')
-    .send(event)
-    .expect(201);
+    await sendAuthRequest('post', '/events', event);
 
     const events = await BulletModel.find();
     expect(events.length).toBe(1);
@@ -96,19 +79,13 @@ test('Create event', async() => {
 });
 
 test('Create future event', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const event = {
         title: 'Doctors appointment',
         anchorDate: '2020-02-20T00:00:00',
-        allDay: true,
-        owner: ownerId
+        allDay: true
     }
 
-    await request(app).post('/events')
-    .send(event)
-    .expect(201);
+    await sendAuthRequest('post', '/events', event);
 
     const events = await BulletModel.find();
     expect(events.length).toBe(1);
@@ -120,18 +97,12 @@ test('Create future event', async() => {
 });
 
 test('Create event with time', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const event = {
         title: 'Doctors appointment',
-        anchorDate: '2020-02-20T08:00:00',
-        owner: ownerId
+        anchorDate: '2020-02-20T08:00:00'
     }
 
-    await request(app).post('/events')
-    .send(event)
-    .expect(201);
+    await sendAuthRequest('post', '/events', event);
 
     const events = await BulletModel.find();
     expect(events.length).toBe(1);
@@ -145,17 +116,11 @@ test('Create event with time', async() => {
 });
 
 test('Create note', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const note = {
-        title: 'Test note',
-        owner: ownerId
+        title: 'Test note'
     }
 
-    await request(app).post('/notes')
-    .send(note)
-    .expect(201);
+    await sendAuthRequest('post', '/notes', note);
 
     const notes = await BulletModel.find();
     expect(notes.length).toBe(1);
@@ -168,36 +133,22 @@ test('Create note', async() => {
 });
 
 test('Check inheritance', async() => {
-    const users = await User.find();
-    const ownerId = users[0]._id;
-
     const task = {
-        title: 'Take out trash',
-        owner: ownerId
+        title: 'Take out trash'
     }
 
     const event = {
         title: 'Doctors appointment',
-        anchorDate: '2020-02-20',
-        owner: ownerId
+        anchorDate: '2020-02-20'
     }
 
     const note = {
-        title: 'Test note',
-        owner: ownerId
+        title: 'Test note'
     }
 
-    await request(app).post('/tasks')
-    .send(task)
-    .expect(201);
-
-    await request(app).post('/events')
-    .send(event)
-    .expect(201);
-
-    await request(app).post('/notes')
-    .send(note)
-    .expect(201);
+    await sendAuthRequest('post', '/events', event);
+    await sendAuthRequest('post', '/tasks', task);
+    await sendAuthRequest('post', '/notes', note);
 
     const bullets = await BulletModel.find();
     expect(bullets.length).toBe(3);

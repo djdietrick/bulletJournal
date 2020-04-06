@@ -9,14 +9,14 @@ const auth = async (req: any, res: Response, next: NextFunction) => {
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
 
         if (!user) {
-            throw new Error();
+            throw new Error("User not found");
         }
 
         req.token = token;
         req.user = user;
         next();
     } catch (e) {
-        res.status(401).send({ error: 'Please authenticate.' });
+        return res.status(401).send({ error: 'Please authenticate.' });
     }
 }
 

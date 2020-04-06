@@ -1,10 +1,12 @@
 import {Router, Request, Response} from 'express';
 const User = require('../models/user');
+const auth = require('../middleware/auth');
 
 export function UserRouter(router: Router = Router()): Router {
     router.post('/users', createUser);
     router.post('/users/login', loginUser);
-    router.post('/users/logout', logoutUser);
+    router.post('/users/logout', auth, logoutUser);
+    router.post('/users/logoutall', auth, logoutAllUser);
 
     return router;
 }
@@ -45,5 +47,15 @@ async function logoutUser(req: any, res: Response) {
     } catch (e) {
         console.log(e.message);
         res.status(500).send(e.message);
+    }
+}
+
+async function logoutAllUser(req: any, res: Response) {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+        return res.send();
+    } catch (e) {
+        return res.status(500).send();
     }
 }
