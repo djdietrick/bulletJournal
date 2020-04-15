@@ -30,9 +30,11 @@ async function createEvent(req: any, res: Response) {
 
 // /events?year=2020&month=01 , gets all events in the given month (index starts at 0) with importance high or medium
 // /events?year=2020 , gets events in the given year with importance high (for yearly view)
-async function getEvents(req: Request, res: Response) {
+async function getEvents(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     // Matches
     if(req.query.year && req.query.month) {
@@ -100,10 +102,12 @@ async function getEvents(req: Request, res: Response) {
     }
 }
 
-async function getEventsByWeek(req: Request, res: Response) {
+async function getEventsByWeek(req: any, res: Response) {
     
         const match = {}
         const sort = {}
+
+        match["owner"] = req.user._id;
 
         if(!req.query.date)
             return res.status(400).send("Must provide either a month and year or just a year");

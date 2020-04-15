@@ -162,3 +162,29 @@ test('Check inheritance', async() => {
     const notes = await NoteModel.find();
     expect(notes.length).toBe(1);
 })
+
+test('Bullet limit', async() => {
+    //Create new user
+    // const loginResponse = await request(app).post('/users')
+    //     .send({
+    //         name: "test",
+    //         email: "test@gmail.com",
+    //         password: "password"
+    //     }).expect(201);
+    // const token = loginResponse.body.token;
+
+    // for(let i = 0; i < 100; i++) {
+    //     await request(app).post('/tasks')
+    //         .send({
+    //             title: "test"
+    //         }).set({"Authorization": "Bearer " + token})
+    //         .expect(201);
+    // }
+
+    // await request(app).post('/tasks')
+    //         .send({
+    //             title: "test"
+    //         }).set({"Authorization": "Bearer " + token})
+    //         .expect(400);
+
+});

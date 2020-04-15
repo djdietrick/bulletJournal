@@ -63,17 +63,15 @@ export default {
         btnText: String
     },
     created() {
+        this.task.anchorDate = moment(this.task.anchorDate);
+        
         // If we get passed a due date, check hasDueDate box
         if(this.passedBullet.dueDate !== null) {
             this.hasDueDate = true;
-        }
-
-        this.task.anchorDate = moment(this.task.anchorDate);
-        if(this.passedBullet.dueDate !== null) {
             this.task.dueDate = moment(this.task.dueDate);
         }
 
-        console.debug("Passed to task form: ", this.passedBullet);
+        console.log("Passed to task form: ", this.passedBullet);
     },
     data() {
         return {
@@ -94,8 +92,9 @@ export default {
         }
     },
     methods: {
-        formatAndSubmit() {
+        async formatAndSubmit() {
             let retTask = Vue.util.extend({},this.task);
+
             retTask.anchorDate = retTask.anchorDate.format();
             if(retTask.dueDate !== null)
                 retTask.dueDate = retTask.dueDate.format();
@@ -103,7 +102,16 @@ export default {
             if(this.passedBullet._id !== undefined)
                 retTask["_id"] = this.passedBullet._id;
             
-            this.submitFunction(retTask);
+            await this.submitFunction(retTask);
+            this.resetTask();
+        },
+        resetTask() {
+            this.task = {
+                title: '',
+                description: '',
+                anchorDate: moment(),
+                dueDate: null
+            }
         }
     },
     watch: {

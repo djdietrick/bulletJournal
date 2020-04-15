@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-const a = axios.create({
-    baseURL: "http://localhost:3000"
-});
-
 const state = {
     weekNotes: [],
     monthNotes: []
@@ -25,7 +21,7 @@ const mutations = {
 const actions = {
     async createNote({ commit, dispatch }, note) {
         try {
-            const res = await a.post('/notes', note);
+            const res = await axios.post('/notes', note);
             if (res.status !== 201) {
 
             }
@@ -40,7 +36,7 @@ const actions = {
 
     async updateNote({ commit, dispatch }, note) {
         try {
-            const res = await a.patch(`/notes/${note._id}`, note);
+            const res = await axios.patch(`/notes/${note._id}`, note);
             if (res.status !== 200) {
                 
             }
@@ -52,10 +48,10 @@ const actions = {
         }
     },
     async fetchNotes({ commit, rootState }) {
-        const monthRes = await a.get(`/notes?year=${rootState.year}&month=${rootState.month}`);
+        const monthRes = await axios.get(`/notes?year=${rootState.year}&month=${rootState.month}`);
         commit('setMonthNotes', monthRes.data);
         
-        const weekRes = await a.get(`/notes/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
+        const weekRes = await axios.get(`/notes/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
         commit('setWeekNotes', weekRes.data);
     }
 };

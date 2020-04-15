@@ -24,7 +24,7 @@ export default new Vuex.Store({
   state: {
     sunday: thisSunday, // Sunday of the current week, used for week view query
     year: nowYear, // Current year the user is viewing
-    month: nowMonth, // Current month the user is viewing
+    month: nowMonth // Current month the user is viewing
   },
   getters: {
     getYear: state => state.year,
@@ -52,8 +52,14 @@ export default new Vuex.Store({
       dispatch('fetchNotes');      
     },
     async deleteBullet({commit, dispatch}, id) {
-      const res = await a.delete(`/${id}`);
+      const res = await this.$http.delete(`/${id}`);
       dispatch('fetchBullets');
+    },
+    resetDates({commit}) {
+      const now = moment();
+      commit('setYear', now.year());
+      commit('setMonth', now.month());
+      commit('setSunday', now.day(0).date());
     }
   },
   modules: {

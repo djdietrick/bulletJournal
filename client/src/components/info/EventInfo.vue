@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import BasePopover from "../BasePopover";
+import BasePopover from "../popovers/BasePopover";
 import Toolbar from "./Toolbar";
 import moment from "moment";
 
@@ -35,7 +35,7 @@ export default {
     computed: {
         dateString() {
             if(!this.event.endDate) {
-                return moment(event.anchorDate).date();
+                return moment(this.event.anchorDate).date();
             } 
             let start, end;
             const anchorDate = moment(this.event.anchorDate);

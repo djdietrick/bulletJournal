@@ -1,5 +1,5 @@
 <template>
-    <BasePopover class="edit" title="Edit" placement="left">
+    <BasePopover class="edit" title="Edit" placement="bottom">
         <template v-slot:content>
             <div>
                 <component :is="selectedComponent"
@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import EventForm from "./forms/EventForm";
-import TaskForm from "./forms/TaskForm";
-import NoteForm from "./forms/NoteForm";
+import EventForm from "../forms/EventForm";
+import TaskForm from "../forms/TaskForm";
+import NoteForm from "../forms/NoteForm";
 import BasePopover from "./BasePopover";
 import {mapActions} from "vuex";
 
@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/main.scss";
+@import "../../styles/main.scss";
 
 .edit {    
     transition: 0.1s ease-in-out;

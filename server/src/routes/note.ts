@@ -29,9 +29,11 @@ async function createNote(req: any, res: Response) {
     }
 }
 
-async function getNotes(req: Request, res: Response) {
+async function getNotes(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     // Matches
     if(req.query.year && req.query.month) {
@@ -80,9 +82,11 @@ async function getNote(req: Request, res: Response) {
     }
 }
 
-async function getNotesByWeek(req: Request, res: Response) {
+async function getNotesByWeek(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     if(!req.query.date)
         return res.status(400).send("Must provide either a month and year or just a year");

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import BasePopover from "../BasePopover";
+import BasePopover from "../popovers/BasePopover";
 import Toolbar from "./Toolbar";
 import {mapActions} from "vuex";
 import moment from "moment";

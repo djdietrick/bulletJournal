@@ -29,9 +29,11 @@ async function createTask(req: any, res: Response) {
     }
 }
 
-async function getTasks(req: Request, res: Response) {
+async function getTasks(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     // Matches
     if (req.query.completed) {
@@ -86,11 +88,12 @@ async function getTask(req: Request, res: Response) {
     }
 }
 
-async function getTasksByWeek(req: Request, res: Response) { 
+async function getTasksByWeek(req: any, res: Response) { 
     try {
         const match = {}
         const sort = {}
 
+        match["owner"] = req.user._id;
 
         if(!req.query.date)
             return res.status(400).send("Must provide either a month and year or just a year");

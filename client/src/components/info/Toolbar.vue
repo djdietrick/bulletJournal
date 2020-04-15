@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Edit from "../Edit";
-import Delete from "../Delete";
+import Edit from "../popovers/Edit";
+import Delete from "../popovers/Delete";
 export default {
     props: {
         bullet: Object

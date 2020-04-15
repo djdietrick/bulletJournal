@@ -1,9 +1,10 @@
 import {Router, Request, Response} from 'express';
 const router = Router();
 const Bullet = require('../models/bullet');
+const auth = require('../middleware/auth');
 
 export function SharedRouter(router: Router = Router()): Router {
-    router.delete('/:id', deleteBullet);
+    router.delete('/:id', auth, deleteBullet);
 
     return router;
 }

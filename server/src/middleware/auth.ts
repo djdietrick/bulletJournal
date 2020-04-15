@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 import {Request, Response, NextFunction} from 'express';
 
 const auth = async (req: any, res: Response, next: NextFunction) => {
@@ -16,6 +16,7 @@ const auth = async (req: any, res: Response, next: NextFunction) => {
         req.user = user;
         next();
     } catch (e) {
+        console.log(e.message);
         return res.status(401).send({ error: 'Please authenticate.' });
     }
 }

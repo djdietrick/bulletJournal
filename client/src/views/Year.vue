@@ -157,6 +157,7 @@ export default {
     position: relative;
     border-radius: 1rem;
     box-shadow: 0 1rem 1rem rgba($color-black, .2);
+    height: 27vh;
 
     overflow-y: auto;
 

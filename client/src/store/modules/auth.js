@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const a = axios.create({
-    baseURL: "http://localhost:3000"
+    baseURL: process.env.SERVER_URL
 });
 
 const state = {
@@ -16,7 +16,7 @@ const getters = {
 }
 
 const mutations = {
-    authUser: (state, userData) {
+    authUser: (state, userData) => {
         state.token = userData.token;
         state.userId = userData.userId;
     },
@@ -31,34 +31,39 @@ const mutations = {
 const actions = {
     async signup({commit}, user) {
         try {
-            const res = await a.post('/users', user);
+            const res = await axios.post('/users', user);
 
             commit('authUser', {
                 token: res.data.token,
                 userId: res.data.user._id
             });
             commit('storeUser', res.data.user);
+
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
         } catch(e) {
             console.error(e);
         }
     },
     async login({commit}, user) {
         try {
-            const res = await a.post('/users/login', user);
+            const res = await axios.post('/users/login', user);
 
             commit('authUser', {
                 token: res.data.token,
                 userId: res.data.user._id
             });
             commit('storeUser', res.data.user);
+
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
         } catch(e) {
             console.error(e);
         }
     },
-    async logout({commit, state}) {
+    async logout({commit, state, dispatch}) {
         try {
-            await a.post('/users/logout', state.user);
+            await axios.post('/users/logout', state.user);
             commit('clearAuthData');
+            dispatch('resetDates');
         } catch(e) {
             console.error(e);
         }

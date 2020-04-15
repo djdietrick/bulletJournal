@@ -1,61 +1,143 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Year from '../views/Year.vue'
-import Month from '../views/Month.vue'
-import Day from '../views/Day.vue'
-import Create from '../components/Create.vue'
-import EventForm from '../components/forms/EventForm.vue';
-import TaskForm from '../components/forms/TaskForm.vue';
-import NoteForm from '../components/forms/NoteForm.vue';
 
+import Login from '../components/auth/Login';
+import Signup from '../components/auth/Signup';
+import Home from '../views/Home.vue';
+
+import HomeNav from '../components/nav/HomeNav.vue';
+import BulletNav from '../components/nav/BulletNav.vue';
+
+const Year = resolve => {
+  require.ensure(['../views/Year.vue'], () => {
+    resolve(require('../views/Year.vue'));
+  })
+}
+const Month = resolve => {
+  require.ensure(['../views/Month.vue'], () => {
+    resolve(require('../views/Month.vue'));
+  })
+}
+const Day = resolve => {
+  require.ensure(['../views/Day.vue'], () => {
+    resolve(require('../views/Day.vue'));
+  })
+}
+
+import store from '../store'
 
 Vue.use(VueRouter);
+
+const auth = (to, from, next) => {
+  if (store.state.auth.token) {
+    next()
+  } else {
+    next('/login')
+  }
+}
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: Year
+    components: {
+      nav: HomeNav,
+      default: Home
+    },
+    // children: [
+    //   {
+    //     path: '/signup',
+    //     components: {
+    //       nav: HomeNav,
+    //       default: Signup
+    //     }
+    //   },
+    //   {
+    //     path: '/login',
+    //     components: {
+    //       nav: HomeNav,
+    //       default: Login
+    //     }
+    //   },
+    // ]
   },
   {
-    path: '/year',
+    path: '/signup',
+    components: {
+      nav: HomeNav,
+      default: Signup
+    }
+  },
+  {
+    path: '/login',
+    components: {
+      nav: HomeNav,
+      default: Login
+    }
+  },
+  {
+    path: '/bullets',
+    beforeEnter: auth,
+    components: {
+      nav: BulletNav,
+      default: Home
+    },
+    // children: [
+    //   {
+    //     path: 'year',
+    //     name: 'year',
+    //     components: {
+    //       nav: BulletNav,
+    //       default: Year
+    //     }
+    //     //beforeEnter: auth
+    //   },
+    //   {
+    //     path: 'month',
+    //     name: 'month',
+    //     components: {
+    //       nav: BulletNav,
+    //       default: Month
+    //     }
+    //     //beforeEnter: auth
+    //   },
+    //   {
+    //     path: 'day',
+    //     name: 'day',
+    //     components: {
+    //       nav: BulletNav,
+    //       default: Day
+    //     }
+    //     //beforeEnter: auth
+    //   }
+    // ]
+  },
+  {
+    path: '/bullets/year',
     name: 'year',
-    component: Year
+    components: {
+      nav: BulletNav,
+      default: Year
+    },
+    beforeEnter: auth
   },
   {
-    path: '/month',
+    path: '/bullets/month',
     name: 'month',
-    component: Month
+    components: {
+      nav: BulletNav,
+      default: Month
+    },
+    beforeEnter: auth
   },
   {
-    path: '/day',
+    path: '/bullets/day',
     name: 'day',
-    component: Day
-  },
-  {
-    path: '/create',
-    name: 'create',
-    component: Create,
-    children: [
-      {
-        path: 'event',
-        components: {
-          createView: EventForm
-        }
-      },
-      {
-        path: 'task',
-        components: {
-          createView: TaskForm
-        }
-      },
-      {
-        path: 'note',
-        components: {
-          createView: NoteForm
-        }
-      }
-    ]
+    components: {
+      nav: BulletNav,
+      default: Day
+    },
+    beforeEnter: auth
   }
 ]
 

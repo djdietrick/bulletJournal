@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-const a = axios.create({
-    baseURL: "http://localhost:3000"
-});
-
 const state = {
     weekEvents: [],
     monthEvents: [],
@@ -40,7 +36,7 @@ const mutations = {
 const actions = {
     async createEvent({ commit, dispatch }, event) {
         try {
-            const res = await a.post('/events', event);
+            const res = await axios.post('/events', event);
             if (res.status !== 201) {
 
             }
@@ -53,7 +49,7 @@ const actions = {
     },
     async updateEvent({ commit, dispatch }, event) {
         try {
-            const res = await a.patch(`/events/${event._id}`, event);
+            const res = await axios.patch(`/events/${event._id}`, event);
             if (res.status !== 200) {
 
             }
@@ -65,13 +61,13 @@ const actions = {
         }
     },
     async fetchEvents({ commit, rootState }) {
-        const yearRes = await a.get(`/events?year=${rootState.year}`);
+        const yearRes = await axios.get(`/events?year=${rootState.year}`);
         commit('setYearEvents', yearRes.data);
 
-        const monthRes = await a.get(`/events?year=${rootState.year}&month=${rootState.month}`);
+        const monthRes = await axios.get(`/events?year=${rootState.year}&month=${rootState.month}`);
         commit('setMonthEvents', monthRes.data);
 
-        const weekRes = await a.get(`/events/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
+        const weekRes = await axios.get(`/events/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
         commit('setWeekEvents', weekRes.data);
     },
 };
