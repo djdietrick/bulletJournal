@@ -9,10 +9,6 @@ import event from './modules/event';
 import note from './modules/note';
 import auth from './modules/auth';
 
-const a = axios.create({
-  baseURL: "http://localhost:3000"
-});
-
 const now = moment();
 const nowYear = now.year();
 const nowMonth = now.month();
@@ -52,7 +48,7 @@ export default new Vuex.Store({
       dispatch('fetchNotes');      
     },
     async deleteBullet({commit, dispatch}, id) {
-      const res = await this.$http.delete(`/${id}`);
+      const res = await axios.delete(`/${id}`);
       dispatch('fetchBullets');
     },
     resetDates({commit}) {

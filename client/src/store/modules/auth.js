@@ -31,7 +31,7 @@ const mutations = {
 const actions = {
     async signup({commit}, user) {
         try {
-            const res = await axios.post('/users', user);
+            const res = await a.post('/users', user);
 
             commit('authUser', {
                 token: res.data.token,
@@ -46,7 +46,7 @@ const actions = {
     },
     async login({commit}, user) {
         try {
-            const res = await axios.post('/users/login', user);
+            const res = await a.post('/users/login', user);
 
             commit('authUser', {
                 token: res.data.token,
@@ -61,7 +61,7 @@ const actions = {
     },
     async logout({commit, state, dispatch}) {
         try {
-            await axios.post('/users/logout', state.user);
+            await a.post('/users/logout', state.user);
             commit('clearAuthData');
             dispatch('resetDates');
         } catch(e) {

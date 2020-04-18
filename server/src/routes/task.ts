@@ -43,10 +43,45 @@ async function getTasks(req: any, res: Response) {
     if(req.query.year && req.query.month) {
         const year = parseInt(req.query.year);
         const month = parseInt(req.query.month);
-        match["anchorDate"] = {
-            $gte: new Date(year, month),
-            $lt: new Date(year, month + 1)
-        }
+        // match["anchorDate"] = {
+        //     $gte: new Date(year, month),
+        //     $lt: new Date(year, month + 1)
+        // }
+
+        match["$or"] = [
+            {
+                anchorDate: {
+                    $gte: new Date(year, month),
+                    $lt: new Date(year, month + 1)
+                }
+            },
+            {
+                $and: [
+                    {
+                        completed: false
+                    },
+                    {
+                        anchorDate: {
+                            $lt: new Date(year, month + 1)
+                        }
+                    }
+                ]
+            },
+            {
+                $and: [
+                    {
+                        anchorDate: {
+                            $lt: new Date(year, month + 1)
+                        }
+                    },
+                    {
+                        completedDate: {
+                            $gte: new Date(year, month),
+                        }
+                    }
+                ]   
+            }
+        ];
     } else {
         return res.status(400).send("Must provide a month and year");
     }

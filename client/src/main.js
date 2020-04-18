@@ -28,11 +28,11 @@ Vue.component(DatePicker.RangePicker.name, DatePicker.RangePicker);
 Vue.component(Switch.name, Switch);
 Vue.component(Popover.name, Popover);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-axios.defaults.baseURL = process.env.SERVER_URL || 'http://localhost:3000';
+axios.defaults.baseURL = process.env.SERVER_URL || 'http://localhost:3000/api';
 const state = JSON.parse(localStorage.getItem('vuex'));
-if(state) {
+if(state && state.auth.token) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.auth.token;
 }
 
