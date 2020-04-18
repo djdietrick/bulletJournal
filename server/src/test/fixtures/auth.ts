@@ -17,15 +17,15 @@ const sendAuthRequest: Function = async function(method: string,
     
     let ret: request.Response = null;
     if(method === "post") {
-        ret = await request(app).post(url)
+        ret = await request(app).post('/api' + url)
             .send(data).set({"Authorization": "Bearer " + token});
     } else if(method === "get") {
-        ret = await request(app).get(url).set({"Authorization": "Bearer " + token});
+        ret = await request(app).get('/api' + url).set({"Authorization": "Bearer " + token});
     } else if(method === "patch") {
-        ret = await request(app).patch(url)
+        ret = await request(app).patch('/api' + url)
         .send(data).set({"Authorization": "Bearer " + token});
     } else if(method === "delete") {
-        ret = await request(app).delete(url)
+        ret = await request(app).delete('/api' + url)
         .set({"Authorization": "Bearer " + token});
     } else {
         throw new Error("Must send a method");

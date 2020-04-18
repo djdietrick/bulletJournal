@@ -47,10 +47,10 @@ export class App {
     }
 
     private initRouters(): void {
-        this.express.use(TaskRouter());
-        this.express.use(EventRouter());
-        this.express.use(NoteRouter());
-        this.express.use(SharedRouter());
+        this.express.use('/api', TaskRouter());
+        this.express.use('/api', EventRouter());
+        this.express.use('/api', NoteRouter());
+        this.express.use('/api', SharedRouter());
         this.express.use(UserRouter());
 
         this.express.get('/', (req: express.Request, res: express.Response) => {
