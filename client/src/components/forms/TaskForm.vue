@@ -70,8 +70,6 @@ export default {
             this.hasDueDate = true;
             this.task.dueDate = moment(this.task.dueDate);
         }
-
-        console.log("Passed to task form: ", this.passedBullet);
     },
     data() {
         return {
@@ -93,7 +91,12 @@ export default {
     },
     methods: {
         async formatAndSubmit() {
+            console.log("this.task: ", this.task);
             let retTask = Vue.util.extend({},this.task);
+
+            // For some reason tasks keep getting created with due dates
+            if(!this.hasDueDate)
+                retTask.dueDate = null;
 
             retTask.anchorDate = retTask.anchorDate.format();
             if(retTask.dueDate !== null)
