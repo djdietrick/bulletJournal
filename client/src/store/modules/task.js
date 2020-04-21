@@ -1,10 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
 
-const a = axios.create({
-    baseURL: "http://localhost:3000"
-});
-
 const state = {
     weekTasks: [],
     monthTasks: []
@@ -26,7 +22,7 @@ const mutations = {
 const actions = {
     async createTask({ commit, dispatch }, task) {
         try {
-            const res = await a.post('/tasks', task);
+            const res = await axios.post('/tasks', task);
             if (res.status !== 201) {
                 console.log("Error!");
             }
@@ -50,7 +46,7 @@ const actions = {
                 task.status = "IN_PROGRESS";
             }
 
-            const res = await a.patch(`/tasks/${id}`, task).catch(e => console.log(e));
+            const res = await axios.patch(`/tasks/${id}`, task).catch(e => console.log(e));
 
             dispatch('fetchTasks');
             //commit('updateTask', res.data);
@@ -59,10 +55,10 @@ const actions = {
         }
     },
     async fetchTasks({ commit, rootState }) {
-        const monthRes = await a.get(`/tasks?year=${rootState.year}&month=${rootState.month}`);
+        const monthRes = await axios.get(`/tasks?year=${rootState.year}&month=${rootState.month}`);
         commit('setMonthTasks', monthRes.data);
 
-        const weekRes = await a.get(`/tasks/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
+        const weekRes = await axios.get(`/tasks/week?date=${rootState.year}-${rootState.month + 1}-${rootState.sunday}`);
         commit('setWeekTasks', weekRes.data);
     }
 };

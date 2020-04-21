@@ -50,13 +50,17 @@ export default {
             this.setSunday(prevSunday.date());
             this.setMonth(prevSunday.month());
             this.setYear(prevSunday.year());
+            this.fetchBullets();
         },
         moveForward() {
             const nextSunday = this.sundayMoment;
             nextSunday.day(7);
             this.setSunday(nextSunday.date());
-            this.setMonth(nextSunday.month());
-            this.setYear(nextSunday.year());
+            if(nextSunday.month() != this.month)
+                this.setMonth(nextSunday.month());
+            if(nextSunday.year() != this.year)            
+                this.setYear(nextSunday.year());
+            this.fetchBullets();
         },
         getBulletsForDay(index) {
             let bullets = [];
@@ -129,6 +133,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 1rem;
+    height: 85vh;
 }
 
 h2 {

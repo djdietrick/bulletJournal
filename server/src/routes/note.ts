@@ -2,21 +2,25 @@ import {Router, Request, Response} from 'express';
 const Note = require('../models/note');
 let router = Router();
 import * as moment from 'moment';
+const auth = require('../middleware/auth');
 
 export function NoteRouter(router: Router = Router()): Router {
-    router.post('/notes', createNote);
-    router.get('/notes', getNotes);
-    router.get('/notes/week', getNotesByWeek);
-    router.get('/notes/:id', getNote);
-    router.patch('/notes/:id', updateNote);
-    router.delete('/notes/:id', deleteNote);
+    router.post('/notes', auth, createNote);
+    router.get('/notes', auth, getNotes);
+    router.get('/notes/week', auth, getNotesByWeek);
+    router.get('/notes/:id', auth, getNote);
+    router.patch('/notes/:id', auth, updateNote);
+    router.delete('/notes/:id', auth, deleteNote);
 
     return router;
 }
 
-async function createNote(req: Request, res: Response) {
+async function createNote(req: any, res: Response) {
     try {
-        const note = await new Note(req.body).save();
+        const note = await new Note({
+            ...req.body,
+            owner: req.user._id
+        }).save();
 
         return res.status(201).send(note);
     } catch(e) {
@@ -25,9 +29,11 @@ async function createNote(req: Request, res: Response) {
     }
 }
 
-async function getNotes(req: Request, res: Response) {
+async function getNotes(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     // Matches
     if(req.query.year && req.query.month) {
@@ -76,9 +82,11 @@ async function getNote(req: Request, res: Response) {
     }
 }
 
-async function getNotesByWeek(req: Request, res: Response) {
+async function getNotesByWeek(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     if(!req.query.date)
         return res.status(400).send("Must provide either a month and year or just a year");

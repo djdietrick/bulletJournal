@@ -1,0 +1,19 @@
+.error {
+    //background-color: $color-error;
+    display: block;
+    text-align: center;
+    border: 2px solid $color-error;
+    border-radius: 2rem;
+    opacity: 0;
+
+    &--active {
+        opacity: 1;
+
+        &--text {
+            padding: 2rem;
+            color: $color-error;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+    }
+}

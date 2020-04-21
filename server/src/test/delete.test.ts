@@ -5,12 +5,15 @@ const BulletModel = require('../models/bullet');
 const TaskModel = require('../models/task');
 const EventModel = require('../models/event');
 const NoteModel = require('../models/note');
-const {clearBullets} = require('./fixtures/db');
+const User = require('../models/user');
+const {clearBullets, createUser} = require('./fixtures/db');
+const {sendAuthRequest} = require('./fixtures/auth');
 
 const app = new App().express;
 
 beforeEach(async() => {
     await clearBullets();
+    await createUser();
 });
 
 afterAll(async() => {
@@ -22,15 +25,12 @@ test('Delete task', async() => {
         title: 'Take out trash'
     }
 
-    await request(app).post('/tasks')
-    .send(task)
-    .expect(201);
+    await sendAuthRequest('post', '/tasks', task);
 
     const tasks = await TaskModel.find();
     expect(tasks.length).toBe(1);
 
-    await request(app).delete(`/tasks/${tasks[0]._id}`)
-    .expect(200);
+    await sendAuthRequest('delete', `/tasks/${tasks[0]._id}`);
 
     const tasksNew = await TaskModel.find();
     expect(tasksNew.length).toBe(0);
@@ -38,18 +38,15 @@ test('Delete task', async() => {
 
 test('Delete event', async() => {
     const event = {
-        title: 'Got a haircut'
+        title: 'Got a haircut',
     }
 
-    await request(app).post('/events')
-    .send(event)
-    .expect(201);
+    await sendAuthRequest('post', '/events', event);
 
     const events = await EventModel.find();
     expect(events.length).toBe(1);
 
-    await request(app).delete(`/events/${events[0]._id}`)
-    .expect(200);
+    await sendAuthRequest('delete', `/events/${events[0]._id}`);
 
     const eventsNew = await EventModel.find();
     expect(eventsNew.length).toBe(0);
@@ -59,16 +56,13 @@ test('Delete note', async() => {
     const note = {
         title: 'Test note'
     }
-
-    await request(app).post('/notes')
-    .send(note)
-    .expect(201);
+    
+    await sendAuthRequest('post', '/notes', note);
 
     const notes = await NoteModel.find();
     expect(notes.length).toBe(1);
 
-    await request(app).delete(`/notes/${notes[0]._id}`)
-    .expect(200);
+    await sendAuthRequest('delete', `/notes/${notes[0]._id}`);
 
     const notesNew = await NoteModel.find();
     expect(notesNew.length).toBe(0);

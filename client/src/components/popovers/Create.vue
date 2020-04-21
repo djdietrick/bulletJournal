@@ -27,9 +27,9 @@
 
 <script>
 import BasePopover from './BasePopover';
-import TaskForm from './forms/TaskForm';
-import EventForm from './forms/EventForm';
-import NoteForm from './forms/NoteForm';
+import TaskForm from '../forms/TaskForm';
+import EventForm from '../forms/EventForm';
+import NoteForm from '../forms/NoteForm';
 import {mapActions} from 'vuex';
 
 export default {
@@ -68,12 +68,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/main.scss';
+@import '../../styles/main.scss';
 
 .create {
   position: fixed;
   top: 3rem;
-  right: 7%;
+  right: 4%;
 
   &--icon {
     color: $color-primary-light;

@@ -2,21 +2,25 @@ import {Router, Request, Response} from 'express';
 const Task = require('../models/task');
 let router = Router();
 import * as moment from 'moment';
+const auth = require('../middleware/auth');
 
 export function TaskRouter(router: Router = Router()): Router {
-    router.post('/tasks', createTask);
-    router.get('/tasks', getTasks);
-    router.get('/tasks/week', getTasksByWeek);
-    router.get('/tasks/:id', getTask);
-    router.patch('/tasks/:id', updateTask);
-    router.delete('/tasks/:id', deleteTask);
+    router.post('/tasks', auth, createTask);
+    router.get('/tasks', auth, getTasks);
+    router.get('/tasks/week', auth, getTasksByWeek);
+    router.get('/tasks/:id', auth, getTask);
+    router.patch('/tasks/:id', auth, updateTask);
+    router.delete('/tasks/:id', auth, deleteTask);
 
     return router;
 }
 
-async function createTask(req: Request, res: Response) {
+async function createTask(req: any, res: Response) {
     try {
-        const task = await new Task(req.body).save();
+        const task = await new Task({
+            ...req.body,
+            owner: req.user._id
+        }).save();
 
         return res.status(201).send(task);
     } catch(e) {
@@ -25,9 +29,11 @@ async function createTask(req: Request, res: Response) {
     }
 }
 
-async function getTasks(req: Request, res: Response) {
+async function getTasks(req: any, res: Response) {
     const match = {}
     const sort = {}
+
+    match["owner"] = req.user._id;
 
     // Matches
     if (req.query.completed) {
@@ -37,10 +43,45 @@ async function getTasks(req: Request, res: Response) {
     if(req.query.year && req.query.month) {
         const year = parseInt(req.query.year);
         const month = parseInt(req.query.month);
-        match["anchorDate"] = {
-            $gte: new Date(year, month),
-            $lt: new Date(year, month + 1)
-        }
+        // match["anchorDate"] = {
+        //     $gte: new Date(year, month),
+        //     $lt: new Date(year, month + 1)
+        // }
+
+        match["$or"] = [
+            {
+                anchorDate: {
+                    $gte: new Date(year, month),
+                    $lt: new Date(year, month + 1)
+                }
+            },
+            {
+                $and: [
+                    {
+                        completed: false
+                    },
+                    {
+                        anchorDate: {
+                            $lt: new Date(year, month + 1)
+                        }
+                    }
+                ]
+            },
+            {
+                $and: [
+                    {
+                        anchorDate: {
+                            $lt: new Date(year, month + 1)
+                        }
+                    },
+                    {
+                        completedDate: {
+                            $gte: new Date(year, month),
+                        }
+                    }
+                ]   
+            }
+        ];
     } else {
         return res.status(400).send("Must provide a month and year");
     }
@@ -82,11 +123,12 @@ async function getTask(req: Request, res: Response) {
     }
 }
 
-async function getTasksByWeek(req: Request, res: Response) { 
+async function getTasksByWeek(req: any, res: Response) { 
     try {
         const match = {}
         const sort = {}
 
+        match["owner"] = req.user._id;
 
         if(!req.query.date)
             return res.status(400).send("Must provide either a month and year or just a year");

@@ -2,14 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import moment from 'moment';
+import createPersistedState from 'vuex-persistedstate';
 
 import task from './modules/task';
 import event from './modules/event';
 import note from './modules/note';
-
-const a = axios.create({
-  baseURL: "http://localhost:3000"
-});
+import auth from './modules/auth';
 
 const now = moment();
 const nowYear = now.year();
@@ -22,7 +20,7 @@ export default new Vuex.Store({
   state: {
     sunday: thisSunday, // Sunday of the current week, used for week view query
     year: nowYear, // Current year the user is viewing
-    month: nowMonth, // Current month the user is viewing
+    month: nowMonth // Current month the user is viewing
   },
   getters: {
     getYear: state => state.year,
@@ -50,13 +48,21 @@ export default new Vuex.Store({
       dispatch('fetchNotes');      
     },
     async deleteBullet({commit, dispatch}, id) {
-      const res = await a.delete(`/${id}`);
+      const res = await axios.delete(`/${id}`);
       dispatch('fetchBullets');
+    },
+    resetDates({commit}) {
+      const now = moment();
+      commit('setYear', now.year());
+      commit('setMonth', now.month());
+      commit('setSunday', now.day(0).date());
     }
   },
   modules: {
     task,
     event,
-    note
-  }
+    note,
+    auth
+  },
+  plugins: [createPersistedState()]
 })
