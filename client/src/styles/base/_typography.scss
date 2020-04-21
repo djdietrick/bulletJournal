@@ -8,35 +8,13 @@ body {
 }
 
 .heading-primary {
-    color: $color-primary;
+    color: $color-primary-light;
     text-transform: uppercase;
+    font-size: 6rem;
+    font-weight: 300;
 
     backface-visibility: hidden;
     //margin-bottom: 6rem;
-
-    &--main {
-        display: block;
-        font-size: 6rem;
-        font-weight: 400;
-        letter-spacing: 3.5rem;
-    
-        animation-name: moveInLeft;
-        animation-duration: 1s;
-        animation-timing-function: ease-out;
-    
-        /*
-        animation-delay: 3s;
-        animation-iteration-count: 3;
-        */
-    }
-    
-    &--sub {
-        display: block;
-        font-size: 2rem;
-        font-weight: 700;
-        letter-spacing: 1.75rem;
-        animation: moveInRight 1s ease-out;
-    }
 }
 
 .heading-secondary {
@@ -44,30 +22,20 @@ body {
     //text-transform: uppercase;
     font-weight: 400;
     display: inline-block;
-    //background-image: linear-gradient(to right, $color-primary-light, $color-secondary-dark);
-    //-webkit-background-clip: text;
     color: $color-primary-light;
     letter-spacing: .1rem;
     transition: all .2s;
-
-    // &:hover {
-    //     transform: skewY(2deg) skewX(15deg) scale(1.1);
-    //     text-shadow: .5rem 1rem 2rem rgba($color-black, .2);
-    // }
 }
 
 .heading-tertiary {
-    font-size: 2rem;
-    font-weight: 500;
-    text-transform: uppercase;
+    font-size: 3rem;
+    font-weight: 300;
+    //text-transform: uppercase;
     color: $color-tertiary-dark;
 }
 
 .paragraph {
     font-size: $default-font-size;
     color: $color-primary-light;
-
-    // &:not(:last-child) {
-    //     margin-bottom: 3rem;
-    // }
+    font-weight: 300;
 }
