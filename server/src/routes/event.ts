@@ -171,11 +171,13 @@ async function getEvent(req: Request, res: Response) {
 
 async function updateEvent(req: Request, res: Response) {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['title', 'description', 'notes', 'anchorDate', 'allDay', 'importance'];
+    const allowedUpdates = ['title', 'description', 'notes', 'anchorDate', 
+    'allDay', 'importance', 'location', 'endDate'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
         const invalidUpdates = updates.filter(update => !allowedUpdates.includes(update));
+        console.error("Invalid updates for event update: ", invalidUpdates);
         return res.status(400).send({ 
             error: 'Invalid updates!', 
             invalidUpdates

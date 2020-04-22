@@ -1,5 +1,5 @@
 <template>
-    <BasePopover class="edit" title="Edit" placement="bottom">
+    <BasePopover class="edit" title="Edit" :placement="placement">
         <template v-slot:content>
             <div>
                 <component :is="selectedComponent"
@@ -28,7 +28,10 @@ import {mapActions} from "vuex";
 export default {
     props: {
         formType: String,
-        bullet: Object
+        bullet: Object,
+        placement: {
+            default: "bottom"
+        }
     },
     components: {
         eventForm: EventForm,

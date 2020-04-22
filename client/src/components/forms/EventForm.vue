@@ -130,6 +130,9 @@ export default {
             retEvent.anchorDate = retEvent.anchorDate.format();
             if(retEvent.endDate !== null)
                 retEvent.endDate = retEvent.endDate.format();
+
+            if(this.passedBullet._id !== undefined)
+                retEvent["_id"] = this.passedBullet._id;
             
             retEvent.importance = retEvent.importance.toUpperCase();
             this.submitFunction(retEvent);

@@ -1,6 +1,6 @@
 body {
     font-family: "Roboto", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     /*font-size: 16px;*/
     line-height: 1.7;
     color: $color-grey-dark;
@@ -14,13 +14,11 @@ body {
     font-weight: 300;
 
     backface-visibility: hidden;
-    //margin-bottom: 6rem;
 }
 
 .heading-secondary {
     font-size: 3.5rem;
-    //text-transform: uppercase;
-    font-weight: 400;
+    font-weight: 300;
     display: inline-block;
     color: $color-primary-light;
     letter-spacing: .1rem;

@@ -49,7 +49,10 @@ const actions = {
     },
     async updateEvent({ commit, dispatch }, event) {
         try {
-            const res = await axios.patch(`/events/${event._id}`, event);
+            const id = event._id;
+            delete event._id;
+
+            const res = await axios.patch(`/events/${id}`, event);
             if (res.status !== 200) {
 
             }

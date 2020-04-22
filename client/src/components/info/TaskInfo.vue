@@ -11,7 +11,23 @@
         <BasePopover :title="task.title" :placement="placement">
             <template v-slot:content>
                 <div class="info">
-                    <Toolbar :bullet="task"/>
+                    <div v-if="task.description && task.description.length !== 0" class="info__group">
+                        <span class="info__key">Description</span>
+                        <span class="info__value">{{task.description}}</span>
+                    </div>
+                    <div class="info__group">
+                        <span class="info__key">Date</span>
+                        <span class="info__value">{{getDisplayDate(task.anchorDate)}}</span>
+                    </div>
+                    <div v-if="task.dueDate" class="info__group">
+                        <span class="info__key">Due Date</span>
+                        <span class="info__value">{{getDisplayDate(task.dueDate)}}</span>
+                    </div>
+                    <div v-if="task.completedDate" class="info__group">
+                        <span class="info__key">Completed Date</span>
+                        <span class="info__value">{{getDisplayDate(task.completedDate)}}</span>
+                    </div>
+                    <Toolbar class="info__footer" :bullet="task"/>
                 </div>
             </template>
             <template v-slot:trigger>
@@ -55,6 +71,9 @@ export default {
             if(!task.dueDate) return false;
             if(task.completed === true) return false;
             return moment(task.dueDate).unix() < moment().unix();
+        },
+        getDisplayDate(date) {
+            return moment(date).format("MMM D, YYYY");
         }
     }
 }

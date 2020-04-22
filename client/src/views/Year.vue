@@ -169,7 +169,7 @@ export default {
 
     &__events {
         position: absolute;
-        top: 4.5rem;
+        top: 5.5rem;
         left: 2rem;
         list-style-type: none;
     }
@@ -206,10 +206,14 @@ h2 {
 
 #btn--left {
     grid-column: 1 / 2;
+    align-self: center;
+    justify-self: center;
 }
 
 #btn--right {
     grid-column: 3 / 4;
+    align-self: center;
+    justify-self: center;
 }
 
 

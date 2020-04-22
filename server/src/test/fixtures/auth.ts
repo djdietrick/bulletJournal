@@ -8,7 +8,7 @@ const app = new App().express;
 const sendAuthRequest: Function = async function(method: string, 
     url: string, data: Object = null): Promise<request.Response> {
 
-    const loginResponse = await request(app).post('/users/login')
+    const loginResponse = await request(app).post('/api/users/login')
         .send({
             email: "djdietrick@gmail.com",
             password: "password"
@@ -31,7 +31,7 @@ const sendAuthRequest: Function = async function(method: string,
         throw new Error("Must send a method");
     }
 
-    await request(app).post('/users/logout').set({"Authorization": "Bearer " + token});
+    await request(app).post('/api/users/logout').set({"Authorization": "Bearer " + token});
 
     return ret;
 }

@@ -2,10 +2,12 @@
     <div class="toolbar">
         <Edit class="edit"
             :bullet="bullet"
-            :formType="bullet._type"/>
+            :formType="bullet._type"
+            :placement="placement"/>
         <Delete class="delete"
                 :id="bullet._id"
-                :title="bullet.title"/>
+                :title="bullet.title"
+                :placement="placement"/>
     </div>
 </template>
 
@@ -14,7 +16,10 @@ import Edit from "../popovers/Edit";
 import Delete from "../popovers/Delete";
 export default {
     props: {
-        bullet: Object
+        bullet: Object,
+        placement: {
+            default: "bottom"
+        }
     },
     components: {
         Edit,

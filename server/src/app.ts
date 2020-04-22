@@ -51,7 +51,7 @@ export class App {
         this.express.use('/api', EventRouter());
         this.express.use('/api', NoteRouter());
         this.express.use('/api', SharedRouter());
-        this.express.use(UserRouter());
+        this.express.use('/api/', UserRouter());
 
         this.express.get('/', (req: express.Request, res: express.Response) => {
             res.sendFile('index.html', {root: publicDir});

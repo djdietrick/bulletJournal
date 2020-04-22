@@ -1,5 +1,5 @@
 <template>
-    <BasePopover class="delete" :title="'Delete ' + title + '?'" placement="bottom">
+    <BasePopover class="delete" :title="'Delete ' + title + '?'" :placement="placement">
         <template v-slot:content>
             <div>
                 <button class="btn" @click="deleteBullet(id)">Delete</button>
@@ -24,7 +24,10 @@ export default {
             type: String,
             required: true
         },
-        title: String
+        title: String,
+        placement: {
+            default: 'right'
+        }
     },
     data() {
         return {

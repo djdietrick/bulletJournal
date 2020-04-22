@@ -1,0 +1,34 @@
+.info {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    margin: 0;
+
+    &__group {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-gap: 0.5rem;
+        justify-items: start;
+        border-bottom: 1px solid $color-grey-dark-4;
+
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__key {
+        color: $color-tertiary-dark;
+        font-size: 1.5rem;
+    }
+
+    &__value {
+        color: $color-primary-light;
+        font-size: 1.5rem;
+        max-width: 25rem;
+        word-wrap: break-word;
+    }
+
+    &__footer {
+        margin-top: 1.5rem;
+    }
+}

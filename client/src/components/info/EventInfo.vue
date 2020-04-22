@@ -2,8 +2,21 @@
     <BasePopover :title="event.title" class="event">
         <template v-slot:content>
             <div class="info">
-                <Toolbar :bullet="event"/>
-
+                <div class="info">
+                    <div v-if="event.description && event.description.length !== 0" class="info__group">
+                        <span class="info__key">Description</span>
+                        <span class="info__value">{{event.description}}</span>
+                    </div>
+                    <div class="info__group">
+                        <span class="info__key">Date</span>
+                        <span class="info__value">{{infoDate}}</span>
+                    </div>
+                    <div v-if="event.location" class="info__group">
+                        <span class="info__key">Location</span>
+                        <span class="info__value">{{event.location}}</span>
+                    </div>
+                </div>
+                <Toolbar class="info__footer" :bullet="event" placement="right"/>
             </div>
         </template>
         <template v-slot:trigger class="event__text">
@@ -55,6 +68,16 @@ export default {
                 str += "@ " + this.event.location;
             }
             return str;
+        },
+        infoDate() {
+            if(this.event.endDate) {
+                return moment(this.event.anchorDate).format("MMM D, YYYY") + " - "
+                 + moment(this.event.endDate).format("MMM D, YYYY");
+            } else if(this.event.allDay) {
+                return moment(this.event.anchorDate).format("h:mma MMM D, YYYY");
+            } else {
+                return moment(this.event.anchorDate).format("MMM D, YYYY");
+            }
         }
     }
 }

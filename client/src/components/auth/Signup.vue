@@ -101,6 +101,9 @@ export default {
     display: flex;
     flex-direction: column;
     width: 40rem;
+    border: 2px solid $color-primary;
+    border-radius: 1rem;
+    padding: 5rem;
     
     position: absolute;
     top: 10%;

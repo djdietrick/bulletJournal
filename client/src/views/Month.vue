@@ -238,10 +238,14 @@ h2 {
 
 #btn--left {
     grid-column: 1 / 2;
+    align-self: center;
+    justify-self: center;
 }
 
 #btn--right {
     grid-column: 3 / 4;
+    align-self: center;
+    justify-self: center;
 }
 
 </style>
