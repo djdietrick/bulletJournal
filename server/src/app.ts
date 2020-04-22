@@ -26,11 +26,9 @@ export class App {
     }
 
     public listen(port: Number): void {
-        if(process.env.NODE_ENV !== 'test') {
-            this.express.listen(port, () => {
-                console.log('Server is up on http://localhost:' + port);
-            });
-        }
+        this.express.listen(port, () => {
+            console.log('Server is up on http://localhost:' + port);
+        });
     }
 
     private initSettings(): void {
@@ -43,7 +41,7 @@ export class App {
     }
 
     private initDb(): void {
-        require('../db/mongoose');
+        require('./db/mongoose');
     }
 
     private initRouters(): void {
@@ -51,9 +49,9 @@ export class App {
         this.express.use('/api', EventRouter());
         this.express.use('/api', NoteRouter());
         this.express.use('/api', SharedRouter());
-        this.express.use('/api/', UserRouter());
+        this.express.use('/api', UserRouter());
 
-        this.express.get('/', (req: express.Request, res: express.Response) => {
+        this.express.get(/.*/, (req: express.Request, res: express.Response) => {
             res.sendFile('index.html', {root: publicDir});
         });
     }
