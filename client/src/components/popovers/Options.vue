@@ -1,8 +1,11 @@
 <template>
     <div class="options">
-        <BasePopover placement="bottomLeft">
+        <BasePopover placement="bottomRight">
             <template v-slot:content>
-                <div class="btn" @click.prevent='logoutUser'>Logout</div>
+                <div class="options__list">
+                    <HowTo/>
+                    <div class="btn" @click.prevent='logoutUser'>Logout</div>
+                </div>
             </template>
             <template v-slot:trigger>
                 <font-awesome-icon 
@@ -15,10 +18,12 @@
 
 <script>
 import BasePopover from './BasePopover';
+import HowTo from './HowTo';
 import {mapActions} from 'vuex';
 export default {
     components: {
-        BasePopover
+        BasePopover,
+        HowTo
     },
     methods: {
         ...mapActions(['logout']),
@@ -38,10 +43,15 @@ export default {
     top: 3rem;
     left: 4%;
 
+    &__list {
+        display: flex;
+        flex-direction: column;
+    }
+
     &--icon {
-    color: $color-primary-light;
-    transform: scale(4);
-  }
+        color: $color-primary-light;
+        transform: scale(4);
+    }
 }
 
 </style>

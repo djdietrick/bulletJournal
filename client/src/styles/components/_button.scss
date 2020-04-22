@@ -13,6 +13,11 @@
         background-color: $color-grey-dark-3;
         border: 1.5px solid $color-primary-light;
         color: $color-primary-light;
+        margin: 0 1rem;
+
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
 
         //Change for the <button> element
         cursor: pointer;
