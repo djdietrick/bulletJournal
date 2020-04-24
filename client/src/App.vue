@@ -9,23 +9,14 @@
 
 <style lang="scss">
 @import "./styles/main.scss";
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
 
 body {
   padding: 0;
 }
 
 #app {
-  //font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  //text-align: center;
-  //color: #2c3e50;
-
-  // display: grid;
-  // grid-template-columns: minmax(0, 1fr) 95vw minmax(0, 1fr);
-  // grid-template-rows: 1fr 90vh;
-
 }
 
 .fade-enter-active, .fade-leave-active {
