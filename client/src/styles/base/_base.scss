@@ -22,7 +22,7 @@ html {
 
 body {
     box-sizing: border-box;
-    background-color: $color-grey-dark-3;
+    background-color: $color-background;
     padding: 0;
 
     /* width */
@@ -40,6 +40,6 @@ body {
     /* Handle */
     ::-webkit-scrollbar-thumb {
     background: $color-grey-dark;
-    border-radius: 10px;
+    border-radius: 8px;
     }
 }

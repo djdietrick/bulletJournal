@@ -101,26 +101,26 @@ p {
 }
 
 .event--icon {
-    color: $color-primary-light;
+    color: $color-grey-light-1;
     margin-right: 5px;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    transform: translateY(-2px);
 }
 
 #event--date {
     margin-right: 4px;
-    color: $color-primary-light;
+    color: $color-tertiary-dark;
     font-weight: 500;
 }
 
 #event--title {
-    color: $color-primary-light;
-    font-weight: 400;
+    @extend .paragraph;
 }
 
 #event--details {
+    @extend .paragraph;
     margin-left: 4px;
-    color: $color-primary;
-    font-weight: 400;
+    color: $color-primary-light !important;
 }
 
 </style>

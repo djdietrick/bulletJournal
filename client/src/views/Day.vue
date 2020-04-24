@@ -160,6 +160,9 @@ h2 {
     padding: 1rem;
     border-radius: 1rem;
 
+    &__list {
+        list-style-type: none;
+    }
 }
 
 </style>

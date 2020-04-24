@@ -15,8 +15,6 @@
                 <ul class="month__events">
                     <li class="paragraph" v-for="event in eventsByMonth[index]" :key="event._id">
                         <EventInfo :event="event" :month="parseInt(index)" addDateString/>
-                        <!-- <span id="event--title">{{ getDateString(event, index) }}: {{event.title}}   </span> 
-                        <span id="event--details">{{getDisplayString(event)}}</span> -->
                     </li>
                 </ul>
             </div>

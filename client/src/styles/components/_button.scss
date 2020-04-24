@@ -10,10 +10,16 @@
         transition: all .2s;
         position: relative;
         font-size: $default-font-size;
-        background-color: $color-grey-dark-3;
+        background-color: $color-background;
         border: 1.5px solid $color-primary-light;
         color: $color-primary-light;
         margin: 0 1rem;
+
+        &--filled {
+            background-color: transparent !important;
+            background-image: $gradient;
+            color: $color-grey-dark-3 !important;
+        }
 
         &:not(:last-child) {
             margin-bottom: 2rem;

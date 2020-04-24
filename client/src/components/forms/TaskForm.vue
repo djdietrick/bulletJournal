@@ -35,7 +35,7 @@
         
         <div class="form__group">
             <button
-                    class="btn btn-primary"
+                    class="btn btn--filled btn-primary"
                     @click.prevent="formatAndSubmit()">{{btnText}}
             </button>
         </div>

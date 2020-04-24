@@ -1,18 +1,35 @@
 // COLORS
-$color-primary: #5068a9;
-$color-primary-light: #76c6e6;
-$color-primary-dark: #324e7b;
+// $color-primary: #5068a9;
+// $color-primary-light: #76c6e6;
+// $color-primary-dark: #324e7b;
+
+$color-primary-light: #6AFFF3; 
+$color-primary: #1CBAD9;
+$color-primary-dark: #6A99FB;
 
 $color-secondary: #1a936f;
 $color-secondary-light: #88d498;
 $color-secondary-dark: #114b5f;
 
-$color-tertiary: #dfb361;
-$color-tertiary-light: #f5eb82;
-$color-tertiary-dark: #d3775d;
+// $color-tertiary: #dfb361;
+// $color-tertiary-light: #f5eb82;
+// $color-tertiary-dark: #d3775d;
 
-$color-warning:#ff2e2eec;
-$color-error:#d63030ec;
+$color-tertiary: #876DFF;
+$color-tertiary-light: #B771FF;
+$color-tertiary-dark: #6A76FE;
+
+$color-warning: #FFF38E;
+$color-error:#FF886A;
+
+// $color-warning:#ff2e2eec;
+// $color-error:#d63030ec;
+
+$color-background: #141526;
+$gradient: linear-gradient(
+    to right bottom,
+    rgba($color-primary-light, 0.8),
+    rgba($color-tertiary-dark, 0.8));
 
 $color-grey-light-1: #f7f7f7;
 $color-grey-light-2: #eee;

@@ -6,7 +6,7 @@ const NoteModel = require('../../models/note');
 const User = require('../../models/user');
 
 // connect to db
-require('../../../db/mongoose');
+require('../../db/mongoose');
 
 const populatedb = async() => {
     const user = await new User({

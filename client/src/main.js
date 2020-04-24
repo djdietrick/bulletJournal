@@ -30,7 +30,7 @@ Vue.component(Popover.name, Popover);
 
 Vue.config.productionTip = false;
 
-axios.defaults.baseURL = process.env.SERVER_URL;
+axios.defaults.baseURL = process.env.VUE_APP_SERVER_URL;
 const state = JSON.parse(localStorage.getItem('vuex'));
 if(state && state.auth.token) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.auth.token;

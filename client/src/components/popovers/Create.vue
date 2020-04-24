@@ -1,6 +1,6 @@
 <template>
     <div class="create">
-        <BasePopover title="Create" placement="bottomRight">
+        <BasePopover title="Create" placement="leftTop">
             <template v-slot:content>
                 <div class="radio--group">
                     <input class="radio--button" type="radio" id="taskForm" v-model="selectedComponent" value="taskForm">
