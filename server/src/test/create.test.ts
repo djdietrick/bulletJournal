@@ -165,7 +165,7 @@ test('Check inheritance', async() => {
 
 test('Bullet limit', async() => {
     //Create new user
-    // const loginResponse = await request(app).post('/users')
+    // const loginResponse = await request(app).post('/api/users')
     //     .send({
     //         name: "test",
     //         email: "test@gmail.com",
@@ -174,17 +174,16 @@ test('Bullet limit', async() => {
     // const token = loginResponse.body.token;
 
     // for(let i = 0; i < 100; i++) {
-    //     await request(app).post('/tasks')
+    //     await request(app).post('/api/tasks')
     //         .send({
     //             title: "test"
     //         }).set({"Authorization": "Bearer " + token})
     //         .expect(201);
     // }
 
-    // await request(app).post('/tasks')
+    // await request(app).post('/api/tasks')
     //         .send({
     //             title: "test"
     //         }).set({"Authorization": "Bearer " + token})
     //         .expect(400);
-
 });

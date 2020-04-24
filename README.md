@@ -13,6 +13,6 @@ There are two individual Node projects in this app, one for the server and one f
 You will also need to add a config file for the server to work properly. For dev, create a file called 'dev.env'. In that file, specify the following parameters:
 * PORT (port you want the server to run on)
 * DEV_MONGODB_URL (url of your mongo db)
-* DB_USER
-* DB_PASSWORD
 * JWT_SECRET (for your JWT)
+* MAX_BULLETS (optional), specify the maximum number of bullets allowed per user
+* SERVER_URL (for prod only), for the front end to specify the backend address
