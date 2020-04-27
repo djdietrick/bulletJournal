@@ -1,5 +1,8 @@
 <template>
     <form class="login">
+        <transition name="fade">
+            <div v-if="error" class="form__error">{{error}}</div>
+        </transition>
         <div class="form__group">
             <label for="email" class="form__label">Email</label>
             <input type="text" id='email' class='form__input'
@@ -25,17 +28,22 @@ export default {
     data() {
         return {
             email: "",
-            password: ""
+            password: "",
+            error: null
         }
     },
     methods: {
         ...mapActions(["login"]),
         async formatAndSubmit() {
-            await this.login({
+            this.error = null;
+            this.login({
                 email: this.email,
                 password: this.password
-            });
-            this.$router.push('/bullets/month');
+            })
+            .then(() => {
+                this.$router.push('/bullets/month');
+            })
+            .catch(e => this.error = e.message);
         }
     }
 }

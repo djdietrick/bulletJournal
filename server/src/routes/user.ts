@@ -13,6 +13,13 @@ export function UserRouter(router: Router = Router()): Router {
 
 async function createUser(req: Request, res: Response) {
     try {
+        const existingUser = await User.find({
+            email: req.body.email
+        });
+
+        if(existingUser.length)
+            return res.status(403).send("Account already exists for that email address");
+
         const user = new User(req.body);
 
         await user.save();
@@ -21,7 +28,7 @@ async function createUser(req: Request, res: Response) {
         return res.status(201).send({ user, token });
     } catch(e) {
         console.log(e.message);
-        return res.status(400).send(e.message);
+        return res.status(400).send("Could not create account, please try again later.");
     }
 }
 

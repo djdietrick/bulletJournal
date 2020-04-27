@@ -41,7 +41,7 @@ const actions = {
 
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
         } catch(e) {
-            console.error(e);
+            throw new Error(e.response.data);
         }
     },
     async login({commit}, user) {
@@ -56,7 +56,7 @@ const actions = {
 
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
         } catch(e) {
-            console.error(e);
+            throw new Error(e.response.data);
         }
     },
     async logout({commit, state, dispatch}) {

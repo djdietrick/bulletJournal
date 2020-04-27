@@ -1,8 +1,8 @@
 <template>
     <form class="signup">
-        <div class="error" v-bind:class="{'error--active': error.length !== 0}">
-            <h3 class="error--text">{{error}}</h3>
-        </div>
+        <transition name="fade">
+            <div v-if="error" class="form__error">{{error}}</div>
+        </transition>
         <div class="form__group">
             <label for="name" class="form__label">Name</label>
             <input type="text" id='name' class='form__input'
@@ -53,25 +53,29 @@ export default {
 
             let errors = false;
             if(!this.name.length) {
-                errors = true;
-
+                this.error = "Please input a name.";
+                return;
             }
             if(!this.validEmail(this.email)) {
-                errors = true;
+                this.error = "Please enter a valid email address.";
+                return;
+            }
+            if(!this.password.length < 8) {
+                this.error = "Please enter a password with at least 8 characters.";
+                return;
             }
             if(this.confirmPassword !== this.password) {
-                errors = true;
+                this.error = "Password and confirm password do not match.";
+                return;
             }
 
-            if(errors)
-                return;
-
-            await this.signup({
+            this.signup({
                 name: this.name,
                 email: this.email,
                 password: this.password
-            });
-            this.$router.push('/bullets/month');
+            })
+            .then(() => this.$router.push('/bullets/month'))
+            .catch(e => this.error = e.message);
         },
         validEmail: function (email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

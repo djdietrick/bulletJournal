@@ -19,6 +19,7 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true,
+        index: true,
         trim: true,
         lowercase: true,
         validate(value: String) {
@@ -79,13 +80,13 @@ userSchema.statics.findByCredentials = async (email, password): Promise<Object> 
     const user: any = await User.findOne({ email });
 
     if (!user) {
-        throw new Error('Unable to login');
+        throw new Error('User not found.');
     }
 
     const isMatch: Boolean = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw new Error('Unable to login');
+        throw new Error('Incorrect password.');
     }
 
     return user;

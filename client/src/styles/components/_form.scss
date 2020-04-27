@@ -61,6 +61,16 @@
         color: $color-tertiary-dark;
     }
 
+    &__error {
+        color: $color-error;
+        border: 2px solid $color-error;
+        border-radius: 2rem;
+        padding: 1.5rem 3rem;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
     &__input:placeholder-shown + &__label {
         opacity: 0;
         visibility: hidden;

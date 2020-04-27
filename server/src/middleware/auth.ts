@@ -17,7 +17,9 @@ const auth = async (req: any, res: Response, next: NextFunction) => {
         next();
     } catch (e) {
         console.log(e.message);
-        return res.status(401).send({ error: 'Please authenticate.' });
+        if(e.message === 'Incorrect password')
+            return res.status(401).send(e.message);
+        return res.status(403).send(e.message);
     }
 }
 
