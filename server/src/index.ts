@@ -1,5 +1,5 @@
 import {App} from './app';
-const http = require('http');
+const http = require('https');
 
 let port: Number = parseInt(process.env.PORT) || 3000;
 
