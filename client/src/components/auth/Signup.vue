@@ -60,7 +60,7 @@ export default {
                 this.error = "Please enter a valid email address.";
                 return;
             }
-            if(!this.password.length < 8) {
+            if(this.password.length < 8) {
                 this.error = "Please enter a password with at least 8 characters.";
                 return;
             }
