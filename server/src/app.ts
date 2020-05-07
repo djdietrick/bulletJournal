@@ -56,35 +56,3 @@ export class App {
         });
     }
 }
-
-// const app = new App();
-// app.listen(port);
-
-// Connect to DB
-// require('../db/mongoose');
-
-// let app = express();
-
-// app.use(express.static(publicDir));
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: true}));
-
-// app.use(cors());
-
-// app.use(TaskRouter());
-// app.use(EventRouter());
-// app.use(NoteRouter());
-// app.use(SharedRouter());
-
-// app.get('/', (req, res) => {
-//     res.sendFile('index.html', {root: publicDir});
-// });
-
-// if(process.env.NODE_ENV !== 'test') {
-//     app.listen(port, () => {
-//         console.log('Server is up on http://localhost:' + port);
-//     });
-// }
-
-//module.exports = app;

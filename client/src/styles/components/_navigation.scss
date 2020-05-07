@@ -4,7 +4,7 @@
 
     &__link {
     //font-weight: bold;
-    color: $color-primary-light;
+    color: $color-tertiary;
     padding: 0.5rem 5rem;
     font-size: 1.7rem;
     text-decoration: none;
@@ -12,19 +12,18 @@
     box-shadow: 0 0.5rem 1rem rgba($color-black, .2);
     transition: 0.2s ease-in-out;
 
-    // &:first-child {
-    //   border-top-left-radius: 7px;
-    //   border-bottom-left-radius: 7px;
-    // }
+    &:first-child {
+      border-top-left-radius: 7px;
+      border-bottom-left-radius: 7px;
+    }
 
-    // &:last-child {
-    //   border-top-right-radius: 7px;
-    //   border-bottom-right-radius: 7px;
-    // }
+    &:last-child {
+      border-top-right-radius: 7px;
+      border-bottom-right-radius: 7px;
+    }
 
     &.router-link-exact-active {
-        background-image: linear-gradient(to bottom, $color-primary-dark, $color-tertiary-dark);
-        background-color: transparent;
+        background-color: $color-tertiary-dark;
         color: $color-grey-light-1;
     }
     }

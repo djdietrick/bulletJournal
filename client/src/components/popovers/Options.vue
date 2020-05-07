@@ -49,7 +49,7 @@ export default {
     }
 
     &--icon {
-        color: $color-primary-light;
+        color: $color-primary;
         transform: scale(4);
     }
 }

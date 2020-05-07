@@ -24,9 +24,12 @@ body {
 .heading-secondary {
     font-size: 3.5rem;
     font-weight: 300;
-    display: inline-block;
+    //display: inline-block;
     
-    color: $color-primary;
+    color: transparent;
+    background-image: $gradient-light;
+    -webkit-background-clip: text;
+    
     letter-spacing: .1rem;
     transition: all .2s;
 }
