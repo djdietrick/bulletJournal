@@ -2,15 +2,15 @@ import {Router, Request, Response} from 'express';
 const Note = require('../models/note');
 let router = Router();
 import * as moment from 'moment';
-const auth = require('../middleware/auth');
+const {AuthMiddleware} = require('dash-auth');
 
 export function NoteRouter(router: Router = Router()): Router {
-    router.post('/notes', auth, createNote);
-    router.get('/notes', auth, getNotes);
-    router.get('/notes/week', auth, getNotesByWeek);
-    router.get('/notes/:id', auth, getNote);
-    router.patch('/notes/:id', auth, updateNote);
-    router.delete('/notes/:id', auth, deleteNote);
+    router.post('/notes', AuthMiddleware, createNote);
+    router.get('/notes', AuthMiddleware, getNotes);
+    router.get('/notes/week', AuthMiddleware, getNotesByWeek);
+    router.get('/notes/:id', AuthMiddleware, getNote);
+    router.patch('/notes/:id', AuthMiddleware, updateNote);
+    router.delete('/notes/:id', AuthMiddleware, deleteNote);
 
     return router;
 }

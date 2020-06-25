@@ -1,11 +1,9 @@
 export {};
-const request = require('supertest');
 import {App} from '../app';
 const BulletModel = require('../models/bullet');
 const TaskModel = require('../models/task');
 const EventModel = require('../models/event');
 const NoteModel = require('../models/note');
-const User = require('../models/user');
 const {clearBullets, createUser} = require('./fixtures/db');
 const {sendAuthRequest} = require('./fixtures/auth');
 

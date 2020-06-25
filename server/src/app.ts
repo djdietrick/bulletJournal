@@ -1,17 +1,14 @@
 import * as express from 'express';
-//let express = require('express');
-
 let https = require('https');
 let path = require('path');
 let fs = require('fs');
 let bodyParser = require('body-parser');
 let cors = require('cors');
-
+const {UserRouter} = require('dash-auth');
 import {EventRouter} from './routes/event';
 import {NoteRouter} from './routes/note';
 import {SharedRouter} from './routes/shared';
 import {TaskRouter} from './routes/task';
-import {UserRouter} from './routes/user';
 
 const publicDir = path.join(__dirname, '../../client/dist/');
 
@@ -51,6 +48,7 @@ export class App {
         this.express.use('/api', EventRouter());
         this.express.use('/api', NoteRouter());
         this.express.use('/api', SharedRouter());
+
         this.express.use(UserRouter());
 
         this.express.get('/', (req: express.Request, res: express.Response) => {

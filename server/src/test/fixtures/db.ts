@@ -1,14 +1,10 @@
 export {};
+const User = require('../../models/user');
 const bullets = require('./testBullets.json');
-const request = require('supertest');
 const BulletModel = require('../../models/bullet');
 const EventModel = require('../../models/event');
 const TaskModel = require('../../models/task');
 const NoteModel = require('../../models/note');
-const User = require('../../models/user');
-import {App} from '../../app';
-
-const app = new App().express;
 
 const clearBullets: Function = async () => {
     await BulletModel.deleteMany();

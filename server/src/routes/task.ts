@@ -2,15 +2,15 @@ import {Router, Request, Response} from 'express';
 const Task = require('../models/task');
 let router = Router();
 import * as moment from 'moment';
-const auth = require('../middleware/auth');
+const {AuthMiddleware} = require('dash-auth');
 
 export function TaskRouter(router: Router = Router()): Router {
-    router.post('/tasks', auth, createTask);
-    router.get('/tasks', auth, getTasks);
-    router.get('/tasks/week', auth, getTasksByWeek);
-    router.get('/tasks/:id', auth, getTask);
-    router.patch('/tasks/:id', auth, updateTask);
-    router.delete('/tasks/:id', auth, deleteTask);
+    router.post('/tasks', AuthMiddleware, createTask);
+    router.get('/tasks', AuthMiddleware, getTasks);
+    router.get('/tasks/week', AuthMiddleware, getTasksByWeek);
+    router.get('/tasks/:id', AuthMiddleware, getTask);
+    router.patch('/tasks/:id', AuthMiddleware, updateTask);
+    router.delete('/tasks/:id', AuthMiddleware, deleteTask);
 
     return router;
 }

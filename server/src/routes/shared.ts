@@ -1,10 +1,10 @@
 import {Router, Request, Response} from 'express';
 const router = Router();
 const Bullet = require('../models/bullet');
-const auth = require('../middleware/auth');
+const {AuthMiddleware} = require('dash-auth');
 
 export function SharedRouter(router: Router = Router()): Router {
-    router.delete('/:id', auth, deleteBullet);
+    router.delete('/:id', AuthMiddleware, deleteBullet);
 
     return router;
 }

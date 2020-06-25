@@ -1,9 +1,9 @@
 export {};
+const User = require('../../models/user');
 const bullets = require('./testBullets.json');
 const EventModel = require('../../models/event');
 const TaskModel = require('../../models/task');
 const NoteModel = require('../../models/note');
-const User = require('../../models/user');
 
 // connect to db
 require('../../../db/mongoose');

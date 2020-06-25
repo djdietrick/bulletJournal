@@ -1,15 +1,15 @@
 import {Router, Request, Response} from 'express';
 const Event = require('../models/event');
 import * as moment from 'moment';
-const auth = require('../middleware/auth');
+const {AuthMiddleware} = require('dash-auth');
 
 export function EventRouter(router: Router = Router()): Router {
-    router.post('/events', auth, createEvent);
-    router.get('/events', auth, getEvents);
-    router.get('/events/week', auth, getEventsByWeek);
-    router.get('/events/:id', auth, getEvent);
-    router.patch('/events/:id', auth, updateEvent);
-    router.delete('/events/:id', auth, deleteEvent);
+    router.post('/events', AuthMiddleware, createEvent);
+    router.get('/events', AuthMiddleware, getEvents);
+    router.get('/events/week', AuthMiddleware, getEventsByWeek);
+    router.get('/events/:id', AuthMiddleware, getEvent);
+    router.patch('/events/:id', AuthMiddleware, updateEvent);
+    router.delete('/events/:id', AuthMiddleware, deleteEvent);
 
     return router;
 }
@@ -77,6 +77,7 @@ async function getEvents(req: any, res: Response) {
 
         match["importance"] = 'HIGH';
     } else {
+        console.log("Must provide either a month and year or just a year");;
         return res.status(400).send("Must provide either a month and year or just a year");
     }
 

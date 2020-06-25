@@ -6,7 +6,6 @@ const BulletModel = require('../models/bullet');
 const TaskModel = require('../models/task');
 const EventModel = require('../models/event');
 const NoteModel = require('../models/note');
-const User = require('../models/user');
 import {App} from '../app';
 const moment = require('moment');
 

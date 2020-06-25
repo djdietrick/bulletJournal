@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 
 mongoose.connect(process.env.DEV_MONGODB_URL, {
     useNewUrlParser: true,
